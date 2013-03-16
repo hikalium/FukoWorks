@@ -10,9 +10,17 @@
 
 @implementation AppDelegate
 
+@synthesize label1 = _label1;
+@synthesize button1 = _button1;
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
     // Insert code here to initialize your application
+}
+
+- (void)awakeFromNib
+{
+    [self.label1 setStringValue:@"初期化完了"];
 }
 
 @end

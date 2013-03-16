@@ -11,5 +11,7 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 
 @property (assign) IBOutlet NSWindow *window;
+@property (strong, nonatomic) IBOutlet NSTextField *label1;
+@property (strong, nonatomic) IBOutlet NSButton *button1;
 
 @end
