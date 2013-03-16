@@ -13,6 +13,7 @@
 		17BCF80616F42BDD00E7E472 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BCF80516F42BDD00E7E472 /* AppDelegate.m */; };
 		17BCF80916F42BDD00E7E472 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF80716F42BDD00E7E472 /* MainMenu.xib */; };
 		17BCF81316F43F9100E7E472 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF81216F43F9100E7E472 /* Credits.rtf */; };
+		17BCF81616F4400300E7E472 /* MainCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BCF81516F4400300E7E472 /* MainCanvasView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,6 +30,8 @@
 		17BCF80F16F4354D00E7E472 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		17BCF81016F4354D00E7E472 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		17BCF81216F43F9100E7E472 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
+		17BCF81416F4400300E7E472 /* MainCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainCanvasView.h; sourceTree = "<group>"; };
+		17BCF81516F4400300E7E472 /* MainCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainCanvasView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +89,8 @@
 				17BCF80516F42BDD00E7E472 /* AppDelegate.m */,
 				17BCF80716F42BDD00E7E472 /* MainMenu.xib */,
 				17BCF7F916F42BDD00E7E472 /* Supporting Files */,
+				17BCF81416F4400300E7E472 /* MainCanvasView.h */,
+				17BCF81516F4400300E7E472 /* MainCanvasView.m */,
 			);
 			path = FukoWorks;
 			sourceTree = "<group>";
@@ -169,6 +174,7 @@
 			files = (
 				17BCF7FF16F42BDD00E7E472 /* main.m in Sources */,
 				17BCF80616F42BDD00E7E472 /* AppDelegate.m in Sources */,
+				17BCF81616F4400300E7E472 /* MainCanvasView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
