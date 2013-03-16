@@ -10,9 +10,9 @@
 		17BCF7F316F42BDD00E7E472 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17BCF7F216F42BDD00E7E472 /* Cocoa.framework */; };
 		17BCF7FD16F42BDD00E7E472 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF7FB16F42BDD00E7E472 /* InfoPlist.strings */; };
 		17BCF7FF16F42BDD00E7E472 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BCF7FE16F42BDD00E7E472 /* main.m */; };
-		17BCF80316F42BDD00E7E472 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF80116F42BDD00E7E472 /* Credits.rtf */; };
 		17BCF80616F42BDD00E7E472 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BCF80516F42BDD00E7E472 /* AppDelegate.m */; };
 		17BCF80916F42BDD00E7E472 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF80716F42BDD00E7E472 /* MainMenu.xib */; };
+		17BCF81316F43F9100E7E472 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF81216F43F9100E7E472 /* Credits.rtf */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -22,16 +22,13 @@
 		17BCF7F616F42BDD00E7E472 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		17BCF7F716F42BDD00E7E472 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		17BCF7FA16F42BDD00E7E472 /* FukoWorks-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "FukoWorks-Info.plist"; sourceTree = "<group>"; };
-		17BCF7FC16F42BDD00E7E472 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		17BCF7FE16F42BDD00E7E472 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		17BCF80016F42BDD00E7E472 /* FukoWorks-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FukoWorks-Prefix.pch"; sourceTree = "<group>"; };
-		17BCF80216F42BDD00E7E472 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = en; path = en.lproj/Credits.rtf; sourceTree = "<group>"; };
 		17BCF80416F42BDD00E7E472 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		17BCF80516F42BDD00E7E472 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		17BCF80816F42BDD00E7E472 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		17BCF80F16F4354D00E7E472 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		17BCF81016F4354D00E7E472 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		17BCF81116F4354D00E7E472 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.rtf; name = ja; path = ja.lproj/Credits.rtf; sourceTree = "<group>"; };
+		17BCF81216F43F9100E7E472 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,7 +97,7 @@
 				17BCF7FB16F42BDD00E7E472 /* InfoPlist.strings */,
 				17BCF7FE16F42BDD00E7E472 /* main.m */,
 				17BCF80016F42BDD00E7E472 /* FukoWorks-Prefix.pch */,
-				17BCF80116F42BDD00E7E472 /* Credits.rtf */,
+				17BCF81216F43F9100E7E472 /* Credits.rtf */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -158,8 +155,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				17BCF7FD16F42BDD00E7E472 /* InfoPlist.strings in Resources */,
-				17BCF80316F42BDD00E7E472 /* Credits.rtf in Resources */,
 				17BCF80916F42BDD00E7E472 /* MainMenu.xib in Resources */,
+				17BCF81316F43F9100E7E472 /* Credits.rtf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -181,25 +178,14 @@
 		17BCF7FB16F42BDD00E7E472 /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
-				17BCF7FC16F42BDD00E7E472 /* en */,
 				17BCF81016F4354D00E7E472 /* ja */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
 		};
-		17BCF80116F42BDD00E7E472 /* Credits.rtf */ = {
-			isa = PBXVariantGroup;
-			children = (
-				17BCF80216F42BDD00E7E472 /* en */,
-				17BCF81116F4354D00E7E472 /* ja */,
-			);
-			name = Credits.rtf;
-			sourceTree = "<group>";
-		};
 		17BCF80716F42BDD00E7E472 /* MainMenu.xib */ = {
 			isa = PBXVariantGroup;
 			children = (
-				17BCF80816F42BDD00E7E472 /* en */,
 				17BCF80F16F4354D00E7E472 /* ja */,
 			);
 			name = MainMenu.xib;

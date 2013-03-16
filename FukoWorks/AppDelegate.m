@@ -10,17 +10,23 @@
 
 @implementation AppDelegate
 
-@synthesize label1 = _label1;
-@synthesize button1 = _button1;
+@synthesize label_indicator = _label_indicator;
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    // Insert code here to initialize your application
+    //初期化
 }
 
 - (void)awakeFromNib
 {
-    [self.label1 setStringValue:@"初期化完了"];
+    //表示部分の初期化
+    [self.label_indicator setStringValue:@"初期化完了"];
+}
+
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
+{
+    //最後のwindowが閉じたときに終了するか否か
+    return YES;
 }
 
 @end
