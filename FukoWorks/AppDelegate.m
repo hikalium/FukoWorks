@@ -10,7 +10,14 @@
 
 @implementation AppDelegate
 
+@synthesize window = _window;
+@synthesize mainCanvasView = _mainCanvasView;
 @synthesize label_indicator = _label_indicator;
+@synthesize toolBox = _toolbox;
+@synthesize cWellForeColor = _cWellForeColor;
+@synthesize cWellFillColor = _cWellFillColor;
+@synthesize cWellTextColor = _cWellTextColor;
+
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
@@ -21,12 +28,44 @@
 {
     //表示部分の初期化
     [self.label_indicator setStringValue:@"初期化完了"];
+    [_window addChildWindow:_toolbox ordered:NSWindowAbove];
+    [_window setHidesOnDeactivate:NO];
+    [_toolbox setHidesOnDeactivate:NO];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
     //最後のwindowが閉じたときに終了するか否か
     return YES;
+}
+
+-(IBAction)ToolBox_ForeColorChanged:(id)sender
+{
+    NSColor *color;
+    
+    color = self.cWellForeColor.color;
+    self.mainCanvasView.drawingForeColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
+}
+
+-(IBAction)ToolBox_FillColorChanged:(id)sender
+{
+    NSColor *color;
+    
+    color = self.cWellFillColor.color;
+    self.mainCanvasView.drawingFillColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
+}
+
+-(IBAction)ToolBox_TextColorChanged:(id)sender
+{
+    NSColor *color;
+    
+    color = self.cWellTextColor.color;
+    self.mainCanvasView.drawingTextColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
+}
+
+-(IBAction)ButtonPushed:(id)sender
+{
+    [self.mainCanvasView setNeedsDisplay:YES];
 }
 
 @end

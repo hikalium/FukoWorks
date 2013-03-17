@@ -7,9 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "CanvasObjectRectangle.h"
 
 @interface MainCanvasView : NSView
 
+@property (assign) IBOutlet NSWindow *parentwindow;
 @property (strong, nonatomic) IBOutlet NSTextField *label_indicator;
 
 - (id)initWithFrame:(NSRect)frame;
@@ -18,5 +20,11 @@
 - (void)mouseDown:(NSEvent*)event;
 - (void)mouseUp:(NSEvent*)event;
 - (void)mouseDragged:(NSEvent*)event;
+
+- (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
+
+@property CGColorRef drawingForeColor;
+@property CGColorRef drawingFillColor;;
+@property CGColorRef drawingTextColor;
 
 @end
