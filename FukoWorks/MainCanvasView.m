@@ -13,7 +13,7 @@
 @synthesize parentwindow = _parentwindow;
 @synthesize label_indicator = _label_indicator;
 
-@synthesize  drawingForeColor = _drawingForeColor;
+@synthesize  drawingStrokeColor = _drawingStrokeColor;
 @synthesize drawingFillColor = _drawingFillColor;
 @synthesize  drawingTextColor = _drawingTextColor;
 
@@ -60,7 +60,8 @@ NSPoint drawingStartPoint;
     rect = [[CanvasObjectRectangle alloc] initWithFrame:baseRect];
     if(rect != nil){
         [self addSubview:rect];
-        rect.FillColor = self.drawingFillColor;
+        rect.objectContext.FillColor = self.drawingFillColor;
+        rect.objectContext.StrokeColor = self.drawingStrokeColor;
     }
 }
 

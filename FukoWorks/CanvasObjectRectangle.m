@@ -12,16 +12,7 @@
 //矩形オブジェクト
 
 //プロパティアクセッサメソッド
-CGColorRef _FillColor;
-- (CGColorRef)FillColor
-{
-    return _FillColor;
-}
-- (void)setFillColor:(CGColorRef)FillColor
-{
-    _FillColor = FillColor;
-    [self setNeedsDisplay:YES];
-}
+@synthesize objectContext = _objectContext;
 
 //メソッド
 
@@ -36,6 +27,8 @@ CGColorRef _FillColor;
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code here.
+        self.objectContext = [[CanvasContext alloc] init];
+        self.objectContext.ControlView = self;
     }
     
     return self;
@@ -45,11 +38,16 @@ CGColorRef _FillColor;
 {
     //再描画時に呼ばれる。
     CGContextRef mainContext;
+    CGRect rect;
     
     mainContext = [[NSGraphicsContext currentContext] graphicsPort];
     
-    CGContextSetFillColorWithColor(mainContext, self.FillColor);
-    CGContextFillRect(mainContext, CGRectMake(0, 0, self.frame.size.width, self.frame.size.height));
+    rect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
+    
+    CGContextSetFillColorWithColor(mainContext, self.objectContext.FillColor);
+    CGContextFillRect(mainContext, rect);
+    CGContextSetStrokeColorWithColor(mainContext, self.objectContext.StrokeColor);
+    CGContextStrokeRect(mainContext, rect);
 }
 
 @end

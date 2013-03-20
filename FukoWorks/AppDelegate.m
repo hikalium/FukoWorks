@@ -14,7 +14,7 @@
 @synthesize mainCanvasView = _mainCanvasView;
 @synthesize label_indicator = _label_indicator;
 @synthesize toolBox = _toolbox;
-@synthesize cWellForeColor = _cWellForeColor;
+@synthesize cWellStrokeColor = _cWellStrokeColor;
 @synthesize cWellFillColor = _cWellFillColor;
 @synthesize cWellTextColor = _cWellTextColor;
 
@@ -39,12 +39,12 @@
     return YES;
 }
 
--(IBAction)ToolBox_ForeColorChanged:(id)sender
+-(IBAction)ToolBox_StrokeColorChanged:(id)sender
 {
     NSColor *color;
     
-    color = self.cWellForeColor.color;
-    self.mainCanvasView.drawingForeColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
+    color = self.cWellStrokeColor.color;
+    self.mainCanvasView.drawingStrokeColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
 }
 
 -(IBAction)ToolBox_FillColorChanged:(id)sender

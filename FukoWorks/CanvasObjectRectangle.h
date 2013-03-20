@@ -7,13 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "CanvasContext.h"
 
 @interface CanvasObjectRectangle : NSView
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)drawRect:(NSRect)dirtyRect;
 
-@property (nonatomic)CGColorRef FillColor;
-@property (nonatomic)CGColorRef StrokeColor;
+@property (nonatomic)CanvasContext *objectContext;
 
 @end

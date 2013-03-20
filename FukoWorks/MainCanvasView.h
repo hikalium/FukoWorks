@@ -23,7 +23,7 @@
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 
-@property CGColorRef drawingForeColor;
+@property CGColorRef drawingStrokeColor;
 @property CGColorRef drawingFillColor;;
 @property CGColorRef drawingTextColor;
 
