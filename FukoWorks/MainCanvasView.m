@@ -16,6 +16,7 @@
 @synthesize  drawingStrokeColor = _drawingStrokeColor;
 @synthesize drawingFillColor = _drawingFillColor;
 @synthesize  drawingTextColor = _drawingTextColor;
+@synthesize drawingStrokeWidth = _drawingStrokeWidth;
 
 NSPoint drawingStartPoint;
 
@@ -62,6 +63,7 @@ NSPoint drawingStartPoint;
         [self addSubview:rect];
         rect.objectContext.FillColor = self.drawingFillColor;
         rect.objectContext.StrokeColor = self.drawingStrokeColor;
+        rect.objectContext.StrokeWidth = self.drawingStrokeWidth;
     }
 }
 

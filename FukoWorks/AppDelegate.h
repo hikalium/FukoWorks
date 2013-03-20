@@ -18,10 +18,14 @@
 @property (strong, nonatomic) IBOutlet NSColorWell *cWellStrokeColor;
 @property (strong, nonatomic) IBOutlet NSColorWell *cWellFillColor;
 @property (strong, nonatomic) IBOutlet NSColorWell *cWellTextColor;
+@property (strong, nonatomic) IBOutlet NSSlider *sliderStrokeWidth;
+@property (strong, nonatomic) IBOutlet NSTextField *textFieldStrokeWidth;
 
 -(IBAction)ToolBox_StrokeColorChanged:(id)sender;
 -(IBAction)ToolBox_FillColorChanged:(id)sender;
 -(IBAction)ToolBox_TextColorChanged:(id)sender;
+-(IBAction)ToolBox_sliderStrokeWidthChanged:(id)sender;
+-(IBAction)ToolBox_textFieldStrokeWidthChanged:(id)sender;
 -(IBAction)ButtonPushed:(id)sender;
 
 @end

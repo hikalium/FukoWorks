@@ -47,7 +47,7 @@
     CGContextSetFillColorWithColor(mainContext, self.objectContext.FillColor);
     CGContextFillRect(mainContext, rect);
     CGContextSetStrokeColorWithColor(mainContext, self.objectContext.StrokeColor);
-    CGContextStrokeRect(mainContext, rect);
+    CGContextStrokeRectWithWidth(mainContext, rect, self.objectContext.StrokeWidth);
 }
 
 @end

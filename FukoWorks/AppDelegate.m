@@ -17,6 +17,7 @@
 @synthesize cWellStrokeColor = _cWellStrokeColor;
 @synthesize cWellFillColor = _cWellFillColor;
 @synthesize cWellTextColor = _cWellTextColor;
+@synthesize sliderStrokeWidth = _sliderStrokeWidth;
 
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
@@ -31,6 +32,10 @@
     [_window addChildWindow:_toolbox ordered:NSWindowAbove];
     [_window setHidesOnDeactivate:NO];
     [_toolbox setHidesOnDeactivate:NO];
+    
+    _sliderStrokeWidth.maxValue = 10;
+    _sliderStrokeWidth.minValue = 0;
+    [_sliderStrokeWidth setIntegerValue:0];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
@@ -61,6 +66,31 @@
     
     color = self.cWellTextColor.color;
     self.mainCanvasView.drawingTextColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
+}
+
+-(IBAction)ToolBox_sliderStrokeWidthChanged:(id)sender
+{
+    self.mainCanvasView.drawingStrokeWidth = self.sliderStrokeWidth.doubleValue;
+    self.textFieldStrokeWidth.doubleValue = self.mainCanvasView.drawingStrokeWidth;
+}
+
+-(IBAction)ToolBox_textFieldStrokeWidthChanged:(id)sender
+{
+    double width;
+    
+    width = self.textFieldStrokeWidth.doubleValue;
+    if(width > self.sliderStrokeWidth.maxValue){
+        width = self.sliderStrokeWidth.maxValue;
+    }
+    if(width < self.sliderStrokeWidth.minValue){
+        width = self.sliderStrokeWidth.minValue;
+    }
+    
+    if(width != self.textFieldStrokeWidth.doubleValue){
+        self.textFieldStrokeWidth.doubleValue = width;
+    }
+    self.sliderStrokeWidth.doubleValue = width;
+    self.mainCanvasView.drawingStrokeWidth = width;
 }
 
 -(IBAction)ButtonPushed:(id)sender

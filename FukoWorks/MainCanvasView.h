@@ -26,5 +26,6 @@
 @property CGColorRef drawingStrokeColor;
 @property CGColorRef drawingFillColor;;
 @property CGColorRef drawingTextColor;
+@property CGFloat drawingStrokeWidth;
 
 @end
