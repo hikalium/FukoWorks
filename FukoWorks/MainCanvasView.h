@@ -7,6 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "ToolBoxController.h"
 
 @interface MainCanvasView : NSView
 {
@@ -27,10 +28,7 @@
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
 
-@property CGColorRef drawingStrokeColor;
-@property CGColorRef drawingFillColor;;
-@property CGColorRef drawingTextColor;
-@property CGFloat drawingStrokeWidth;
+@property (nonatomic) ToolBoxController *toolboxController;
 @property (nonatomic) CGFloat canvasScale;
 
 @end

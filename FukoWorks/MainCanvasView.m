@@ -13,10 +13,7 @@
 
 @synthesize label_indicator = _label_indicator;
 
-@synthesize  drawingStrokeColor = _drawingStrokeColor;
-@synthesize drawingFillColor = _drawingFillColor;
-@synthesize  drawingTextColor = _drawingTextColor;
-@synthesize drawingStrokeWidth = _drawingStrokeWidth;
+@synthesize toolboxController = _toolboxController;
 @synthesize canvasScale = _canvasScale;
 - (void)setCanvasScale:(CGFloat)canvasScale
 {
@@ -83,9 +80,9 @@
     rect = [[CanvasObjectRectangle alloc] initWithFrame:baseRect];
     if(rect != nil){
         rect.parentView = self;
-        rect.objectContext.FillColor = self.drawingFillColor;
-        rect.objectContext.StrokeColor = self.drawingStrokeColor;
-        rect.objectContext.StrokeWidth = self.drawingStrokeWidth;
+        rect.objectContext.FillColor = self.toolboxController.drawingFillColor;
+        rect.objectContext.StrokeColor = self.toolboxController.drawingStrokeColor;
+        rect.objectContext.StrokeWidth = self.toolboxController.drawingStrokeWidth;
         [self addSubview:rect];
     }
 }

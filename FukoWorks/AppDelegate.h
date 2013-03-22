@@ -8,27 +8,23 @@
 
 #import <Cocoa/Cocoa.h>
 #import "MainCanvasView.h"
+#import "ToolBoxController.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 {
+    IBOutlet ToolBoxController *toolboxController;
+    
+    IBOutlet NSPanel *panelToolBox;
+    IBOutlet NSSlider *sliderStrokeWidth;
+    IBOutlet NSWindow *window;
+    IBOutlet NSScrollView *scrollView;
+    IBOutlet NSTextField *label_indicator;
+    IBOutlet NSComboBox *comboBoxCanvasScale;
+    
     MainCanvasView *mainCanvasView;
+    
 }
-@property (assign) IBOutlet NSWindow *window;
-@property (strong, nonatomic) IBOutlet NSScrollView *scrollView;
-@property (strong, nonatomic) IBOutlet NSTextField *label_indicator;
-@property (strong, nonatomic) IBOutlet NSComboBox *comboBoxCanvasScale;
-@property (strong, nonatomic) IBOutlet NSPanel *toolBox;
-@property (strong, nonatomic) IBOutlet NSColorWell *cWellStrokeColor;
-@property (strong, nonatomic) IBOutlet NSColorWell *cWellFillColor;
-@property (strong, nonatomic) IBOutlet NSColorWell *cWellTextColor;
-@property (strong, nonatomic) IBOutlet NSSlider *sliderStrokeWidth;
-@property (strong, nonatomic) IBOutlet NSTextField *textFieldStrokeWidth;
 
--(IBAction)ToolBox_StrokeColorChanged:(id)sender;
--(IBAction)ToolBox_FillColorChanged:(id)sender;
--(IBAction)ToolBox_TextColorChanged:(id)sender;
--(IBAction)ToolBox_sliderStrokeWidthChanged:(id)sender;
--(IBAction)ToolBox_textFieldStrokeWidthChanged:(id)sender;
 -(IBAction)comboBoxCanvasScaleChanged:(id)sender;
 -(IBAction)ButtonPushed:(id)sender;
 
