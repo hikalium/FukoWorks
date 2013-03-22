@@ -13,9 +13,9 @@
 
 //プロパティアクセッサメソッド
 @synthesize objectContext = _objectContext;
+@synthesize parentView = _parentView;
 
 //メソッド
-
 - (id)initWithFrame:(NSRect)frame
 {
     //エラーがあればnil, 成功したらselfを返す。
@@ -44,10 +44,15 @@
     
     rect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     
-    CGContextSetFillColorWithColor(mainContext, self.objectContext.FillColor);
-    CGContextFillRect(mainContext, rect);
-    CGContextSetStrokeColorWithColor(mainContext, self.objectContext.StrokeColor);
-    CGContextStrokeRectWithWidth(mainContext, rect, self.objectContext.StrokeWidth);
+    CGContextSaveGState(mainContext);
+    {
+        //CGContextScaleCTM(mainContext, self.parentView.canvasScale, self.parentView.canvasScale);
+        CGContextSetFillColorWithColor(mainContext, self.objectContext.FillColor);
+        CGContextFillRect(mainContext, rect);
+        CGContextSetStrokeColorWithColor(mainContext, self.objectContext.StrokeColor);
+        CGContextStrokeRectWithWidth(mainContext, rect, self.objectContext.StrokeWidth);
+    }
+    CGContextRestoreGState(mainContext);
 }
 
 @end

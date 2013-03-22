@@ -7,42 +7,64 @@
 //
 
 #import "MainCanvasView.h"
+#import "CanvasObjectRectangle.h"
 
 @implementation MainCanvasView
 
-@synthesize parentwindow = _parentwindow;
 @synthesize label_indicator = _label_indicator;
 
 @synthesize  drawingStrokeColor = _drawingStrokeColor;
 @synthesize drawingFillColor = _drawingFillColor;
 @synthesize  drawingTextColor = _drawingTextColor;
 @synthesize drawingStrokeWidth = _drawingStrokeWidth;
-
-NSPoint drawingStartPoint;
+@synthesize canvasScale = _canvasScale;
+- (void)setCanvasScale:(CGFloat)canvasScale
+{
+    [self scaleUnitSquareToSize:NSMakeSize(1/_canvasScale, 1/_canvasScale)];
+    _canvasScale = canvasScale;
+    [self scaleUnitSquareToSize:NSMakeSize(canvasScale, canvasScale)];
+    [self setFrameSize:NSMakeSize(baseFrame.size.width * canvasScale, baseFrame.size.height * canvasScale)];
+    [self.superview setNeedsDisplay:YES];
+    [self setNeedsDisplay:YES];
+}
 
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code here.
+        baseFrame = NSMakeRect(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
+        drawingStartPoint.x = 0;
+        drawingStartPoint.y = 0;
+        
+        backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
+        _canvasScale = 1;
     }
-    
-    drawingStartPoint.x = 0;
-    drawingStartPoint.y = 0;
     
     return self;
 }
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    //[super drawRect:dirtyRect];
+    CGContextRef mainContext;
+    CGRect rect;
+    
+    mainContext = [[NSGraphicsContext currentContext] graphicsPort];
+    
+    rect = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    
+    CGContextSaveGState(mainContext);
+    {
+        CGContextSetFillColorWithColor(mainContext, backgroundColor);
+        CGContextFillRect(mainContext, rect);
+    }
+    CGContextRestoreGState(mainContext);
 }
 
 - (void)mouseDown:(NSEvent*)event
 {
     NSPoint currentPoint;
-    
-    currentPoint = [event locationInWindow];
+    currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDw:%@", NSStringFromPoint(currentPoint)]];
 
     drawingStartPoint = currentPoint;
@@ -54,16 +76,17 @@ NSPoint drawingStartPoint;
     CanvasObjectRectangle *rect;
     NSRect baseRect;
     
-    currentPoint = [event locationInWindow];
+    currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mUp:%@", NSStringFromPoint(currentPoint)]];
  
     baseRect = [self makeNSRectFromMouseMoving:drawingStartPoint :currentPoint];
     rect = [[CanvasObjectRectangle alloc] initWithFrame:baseRect];
     if(rect != nil){
-        [self addSubview:rect];
+        rect.parentView = self;
         rect.objectContext.FillColor = self.drawingFillColor;
         rect.objectContext.StrokeColor = self.drawingStrokeColor;
         rect.objectContext.StrokeWidth = self.drawingStrokeWidth;
+        [self addSubview:rect];
     }
 }
 
@@ -71,7 +94,7 @@ NSPoint drawingStartPoint;
 {
     NSPoint currentPoint;
 
-    currentPoint = [event locationInWindow];
+    currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDr:%@", NSStringFromPoint(currentPoint)]];
 
 }
@@ -98,6 +121,15 @@ NSPoint drawingStartPoint;
     }
     
     return NSMakeRect(p.x, p.y, q.width, q.height);
+}
+
+- (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event
+{
+    //このViewに相対的な座標でマウスポインタの座標を返す。
+    NSPoint currentPoint;
+    
+    currentPoint = [event locationInWindow];
+    return [self convertPoint:currentPoint fromView:nil];
 }
 
 @end

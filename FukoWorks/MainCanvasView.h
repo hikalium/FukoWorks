@@ -7,12 +7,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "CanvasObjectRectangle.h"
 
 @interface MainCanvasView : NSView
+{
+    NSPoint drawingStartPoint;
+    CGColorRef backgroundColor;
+    NSRect baseFrame;
+}
 
-@property (assign) IBOutlet NSWindow *parentwindow;
-@property (strong, nonatomic) IBOutlet NSTextField *label_indicator;
+@property (strong, nonatomic) NSTextField *label_indicator;
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)drawRect:(NSRect)dirtyRect;
@@ -22,10 +25,12 @@
 - (void)mouseDragged:(NSEvent*)event;
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
+- (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
 
 @property CGColorRef drawingStrokeColor;
 @property CGColorRef drawingFillColor;;
 @property CGColorRef drawingTextColor;
 @property CGFloat drawingStrokeWidth;
+@property (nonatomic) CGFloat canvasScale;
 
 @end
