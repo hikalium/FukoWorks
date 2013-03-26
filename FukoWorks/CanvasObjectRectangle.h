@@ -8,7 +8,6 @@
 
 #import <Cocoa/Cocoa.h>
 #import "CanvasContext.h"
-#import "MainCanvasView.h"
 
 @interface CanvasObjectRectangle : NSView
 
@@ -19,7 +18,5 @@
 
 @property (nonatomic) CanvasContext *objectContext;
     //オブジェクト固有のグラフィックコンテキストの設定を格納
-@property (nonatomic) MainCanvasView *parentView;
-    //所属するキャンバスへの参照
 
 @end

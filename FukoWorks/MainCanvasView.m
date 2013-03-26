@@ -7,7 +7,6 @@
 //
 
 #import "MainCanvasView.h"
-#import "CanvasObjectRectangle.h"
 
 @implementation MainCanvasView
 
@@ -35,7 +34,12 @@
         drawingStartPoint.y = 0;
         
         backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
+        guideRectFillColor = CGColorCreateGenericRGB(0, 0, 1, 0.75);
+        guideRectStrokeColor = CGColorCreateGenericRGB(1, 1, 1, 0.75);
+        guideRectStrokeWidth = 2;
         _canvasScale = 1;
+        
+        dragging = false;
     }
     
     return self;
@@ -44,16 +48,23 @@
 - (void)drawRect:(NSRect)dirtyRect
 {
     CGContextRef mainContext;
-    CGRect rect;
+    CGRect rect, guideRect;
     
     mainContext = [[NSGraphicsContext currentContext] graphicsPort];
     
     rect = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
+    guideRect = NSRectToCGRect([self makeNSRectFromMouseMoving:drawingStartPoint :drawingDragPoint]);
     
     CGContextSaveGState(mainContext);
     {
         CGContextSetFillColorWithColor(mainContext, backgroundColor);
         CGContextFillRect(mainContext, rect);
+        if(dragging){
+            CGContextSetFillColorWithColor(mainContext, guideRectFillColor);
+            CGContextFillRect(mainContext, guideRect);
+            CGContextSetStrokeColorWithColor(mainContext, guideRectStrokeColor);
+            CGContextStrokeRectWithWidth(mainContext, guideRect, guideRectStrokeWidth);
+        }
     }
     CGContextRestoreGState(mainContext);
 }
@@ -65,6 +76,7 @@
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDw:%@", NSStringFromPoint(currentPoint)]];
 
     drawingStartPoint = currentPoint;
+    dragging = true;
 }
 
 - (void)mouseUp:(NSEvent*)event
@@ -73,13 +85,13 @@
     CanvasObjectRectangle *rect;
     NSRect baseRect;
     
+    dragging = false;
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mUp:%@", NSStringFromPoint(currentPoint)]];
  
     baseRect = [self makeNSRectFromMouseMoving:drawingStartPoint :currentPoint];
     rect = [[CanvasObjectRectangle alloc] initWithFrame:baseRect];
     if(rect != nil){
-        rect.parentView = self;
         rect.objectContext.FillColor = self.toolboxController.drawingFillColor;
         rect.objectContext.StrokeColor = self.toolboxController.drawingStrokeColor;
         rect.objectContext.StrokeWidth = self.toolboxController.drawingStrokeWidth;
@@ -93,7 +105,8 @@
 
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDr:%@", NSStringFromPoint(currentPoint)]];
-
+    drawingDragPoint = currentPoint;
+    [self setNeedsDisplay:YES];
 }
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint

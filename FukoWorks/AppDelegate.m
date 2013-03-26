@@ -18,7 +18,6 @@
 - (void)awakeFromNib
 {
     //表示部分の初期化
-    [label_indicator setStringValue:@"初期化完了"];
     [window addChildWindow:panelToolBox ordered:NSWindowAbove];
     [window setHidesOnDeactivate:NO];
     [panelToolBox setHidesOnDeactivate:NO];
@@ -26,39 +25,25 @@
     sliderStrokeWidth.maxValue = 10;
     sliderStrokeWidth.minValue = 0;
     [sliderStrokeWidth setIntegerValue:0];
+    [textFieldStrokeWidth setIntegerValue:0];
     
+    [comboBoxCanvasScale setStringValue:@"100%"];
     mainCanvasView = [[MainCanvasView alloc] initWithFrame:NSMakeRect(0, 0, 1024, 768)];
     mainCanvasView.label_indicator = label_indicator;
     scrollView.documentView = mainCanvasView;
     mainCanvasView.toolboxController = toolboxController;
+    canvasController.currentCanvasView = mainCanvasView;
     
+    //ColorWellで透明色を指定できるようにする。
     [NSColor setIgnoresAlpha:NO];
+    
+    [label_indicator setStringValue:@"初期化完了"];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
 {
     //最後のwindowが閉じたときに終了するか否か
     return YES;
-}
-
--(IBAction)comboBoxCanvasScaleChanged:(id)sender
-{
-    double scalePerCent, scale;
-    
-    scalePerCent = comboBoxCanvasScale.doubleValue;
-    if(scalePerCent < 0){
-        scalePerCent = 100;
-    }
-    scale = scalePerCent / 100;
-    
-    [label_indicator setStringValue:[NSString stringWithFormat:@"scaleSet:%f", scale]];
-    [mainCanvasView setCanvasScale:scale];
-    
-}
-
--(IBAction)ButtonPushed:(id)sender
-{
-    [mainCanvasView setNeedsDisplay:YES];
 }
 
 @end

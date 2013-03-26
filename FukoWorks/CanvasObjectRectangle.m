@@ -13,13 +13,12 @@
 
 //プロパティアクセッサメソッド
 @synthesize objectContext = _objectContext;
-@synthesize parentView = _parentView;
 
 //メソッド
 - (id)initWithFrame:(NSRect)frame
 {
     //エラーがあればnil, 成功したらselfを返す。
-    if(frame.size.height < 0){
+    if(frame.size.height < 0 || frame.size.width < 0){
         NSRunAlertPanel(@"FukoWorks", @"大きさ0以下の四角形は描画できません。", @"OK", nil, nil);
         return nil;
     }
@@ -46,7 +45,6 @@
     
     CGContextSaveGState(mainContext);
     {
-        //CGContextScaleCTM(mainContext, self.parentView.canvasScale, self.parentView.canvasScale);
         CGContextSetFillColorWithColor(mainContext, self.objectContext.FillColor);
         CGContextFillRect(mainContext, rect);
         CGContextSetStrokeColorWithColor(mainContext, self.objectContext.StrokeColor);

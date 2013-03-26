@@ -11,6 +11,7 @@
 		17B089BF16F7B1520006FA2C /* FukoWorks.icns in Resources */ = {isa = PBXBuildFile; fileRef = 17B089BE16F7B1520006FA2C /* FukoWorks.icns */; };
 		17B089C216F99D820006FA2C /* CanvasContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B089C116F99D820006FA2C /* CanvasContext.m */; };
 		17B089C516FCB9130006FA2C /* ToolBoxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B089C416FCB9130006FA2C /* ToolBoxController.m */; };
+		17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B089C816FDAEF10006FA2C /* CanvasWindowController.m */; };
 		17BCF7F316F42BDD00E7E472 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17BCF7F216F42BDD00E7E472 /* Cocoa.framework */; };
 		17BCF7FD16F42BDD00E7E472 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF7FB16F42BDD00E7E472 /* InfoPlist.strings */; };
 		17BCF7FF16F42BDD00E7E472 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BCF7FE16F42BDD00E7E472 /* main.m */; };
@@ -28,6 +29,8 @@
 		17B089C116F99D820006FA2C /* CanvasContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasContext.m; sourceTree = "<group>"; };
 		17B089C316FCB9130006FA2C /* ToolBoxController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolBoxController.h; sourceTree = "<group>"; };
 		17B089C416FCB9130006FA2C /* ToolBoxController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolBoxController.m; sourceTree = "<group>"; };
+		17B089C716FDAEF10006FA2C /* CanvasWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasWindowController.h; sourceTree = "<group>"; };
+		17B089C816FDAEF10006FA2C /* CanvasWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasWindowController.m; sourceTree = "<group>"; };
 		17BCF7EF16F42BDD00E7E472 /* FukoWorks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FukoWorks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17BCF7F216F42BDD00E7E472 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		17BCF7F516F42BDD00E7E472 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -108,6 +111,8 @@
 				17B089C116F99D820006FA2C /* CanvasContext.m */,
 				17B089C316FCB9130006FA2C /* ToolBoxController.h */,
 				17B089C416FCB9130006FA2C /* ToolBoxController.m */,
+				17B089C716FDAEF10006FA2C /* CanvasWindowController.h */,
+				17B089C816FDAEF10006FA2C /* CanvasWindowController.m */,
 			);
 			path = FukoWorks;
 			sourceTree = "<group>";
@@ -197,6 +202,7 @@
 				1723966916F5A8200089DF1E /* CanvasObjectRectangle.m in Sources */,
 				17B089C216F99D820006FA2C /* CanvasContext.m in Sources */,
 				17B089C516FCB9130006FA2C /* ToolBoxController.m in Sources */,
+				17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

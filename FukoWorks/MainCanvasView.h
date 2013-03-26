@@ -8,11 +8,20 @@
 
 #import <Cocoa/Cocoa.h>
 #import "ToolBoxController.h"
+#import "CanvasObjectRectangle.h"
 
 @interface MainCanvasView : NSView
 {
     NSPoint drawingStartPoint;
+    NSPoint drawingDragPoint;
+    bool dragging;
+    
     CGColorRef backgroundColor;
+    
+    CGColorRef guideRectFillColor;
+    CGColorRef guideRectStrokeColor;
+    CGFloat guideRectStrokeWidth;
+    
     NSRect baseFrame;
 }
 
