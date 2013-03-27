@@ -6,9 +6,9 @@
 //  Copyright (c) 2013年 TokyoGakugeiUniversitySeniorHighSchool. All rights reserved.
 //
 
-#import "CanvasContext.h"
+#import "CanvasObjectContext.h"
 
-@implementation CanvasContext
+@implementation CanvasObjectContext
 
 @synthesize ControlView = _ControlView;
 

@@ -7,6 +7,7 @@
 //
 
 #import "AppDelegate.h"
+#import "PreferenceWindowController.h"
 
 @implementation AppDelegate
 
@@ -20,7 +21,7 @@
     //表示部分の初期化
     [window addChildWindow:panelToolBox ordered:NSWindowAbove];
     [window setHidesOnDeactivate:NO];
-    [panelToolBox setHidesOnDeactivate:NO];
+    //[panelToolBox setHidesOnDeactivate:NO];
     
     sliderStrokeWidth.maxValue = 10;
     sliderStrokeWidth.minValue = 0;
@@ -44,6 +45,11 @@
 {
     //最後のwindowが閉じたときに終了するか否か
     return YES;
+}
+
+- (void)showPreferenceWindow:(id)sender
+{
+    [[PreferenceWindowController sharedPreferenceWindowController] showWindow:sender];
 }
 
 @end

@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface CanvasContext : NSObject
+@interface CanvasObjectContext : NSObject
 
 @property (nonatomic) NSView *ControlView;
 

@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "CanvasContext.h"
+#import "CanvasObjectContext.h"
 
 @interface CanvasObjectRectangle : NSView
 
@@ -16,7 +16,7 @@
 - (void)drawRect:(NSRect)dirtyRect;
     //再描画時に呼ばれる。
 
-@property (nonatomic) CanvasContext *objectContext;
+@property (nonatomic) CanvasObjectContext *objectContext;
     //オブジェクト固有のグラフィックコンテキストの設定を格納
 
 @end

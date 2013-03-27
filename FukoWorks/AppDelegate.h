@@ -28,4 +28,6 @@
     
 }
 
+- (IBAction)showPreferenceWindow:(id)sender;
+
 @end

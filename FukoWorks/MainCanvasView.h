@@ -18,11 +18,14 @@
     
     CGColorRef backgroundColor;
     
-    CGColorRef guideRectFillColor;
-    CGColorRef guideRectStrokeColor;
-    CGFloat guideRectStrokeWidth;
+    //CGColorRef guideRectFillColor;
+    //CGColorRef guideRectStrokeColor;
+    //CGFloat guideRectStrokeWidth;
+    
+    CanvasObjectRectangle *editingRect;
     
     NSRect baseFrame;
+    NSCursor *canvasCursor;
 }
 
 @property (strong, nonatomic) NSTextField *label_indicator;

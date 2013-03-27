@@ -34,12 +34,15 @@
         drawingStartPoint.y = 0;
         
         backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
-        guideRectFillColor = CGColorCreateGenericRGB(0, 0, 1, 0.75);
-        guideRectStrokeColor = CGColorCreateGenericRGB(1, 1, 1, 0.75);
-        guideRectStrokeWidth = 2;
+        //guideRectFillColor = CGColorCreateGenericRGB(0, 0, 1, 0.75);
+        //guideRectStrokeColor = CGColorCreateGenericRGB(1, 1, 1, 0.75);
+        //guideRectStrokeWidth = 2;
         _canvasScale = 1;
         
         dragging = false;
+        
+        canvasCursor = [NSCursor crosshairCursor];
+        //[canvasCursor setOnMouseEntered:YES];
     }
     
     return self;
@@ -59,44 +62,42 @@
     {
         CGContextSetFillColorWithColor(mainContext, backgroundColor);
         CGContextFillRect(mainContext, rect);
-        if(dragging){
-            CGContextSetFillColorWithColor(mainContext, guideRectFillColor);
-            CGContextFillRect(mainContext, guideRect);
-            CGContextSetStrokeColorWithColor(mainContext, guideRectStrokeColor);
-            CGContextStrokeRectWithWidth(mainContext, guideRect, guideRectStrokeWidth);
-        }
     }
     CGContextRestoreGState(mainContext);
 }
 
 - (void)mouseDown:(NSEvent*)event
 {
+    NSRect baseRect;
     NSPoint currentPoint;
+    
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDw:%@", NSStringFromPoint(currentPoint)]];
 
+    //描画開始点を現在の地点に設定
     drawingStartPoint = currentPoint;
     dragging = true;
+    
+    //図形を新規作成して、編集中に設定
+    baseRect = [self makeNSRectFromMouseMoving:drawingStartPoint :currentPoint];
+    editingRect = [[CanvasObjectRectangle alloc] initWithFrame:baseRect];
+    if(editingRect != nil){
+        editingRect.objectContext.FillColor = self.toolboxController.drawingFillColor;
+        editingRect.objectContext.StrokeColor = self.toolboxController.drawingStrokeColor;
+        editingRect.objectContext.StrokeWidth = self.toolboxController.drawingStrokeWidth;
+        [self addSubview:editingRect];
+    }
 }
 
 - (void)mouseUp:(NSEvent*)event
 {
     NSPoint currentPoint;
-    CanvasObjectRectangle *rect;
-    NSRect baseRect;
-    
+
+    editingRect = nil;
     dragging = false;
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mUp:%@", NSStringFromPoint(currentPoint)]];
  
-    baseRect = [self makeNSRectFromMouseMoving:drawingStartPoint :currentPoint];
-    rect = [[CanvasObjectRectangle alloc] initWithFrame:baseRect];
-    if(rect != nil){
-        rect.objectContext.FillColor = self.toolboxController.drawingFillColor;
-        rect.objectContext.StrokeColor = self.toolboxController.drawingStrokeColor;
-        rect.objectContext.StrokeWidth = self.toolboxController.drawingStrokeWidth;
-        [self addSubview:rect];
-    }
 }
 
 - (void)mouseDragged:(NSEvent*)event
@@ -106,7 +107,15 @@
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDr:%@", NSStringFromPoint(currentPoint)]];
     drawingDragPoint = currentPoint;
-    [self setNeedsDisplay:YES];
+    
+    [editingRect setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPoint]];
+    //[self setNeedsDisplay:YES];
+}
+
+-(void)resetCursorRects
+{
+    [self discardCursorRects];
+    [self addCursorRect:self.visibleRect cursor:canvasCursor];
 }
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
@@ -136,6 +145,7 @@
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event
 {
     //このViewに相対的な座標でマウスポインタの座標を返す。
+    //ViewのScaleに合わせて座標も調節される。
     NSPoint currentPoint;
     
     currentPoint = [event locationInWindow];

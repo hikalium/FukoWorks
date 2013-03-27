@@ -26,7 +26,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         // Initialization code here.
-        self.objectContext = [[CanvasContext alloc] init];
+        self.objectContext = [[CanvasObjectContext alloc] init];
         self.objectContext.ControlView = self;
     }
     
