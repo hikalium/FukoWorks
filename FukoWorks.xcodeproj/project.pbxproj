@@ -10,6 +10,7 @@
 		170C3AFE170194DE0030CA0C /* PreferenceWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 170C3AFC170194DE0030CA0C /* PreferenceWindowController.m */; };
 		170C3AFF170194DE0030CA0C /* PreferenceWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 170C3AFD170194DE0030CA0C /* PreferenceWindowController.xib */; };
 		1723966916F5A8200089DF1E /* CanvasObjectRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1723966816F5A8200089DF1E /* CanvasObjectRectangle.m */; };
+		174A840A170433B500A53520 /* CanvasObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 174A8409170433B500A53520 /* CanvasObject.m */; };
 		17B089BF16F7B1520006FA2C /* FukoWorks.icns in Resources */ = {isa = PBXBuildFile; fileRef = 17B089BE16F7B1520006FA2C /* FukoWorks.icns */; };
 		17B089C216F99D820006FA2C /* CanvasObjectContext.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B089C116F99D820006FA2C /* CanvasObjectContext.m */; };
 		17B089C516FCB9130006FA2C /* ToolBoxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B089C416FCB9130006FA2C /* ToolBoxController.m */; };
@@ -29,6 +30,8 @@
 		170C3AFD170194DE0030CA0C /* PreferenceWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = PreferenceWindowController.xib; sourceTree = "<group>"; };
 		1723966716F5A8200089DF1E /* CanvasObjectRectangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectRectangle.h; sourceTree = "<group>"; };
 		1723966816F5A8200089DF1E /* CanvasObjectRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectRectangle.m; sourceTree = "<group>"; };
+		174A8408170433B500A53520 /* CanvasObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObject.h; sourceTree = "<group>"; };
+		174A8409170433B500A53520 /* CanvasObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObject.m; sourceTree = "<group>"; };
 		17B089BE16F7B1520006FA2C /* FukoWorks.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = FukoWorks.icns; sourceTree = "<group>"; };
 		17B089C016F99D820006FA2C /* CanvasObjectContext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectContext.h; sourceTree = "<group>"; };
 		17B089C116F99D820006FA2C /* CanvasObjectContext.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectContext.m; sourceTree = "<group>"; };
@@ -106,6 +109,8 @@
 			children = (
 				17BCF80416F42BDD00E7E472 /* AppDelegate.h */,
 				17BCF80516F42BDD00E7E472 /* AppDelegate.m */,
+				174A8408170433B500A53520 /* CanvasObject.h */,
+				174A8409170433B500A53520 /* CanvasObject.m */,
 				17B089C016F99D820006FA2C /* CanvasObjectContext.h */,
 				17B089C116F99D820006FA2C /* CanvasObjectContext.m */,
 				1723966716F5A8200089DF1E /* CanvasObjectRectangle.h */,
@@ -115,12 +120,12 @@
 				17BCF81416F4400300E7E472 /* MainCanvasView.h */,
 				17BCF81516F4400300E7E472 /* MainCanvasView.m */,
 				17BCF80716F42BDD00E7E472 /* MainMenu.xib */,
-				17BCF7F916F42BDD00E7E472 /* Supporting Files */,
-				17B089C316FCB9130006FA2C /* ToolBoxController.h */,
-				17B089C416FCB9130006FA2C /* ToolBoxController.m */,
 				170C3AFB170194DE0030CA0C /* PreferenceWindowController.h */,
 				170C3AFC170194DE0030CA0C /* PreferenceWindowController.m */,
 				170C3AFD170194DE0030CA0C /* PreferenceWindowController.xib */,
+				17BCF7F916F42BDD00E7E472 /* Supporting Files */,
+				17B089C316FCB9130006FA2C /* ToolBoxController.h */,
+				17B089C416FCB9130006FA2C /* ToolBoxController.m */,
 			);
 			path = FukoWorks;
 			sourceTree = "<group>";
@@ -213,6 +218,7 @@
 				17B089C516FCB9130006FA2C /* ToolBoxController.m in Sources */,
 				17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */,
 				170C3AFE170194DE0030CA0C /* PreferenceWindowController.m in Sources */,
+				174A840A170433B500A53520 /* CanvasObject.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -62,7 +62,7 @@ PreferenceWindowController *sharedController = nil;
     NSToolbarItem *firstToolbarItem;
     
     [super windowDidLoad];
-    
+        
     firstToolbarItem = [[[[self window] toolbar] items] objectAtIndex:0];
     [[[self window] toolbar] setSelectedItemIdentifier:[firstToolbarItem itemIdentifier]];
     [self switchView:firstToolbarItem];
