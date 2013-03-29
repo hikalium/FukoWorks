@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "ToolBoxController.h"
 #import "CanvasObjectRectangle.h"
+#import "CanvasObjectEllipse.h"
 
 @interface MainCanvasView : NSView
 {
@@ -22,13 +23,16 @@
     //CGColorRef guideRectStrokeColor;
     //CGFloat guideRectStrokeWidth;
     
-    CanvasObjectRectangle *editingRect;
+    //CanvasObjectRectangle *editingRect;
+    CanvasObject *editingObject;
     
     NSRect baseFrame;
     NSCursor *canvasCursor;
 }
 
 @property (strong, nonatomic) NSTextField *label_indicator;
+@property (nonatomic) ToolBoxController *toolboxController;
+@property (nonatomic) CGFloat canvasScale;
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)drawRect:(NSRect)dirtyRect;
@@ -40,7 +44,6 @@
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
 
-@property (nonatomic) ToolBoxController *toolboxController;
-@property (nonatomic) CGFloat canvasScale;
+
 
 @end

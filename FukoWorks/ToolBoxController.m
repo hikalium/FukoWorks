@@ -13,7 +13,19 @@
 @synthesize drawingStrokeColor = _drawingStrokeColor;
 @synthesize drawingStrokeWidth = _drawingStrokeWidth;
 @synthesize drawingFillColor = _drawingFillColor;
-@synthesize drawingTextColor = _drawingTextColor;
+@synthesize drawingObjectType = _drawingObjectType;
+
+-(id)init
+{
+    self = [super init];
+    
+    if(self){
+        _drawingObjectType = Undefined;
+        selectedDrawingObjectTypeButton = nil;
+    }
+    
+    return self;
+}
 
 -(IBAction)ToolBox_StrokeColorChanged:(id)sender
 {
@@ -29,14 +41,6 @@
     
     color = cWellFillColor.color;
     _drawingFillColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
-}
-
--(IBAction)ToolBox_TextColorChanged:(id)sender
-{
-    NSColor *color;
-    
-    color = cWellTextColor.color;
-    _drawingTextColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
 }
 
 -(IBAction)ToolBox_sliderStrokeWidthChanged:(id)sender
@@ -62,6 +66,19 @@
     }
     sliderStrokeWidth.doubleValue = width;
     _drawingStrokeWidth = width;
+}
+
+-(IBAction)ToolBox_DrawingObjectTypeChanged:(id)sender
+{
+    NSButton *nextButton;
+    
+    if([sender isKindOfClass:[NSButton class]]){
+        nextButton = (NSButton *)sender;
+        [selectedDrawingObjectTypeButton setState:NSOffState];
+        selectedDrawingObjectTypeButton = nextButton;
+        [selectedDrawingObjectTypeButton setState:NSOnState];
+        _drawingObjectType = selectedDrawingObjectTypeButton.tag;
+    }
 }
 
 

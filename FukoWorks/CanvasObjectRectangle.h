@@ -7,16 +7,20 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "CanvasObjectContext.h"
+#import "CanvasObject.h"
 
-@interface CanvasObjectRectangle : NSView
+@interface CanvasObjectRectangle : CanvasObject
+{
+    NSPoint drawingStartPoint;
+}
 
-- (id)initWithFrame:(NSRect)frame;
-    //frameには、表示倍率100%換算のものを渡すこと。
+- (id)initWithFrame:(NSRect)frameRect;
+
 - (void)drawRect:(NSRect)dirtyRect;
     //再描画時に呼ばれる。
 
-@property (nonatomic) CanvasObjectContext *objectContext;
-    //オブジェクト固有のグラフィックコンテキストの設定を格納
+- (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
+- (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
+- (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;
 
 @end

@@ -1,26 +1,23 @@
 //
-//  CanvasObjectRectangle.m
+//  CanvasObjectEllipse.m
 //  FukoWorks
 //
-//  Created by 西田　耀 on 13/03/17.
+//  Created by 西田　耀 on 13/03/28.
 //  Copyright (c) 2013年 TokyoGakugeiUniversitySeniorHighSchool. All rights reserved.
 //
 
-#import "CanvasObjectRectangle.h"
+#import "CanvasObjectEllipse.h"
 
-@implementation CanvasObjectRectangle
-//矩形オブジェクト
+@implementation CanvasObjectEllipse
 
-//プロパティアクセッサメソッド
 @synthesize ObjectType = _ObjectType;
 
-//メソッド
 - (id)initWithFrame:(NSRect)frameRect
 {
     self = [super initWithFrame:frameRect];
     if (self) {
         // Initialization code here.
-        _ObjectType = Rectangle;
+        _ObjectType = Ellipse;
     }
     
     return self;
@@ -30,20 +27,25 @@
 {
     //再描画時に呼ばれる。
     CGContextRef mainContext;
-    CGRect rect;
+    CGRect ellipseRect;
     
     mainContext = [[NSGraphicsContext currentContext] graphicsPort];
     
-    rect = [self makeNSRectWithRealSizeViewFrameInLocal];
+    ellipseRect = [self makeNSRectWithRealSizeViewFrameInLocal];
     
     CGContextSaveGState(mainContext);
     {
+        CGContextAddEllipseInRect(mainContext, ellipseRect);
         CGContextSetFillColorWithColor(mainContext, self.FillColor);
-        CGContextFillRect(mainContext, rect);
+        CGContextFillPath(mainContext);
+        
+        CGContextAddEllipseInRect(mainContext, ellipseRect);
         CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor);
-        CGContextStrokeRectWithWidth(mainContext, rect, self.StrokeWidth);
+        CGContextSetLineWidth(mainContext, self.StrokeWidth);
+        CGContextStrokePath(mainContext);
     }
     CGContextRestoreGState(mainContext);
+
 }
 
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
