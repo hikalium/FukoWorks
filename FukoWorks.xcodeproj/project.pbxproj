@@ -16,8 +16,9 @@
 		174A841117043F9600A53520 /* icon_ellipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 174A840F17043F9600A53520 /* icon_ellipse.png */; };
 		174A841417050F1500A53520 /* icon_cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = 174A841317050F1500A53520 /* icon_cursor.png */; };
 		17B089BF16F7B1520006FA2C /* FukoWorks.icns in Resources */ = {isa = PBXBuildFile; fileRef = 17B089BE16F7B1520006FA2C /* FukoWorks.icns */; };
-		17B089C516FCB9130006FA2C /* ToolBoxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B089C416FCB9130006FA2C /* ToolBoxController.m */; };
 		17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B089C816FDAEF10006FA2C /* CanvasWindowController.m */; };
+		17B41E1D1707A5F400E535FB /* ToolboxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B41E1B1707A5F400E535FB /* ToolboxController.m */; };
+		17B41E1E1707A5F400E535FB /* ToolboxController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17B41E1C1707A5F400E535FB /* ToolboxController.xib */; };
 		17BCF7F316F42BDD00E7E472 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17BCF7F216F42BDD00E7E472 /* Cocoa.framework */; };
 		17BCF7FD16F42BDD00E7E472 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF7FB16F42BDD00E7E472 /* InfoPlist.strings */; };
 		17BCF7FF16F42BDD00E7E472 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BCF7FE16F42BDD00E7E472 /* main.m */; };
@@ -41,10 +42,11 @@
 		174A840F17043F9600A53520 /* icon_ellipse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_ellipse.png; path = ../icon_ellipse.png; sourceTree = "<group>"; };
 		174A841317050F1500A53520 /* icon_cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_cursor.png; path = ../icon_cursor.png; sourceTree = "<group>"; };
 		17B089BE16F7B1520006FA2C /* FukoWorks.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = FukoWorks.icns; sourceTree = "<group>"; };
-		17B089C316FCB9130006FA2C /* ToolBoxController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolBoxController.h; sourceTree = "<group>"; };
-		17B089C416FCB9130006FA2C /* ToolBoxController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolBoxController.m; sourceTree = "<group>"; };
 		17B089C716FDAEF10006FA2C /* CanvasWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasWindowController.h; sourceTree = "<group>"; };
 		17B089C816FDAEF10006FA2C /* CanvasWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasWindowController.m; sourceTree = "<group>"; };
+		17B41E1A1707A5F400E535FB /* ToolboxController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolboxController.h; sourceTree = "<group>"; };
+		17B41E1B1707A5F400E535FB /* ToolboxController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolboxController.m; sourceTree = "<group>"; };
+		17B41E1C1707A5F400E535FB /* ToolboxController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToolboxController.xib; sourceTree = "<group>"; };
 		17BCF7EF16F42BDD00E7E472 /* FukoWorks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FukoWorks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17BCF7F216F42BDD00E7E472 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		17BCF7F516F42BDD00E7E472 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
@@ -74,6 +76,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		170A83241707A302003A6AB9 /* CanvasObject */ = {
+			isa = PBXGroup;
+			children = (
+				174A8408170433B500A53520 /* CanvasObject.h */,
+				174A8409170433B500A53520 /* CanvasObject.m */,
+				174A840B1704397100A53520 /* CanvasObjectEllipse.h */,
+				174A840C1704397100A53520 /* CanvasObjectEllipse.m */,
+				1723966716F5A8200089DF1E /* CanvasObjectRectangle.h */,
+				1723966816F5A8200089DF1E /* CanvasObjectRectangle.m */,
+			);
+			name = CanvasObject;
+			sourceTree = "<group>";
+		};
+		170A83251707A35F003A6AB9 /* UserInterface */ = {
+			isa = PBXGroup;
+			children = (
+				17B089C716FDAEF10006FA2C /* CanvasWindowController.h */,
+				17B089C816FDAEF10006FA2C /* CanvasWindowController.m */,
+				17BCF81416F4400300E7E472 /* MainCanvasView.h */,
+				17BCF81516F4400300E7E472 /* MainCanvasView.m */,
+				17BCF80716F42BDD00E7E472 /* MainMenu.xib */,
+				170C3AFB170194DE0030CA0C /* PreferenceWindowController.h */,
+				170C3AFC170194DE0030CA0C /* PreferenceWindowController.m */,
+				170C3AFD170194DE0030CA0C /* PreferenceWindowController.xib */,
+				17B41E1A1707A5F400E535FB /* ToolboxController.h */,
+				17B41E1B1707A5F400E535FB /* ToolboxController.m */,
+				17B41E1C1707A5F400E535FB /* ToolboxController.xib */,
+			);
+			name = UserInterface;
+			sourceTree = "<group>";
+		};
 		174A841217043FB200A53520 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -126,23 +159,9 @@
 				174A841217043FB200A53520 /* Resources */,
 				17BCF80416F42BDD00E7E472 /* AppDelegate.h */,
 				17BCF80516F42BDD00E7E472 /* AppDelegate.m */,
-				174A8408170433B500A53520 /* CanvasObject.h */,
-				174A8409170433B500A53520 /* CanvasObject.m */,
-				174A840B1704397100A53520 /* CanvasObjectEllipse.h */,
-				174A840C1704397100A53520 /* CanvasObjectEllipse.m */,
-				1723966716F5A8200089DF1E /* CanvasObjectRectangle.h */,
-				1723966816F5A8200089DF1E /* CanvasObjectRectangle.m */,
-				17B089C716FDAEF10006FA2C /* CanvasWindowController.h */,
-				17B089C816FDAEF10006FA2C /* CanvasWindowController.m */,
-				17BCF81416F4400300E7E472 /* MainCanvasView.h */,
-				17BCF81516F4400300E7E472 /* MainCanvasView.m */,
-				17BCF80716F42BDD00E7E472 /* MainMenu.xib */,
-				170C3AFB170194DE0030CA0C /* PreferenceWindowController.h */,
-				170C3AFC170194DE0030CA0C /* PreferenceWindowController.m */,
-				170C3AFD170194DE0030CA0C /* PreferenceWindowController.xib */,
+				170A83241707A302003A6AB9 /* CanvasObject */,
+				170A83251707A35F003A6AB9 /* UserInterface */,
 				17BCF7F916F42BDD00E7E472 /* Supporting Files */,
-				17B089C316FCB9130006FA2C /* ToolBoxController.h */,
-				17B089C416FCB9130006FA2C /* ToolBoxController.m */,
 			);
 			path = FukoWorks;
 			sourceTree = "<group>";
@@ -170,6 +189,7 @@
 				17BCF7EB16F42BDD00E7E472 /* Sources */,
 				17BCF7EC16F42BDD00E7E472 /* Frameworks */,
 				17BCF7ED16F42BDD00E7E472 /* Resources */,
+				170A83231707A1CC003A6AB9 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -220,10 +240,27 @@
 				174A841017043F9600A53520 /* icon_rectangle.png in Resources */,
 				174A841117043F9600A53520 /* icon_ellipse.png in Resources */,
 				174A841417050F1500A53520 /* icon_cursor.png in Resources */,
+				17B41E1E1707A5F400E535FB /* ToolboxController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		170A83231707A1CC003A6AB9 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" \"$INFOPLIST_FILE\")\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" \"$INFOPLIST_FILE\"";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		17BCF7EB16F42BDD00E7E472 /* Sources */ = {
@@ -234,11 +271,11 @@
 				17BCF80616F42BDD00E7E472 /* AppDelegate.m in Sources */,
 				17BCF81616F4400300E7E472 /* MainCanvasView.m in Sources */,
 				1723966916F5A8200089DF1E /* CanvasObjectRectangle.m in Sources */,
-				17B089C516FCB9130006FA2C /* ToolBoxController.m in Sources */,
 				17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */,
 				170C3AFE170194DE0030CA0C /* PreferenceWindowController.m in Sources */,
 				174A840A170433B500A53520 /* CanvasObject.m in Sources */,
 				174A840D1704397100A53520 /* CanvasObjectEllipse.m in Sources */,
+				17B41E1D1707A5F400E535FB /* ToolboxController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -1,23 +1,23 @@
 //
-//  ToolBoxController.m
+//  ToolboxController.m
 //  FukoWorks
 //
-//  Created by 西田　耀 on 13/03/23.
+//  Created by 西田　耀 on 13/03/31.
 //  Copyright (c) 2013年 TokyoGakugeiUniversitySeniorHighSchool. All rights reserved.
 //
 
-#import "ToolBoxController.h"
+#import "ToolboxController.h"
 
-@implementation ToolBoxController
+@implementation ToolboxController
 
 @synthesize drawingStrokeColor = _drawingStrokeColor;
 @synthesize drawingStrokeWidth = _drawingStrokeWidth;
 @synthesize drawingFillColor = _drawingFillColor;
 @synthesize drawingObjectType = _drawingObjectType;
 
--(id)init
+- (id)init
 {
-    self = [super init];
+    self = [super initWithWindowNibName:[self className]];
     
     if(self){
         _drawingObjectType = Undefined;
@@ -27,7 +27,29 @@
     return self;
 }
 
--(IBAction)ToolBox_StrokeColorChanged:(id)sender
+ToolboxController *_sharedToolboxController = nil;
++ (ToolboxController *)sharedToolboxController
+{
+    if(_sharedToolboxController == nil) {
+        _sharedToolboxController = [[ToolboxController alloc] init];
+    }
+    return _sharedToolboxController;
+}
+
+
+- (void)windowDidLoad
+{
+    [super windowDidLoad];
+
+    sliderStrokeWidth.maxValue = 10;
+    sliderStrokeWidth.minValue = 0;
+    [sliderStrokeWidth setIntegerValue:0];
+    [textFieldStrokeWidth setIntegerValue:0];
+
+}
+
+
+- (void)strokeColorChanged:(id)sender
 {
     NSColor *color;
     
@@ -35,7 +57,7 @@
     _drawingStrokeColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
 }
 
--(IBAction)ToolBox_FillColorChanged:(id)sender
+- (void)fillColorChanged:(id)sender
 {
     NSColor *color;
     
@@ -43,13 +65,13 @@
     _drawingFillColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
 }
 
--(IBAction)ToolBox_sliderStrokeWidthChanged:(id)sender
+- (void)sliderStrokeWidthChanged:(id)sender
 {
     _drawingStrokeWidth = sliderStrokeWidth.doubleValue;
     textFieldStrokeWidth.doubleValue = _drawingStrokeWidth;
 }
 
--(IBAction)ToolBox_textFieldStrokeWidthChanged:(id)sender
+- (void)textFieldStrokeWidthChanged:(id)sender
 {
     double width;
     
@@ -68,7 +90,7 @@
     _drawingStrokeWidth = width;
 }
 
--(IBAction)ToolBox_DrawingObjectTypeChanged:(id)sender
+- (void)drawingObjectTypeChanged:(id)sender
 {
     NSButton *nextButton;
     

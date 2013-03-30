@@ -1,17 +1,17 @@
 //
-//  ToolBoxController.h
+//  ToolboxController.h
 //  FukoWorks
 //
-//  Created by 西田　耀 on 13/03/23.
+//  Created by 西田　耀 on 13/03/31.
 //  Copyright (c) 2013年 TokyoGakugeiUniversitySeniorHighSchool. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 #import "CanvasObject.h"
 
-@interface ToolBoxController : NSObject
+@interface ToolboxController : NSWindowController
 {
-    IBOutlet NSPanel *toolBox;
+    IBOutlet NSPanel *toolbox;
     IBOutlet NSColorWell *cWellStrokeColor;
     IBOutlet NSColorWell *cWellFillColor;
     IBOutlet NSSlider *sliderStrokeWidth;
@@ -26,11 +26,14 @@
 @property (nonatomic) CGColorRef drawingTextColor;
 @property (nonatomic) CanvasObjectType drawingObjectType;
 
--(IBAction)ToolBox_StrokeColorChanged:(id)sender;
--(IBAction)ToolBox_FillColorChanged:(id)sender;
--(IBAction)ToolBox_sliderStrokeWidthChanged:(id)sender;
--(IBAction)ToolBox_textFieldStrokeWidthChanged:(id)sender;
+- (id)init;
++ (ToolboxController *)sharedToolboxController;
+- (void)windowDidLoad;
 
--(IBAction)ToolBox_DrawingObjectTypeChanged:(id)sender;
+- (IBAction)strokeColorChanged:(id)sender;
+- (IBAction)fillColorChanged:(id)sender;
+- (IBAction)sliderStrokeWidthChanged:(id)sender;
+- (IBAction)textFieldStrokeWidthChanged:(id)sender;
+- (IBAction)drawingObjectTypeChanged:(id)sender;
 
 @end

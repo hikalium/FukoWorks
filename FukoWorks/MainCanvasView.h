@@ -7,7 +7,7 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "ToolBoxController.h"
+#import "ToolboxController.h"
 #import "CanvasObjectRectangle.h"
 #import "CanvasObjectEllipse.h"
 
@@ -31,7 +31,7 @@
 }
 
 @property (strong, nonatomic) NSTextField *label_indicator;
-@property (nonatomic) ToolBoxController *toolboxController;
+@property (nonatomic) ToolboxController *toolboxController;
 @property (nonatomic) CGFloat canvasScale;
 
 - (id)initWithFrame:(NSRect)frame;

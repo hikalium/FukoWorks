@@ -19,14 +19,12 @@
 - (void)awakeFromNib
 {
     //表示部分の初期化
-    [window addChildWindow:panelToolBox ordered:NSWindowAbove];
+    toolboxController = [ToolboxController sharedToolboxController];
+    
+    [window addChildWindow:toolboxController.window ordered:NSWindowAbove];
     [window setHidesOnDeactivate:NO];
     //[panelToolBox setHidesOnDeactivate:NO];
     
-    sliderStrokeWidth.maxValue = 10;
-    sliderStrokeWidth.minValue = 0;
-    [sliderStrokeWidth setIntegerValue:0];
-    [textFieldStrokeWidth setIntegerValue:0];
     
     [comboBoxCanvasScale setStringValue:@"100%"];
     mainCanvasView = [[MainCanvasView alloc] initWithFrame:NSMakeRect(0, 0, 1024, 768)];

@@ -29,13 +29,13 @@
 
 @implementation PreferenceWindowController
 
-PreferenceWindowController *sharedController = nil;
+PreferenceWindowController *_sharedPreferenceWindowController = nil;
 + (PreferenceWindowController *)sharedPreferenceWindowController
 {
-    if(sharedController == nil) {
-        sharedController = [[PreferenceWindowController alloc] init];
+    if(_sharedPreferenceWindowController == nil) {
+        _sharedPreferenceWindowController = [[PreferenceWindowController alloc] init];
     }
-    return sharedController;
+    return _sharedPreferenceWindowController;
 }
 
 - (id)init
