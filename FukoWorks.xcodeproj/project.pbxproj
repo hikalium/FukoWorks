@@ -15,6 +15,7 @@
 		174A841017043F9600A53520 /* icon_rectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 174A840E17043F9600A53520 /* icon_rectangle.png */; };
 		174A841117043F9600A53520 /* icon_ellipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 174A840F17043F9600A53520 /* icon_ellipse.png */; };
 		174A841417050F1500A53520 /* icon_cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = 174A841317050F1500A53520 /* icon_cursor.png */; };
+		176EEFE01707C16800F56FF4 /* ToolboxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 176EEFDF1707C16800F56FF4 /* ToolboxController.m */; };
 		17B089BF16F7B1520006FA2C /* FukoWorks.icns in Resources */ = {isa = PBXBuildFile; fileRef = 17B089BE16F7B1520006FA2C /* FukoWorks.icns */; };
 		17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B089C816FDAEF10006FA2C /* CanvasWindowController.m */; };
 		17B41E1E1707A5F400E535FB /* ToolboxController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17B41E1C1707A5F400E535FB /* ToolboxController.xib */; };
@@ -40,6 +41,8 @@
 		174A840E17043F9600A53520 /* icon_rectangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_rectangle.png; path = ../icon_rectangle.png; sourceTree = "<group>"; };
 		174A840F17043F9600A53520 /* icon_ellipse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_ellipse.png; path = ../icon_ellipse.png; sourceTree = "<group>"; };
 		174A841317050F1500A53520 /* icon_cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_cursor.png; path = ../icon_cursor.png; sourceTree = "<group>"; };
+		176EEFDE1707C16200F56FF4 /* ToolboxController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolboxController.h; sourceTree = "<group>"; };
+		176EEFDF1707C16800F56FF4 /* ToolboxController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolboxController.m; sourceTree = "<group>"; };
 		17B089BE16F7B1520006FA2C /* FukoWorks.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = FukoWorks.icns; sourceTree = "<group>"; };
 		17B089C716FDAEF10006FA2C /* CanvasWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasWindowController.h; sourceTree = "<group>"; };
 		17B089C816FDAEF10006FA2C /* CanvasWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasWindowController.m; sourceTree = "<group>"; };
@@ -89,6 +92,8 @@
 		170A83251707A35F003A6AB9 /* UserInterface */ = {
 			isa = PBXGroup;
 			children = (
+				176EEFDF1707C16800F56FF4 /* ToolboxController.m */,
+				176EEFDE1707C16200F56FF4 /* ToolboxController.h */,
 				17B089C716FDAEF10006FA2C /* CanvasWindowController.h */,
 				17B089C816FDAEF10006FA2C /* CanvasWindowController.m */,
 				17BCF81416F4400300E7E472 /* MainCanvasView.h */,
@@ -270,6 +275,7 @@
 				170C3AFE170194DE0030CA0C /* PreferenceWindowController.m in Sources */,
 				174A840A170433B500A53520 /* CanvasObject.m in Sources */,
 				174A840D1704397100A53520 /* CanvasObjectEllipse.m in Sources */,
+				176EEFE01707C16800F56FF4 /* ToolboxController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
