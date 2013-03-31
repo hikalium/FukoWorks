@@ -25,5 +25,6 @@
 }
 
 - (IBAction)showPreferenceWindow:(id)sender;
+- (IBAction)saveCanvasImageForFile:(id)sender;
 
 @end

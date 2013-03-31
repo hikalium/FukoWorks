@@ -812,7 +812,7 @@
 							</array>
 						</object>
 					</object>
-					<object class="NSMenuItem" id="87266606">
+					<object class="NSMenuItem" id="1038087931">
 						<reference key="NSMenu" ref="649796088"/>
 						<string key="NSTitle">ウィンドウ</string>
 						<string key="NSKeyEquiv"/>
@@ -820,11 +820,11 @@
 						<reference key="NSOnImage" ref="35465992"/>
 						<reference key="NSMixedImage" ref="502551668"/>
 						<string key="NSAction">submenuAction:</string>
-						<object class="NSMenu" key="NSSubmenu" id="971172394">
+						<object class="NSMenu" key="NSSubmenu" id="558571189">
 							<string key="NSTitle">ウィンドウ</string>
 							<array class="NSMutableArray" key="NSMenuItems">
-								<object class="NSMenuItem" id="130371257">
-									<reference key="NSMenu" ref="971172394"/>
+								<object class="NSMenuItem" id="825619206">
+									<reference key="NSMenu" ref="558571189"/>
 									<string key="NSTitle">最小化</string>
 									<string key="NSKeyEquiv">m</string>
 									<int key="NSKeyEquivModMask">1048576</int>
@@ -832,16 +832,16 @@
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
 								</object>
-								<object class="NSMenuItem" id="456602790">
-									<reference key="NSMenu" ref="971172394"/>
+								<object class="NSMenuItem" id="981349499">
+									<reference key="NSMenu" ref="558571189"/>
 									<string key="NSTitle">拡大/縮小</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
 								</object>
-								<object class="NSMenuItem" id="277086673">
-									<reference key="NSMenu" ref="971172394"/>
+								<object class="NSMenuItem" id="137533429">
+									<reference key="NSMenu" ref="558571189"/>
 									<bool key="NSIsDisabled">YES</bool>
 									<bool key="NSIsSeparator">YES</bool>
 									<string key="NSTitle"/>
@@ -850,8 +850,8 @@
 									<reference key="NSOnImage" ref="35465992"/>
 									<reference key="NSMixedImage" ref="502551668"/>
 								</object>
-								<object class="NSMenuItem" id="972290794">
-									<reference key="NSMenu" ref="971172394"/>
+								<object class="NSMenuItem" id="882990036">
+									<reference key="NSMenu" ref="558571189"/>
 									<string key="NSTitle">すべてを手前に移動</string>
 									<string key="NSKeyEquiv"/>
 									<int key="NSMnemonicLoc">2147483647</int>
@@ -915,14 +915,12 @@
 											<int key="NSvFlags">274</int>
 											<string key="NSFrameSize">{640, 438}</string>
 											<reference key="NSSuperview" ref="1001455961"/>
-											<reference key="NSWindow"/>
 											<reference key="NSNextKeyView" ref="609555774"/>
 											<string key="NSReuseIdentifierKey">_NS:13</string>
 										</object>
 									</array>
 									<string key="NSFrame">{{1, 1}, {625, 423}}</string>
 									<reference key="NSSuperview" ref="64534862"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="722065454"/>
 									<string key="NSReuseIdentifierKey">_NS:11</string>
 									<reference key="NSDocView" ref="722065454"/>
@@ -942,7 +940,6 @@
 									<int key="NSvFlags">256</int>
 									<string key="NSFrame">{{626, 1}, {15, 423}}</string>
 									<reference key="NSSuperview" ref="64534862"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="15188642"/>
 									<string key="NSReuseIdentifierKey">_NS:15</string>
 									<bool key="NSEnabled">YES</bool>
@@ -956,7 +953,6 @@
 									<int key="NSvFlags">256</int>
 									<string key="NSFrame">{{1, 424}, {625, 15}}</string>
 									<reference key="NSSuperview" ref="64534862"/>
-									<reference key="NSWindow"/>
 									<reference key="NSNextKeyView" ref="883387205"/>
 									<string key="NSReuseIdentifierKey">_NS:26</string>
 									<bool key="NSEnabled">YES</bool>
@@ -968,7 +964,6 @@
 							</array>
 							<string key="NSFrame">{{-1, 20}, {642, 440}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="1001455961"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<int key="NSsFlags">133362</int>
@@ -981,7 +976,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{17, 463}, {262, 17}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="64534862"/>
 							<string key="NSReuseIdentifierKey">_NS:1535</string>
 							<bool key="NSEnabled">YES</bool>
@@ -1013,8 +1007,6 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{20, -4}, {99, 26}}</string>
 							<reference key="NSSuperview" ref="439893737"/>
-							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSComboBoxCell" key="NSCell" id="525065917">
@@ -1120,7 +1112,6 @@
 					</array>
 					<string key="NSFrameSize">{640, 480}</string>
 					<reference key="NSSuperview"/>
-					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="820347015"/>
 					<int key="NSViewLayerContentsRedrawPolicy">2</int>
 					<string key="NSHuggingPriority">{123, 250}</string>
@@ -1244,14 +1235,6 @@
 						<reference key="destination" ref="437104165"/>
 					</object>
 					<int key="connectionID">235</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBActionConnection" key="connection">
-						<string key="label">saveDocument:</string>
-						<reference key="source" ref="1014"/>
-						<reference key="destination" ref="1023925487"/>
-					</object>
-					<int key="connectionID">362</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBActionConnection" key="connection">
@@ -1537,7 +1520,7 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">performMiniaturize:</string>
 						<reference key="source" ref="1014"/>
-						<reference key="destination" ref="130371257"/>
+						<reference key="destination" ref="825619206"/>
 					</object>
 					<int key="connectionID">906</int>
 				</object>
@@ -1545,7 +1528,7 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">arrangeInFront:</string>
 						<reference key="source" ref="1014"/>
-						<reference key="destination" ref="972290794"/>
+						<reference key="destination" ref="882990036"/>
 					</object>
 					<int key="connectionID">907</int>
 				</object>
@@ -1553,7 +1536,7 @@
 					<object class="IBActionConnection" key="connection">
 						<string key="label">performZoom:</string>
 						<reference key="source" ref="1014"/>
-						<reference key="destination" ref="456602790"/>
+						<reference key="destination" ref="981349499"/>
 					</object>
 					<int key="connectionID">908</int>
 				</object>
@@ -1646,6 +1629,14 @@
 					<int key="connectionID">883</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">saveCanvasImageForFile:</string>
+						<reference key="source" ref="976324537"/>
+						<reference key="destination" ref="1023925487"/>
+					</object>
+					<int key="connectionID">909</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">mainWindow</string>
 						<reference key="source" ref="380199491"/>
@@ -1722,7 +1713,7 @@
 							<reference ref="586577488"/>
 							<reference ref="302598603"/>
 							<reference ref="448692316"/>
-							<reference ref="87266606"/>
+							<reference ref="1038087931"/>
 						</array>
 						<reference key="parent" ref="0"/>
 					</object>
@@ -2406,42 +2397,42 @@
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">900</int>
-						<reference key="object" ref="87266606"/>
+						<reference key="object" ref="1038087931"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="971172394"/>
+							<reference ref="558571189"/>
 						</array>
 						<reference key="parent" ref="649796088"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">901</int>
-						<reference key="object" ref="971172394"/>
+						<reference key="object" ref="558571189"/>
 						<array class="NSMutableArray" key="children">
-							<reference ref="130371257"/>
-							<reference ref="456602790"/>
-							<reference ref="277086673"/>
-							<reference ref="972290794"/>
+							<reference ref="825619206"/>
+							<reference ref="981349499"/>
+							<reference ref="137533429"/>
+							<reference ref="882990036"/>
 						</array>
-						<reference key="parent" ref="87266606"/>
+						<reference key="parent" ref="1038087931"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">902</int>
-						<reference key="object" ref="130371257"/>
-						<reference key="parent" ref="971172394"/>
+						<reference key="object" ref="825619206"/>
+						<reference key="parent" ref="558571189"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">903</int>
-						<reference key="object" ref="456602790"/>
-						<reference key="parent" ref="971172394"/>
+						<reference key="object" ref="981349499"/>
+						<reference key="parent" ref="558571189"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">904</int>
-						<reference key="object" ref="277086673"/>
-						<reference key="parent" ref="971172394"/>
+						<reference key="object" ref="137533429"/>
+						<reference key="parent" ref="558571189"/>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">905</int>
-						<reference key="object" ref="972290794"/>
-						<reference key="parent" ref="971172394"/>
+						<reference key="object" ref="882990036"/>
+						<reference key="parent" ref="558571189"/>
 					</object>
 				</array>
 			</object>
@@ -2573,121 +2564,9 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">908</int>
+			<int key="maxID">909</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes">
-			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
-				<object class="IBPartialClassDescription">
-					<string key="className">AppDelegate</string>
-					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">showPreferenceWindow:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">showPreferenceWindow:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">showPreferenceWindow:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="canvasController">CanvasWindowController</string>
-						<string key="comboBoxCanvasScale">NSComboBox</string>
-						<string key="label_indicator">NSTextField</string>
-						<string key="scrollView">NSScrollView</string>
-						<string key="window">NSWindow</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="canvasController">
-							<string key="name">canvasController</string>
-							<string key="candidateClassName">CanvasWindowController</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="comboBoxCanvasScale">
-							<string key="name">comboBoxCanvasScale</string>
-							<string key="candidateClassName">NSComboBox</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="label_indicator">
-							<string key="name">label_indicator</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="scrollView">
-							<string key="name">scrollView</string>
-							<string key="candidateClassName">NSScrollView</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="window">
-							<string key="name">window</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/AppDelegate.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">CanvasWindowController</string>
-					<string key="superclassName">NSObject</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">comboBoxCanvasScaleChanged:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">comboBoxCanvasScaleChanged:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">comboBoxCanvasScaleChanged:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<dictionary class="NSMutableDictionary" key="outlets">
-						<string key="comboBoxCanvasScale">NSComboBox</string>
-						<string key="label_indicator">NSTextField</string>
-						<string key="mainWindow">NSWindow</string>
-						<string key="scrollView">NSScrollView</string>
-					</dictionary>
-					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
-						<object class="IBToOneOutletInfo" key="comboBoxCanvasScale">
-							<string key="name">comboBoxCanvasScale</string>
-							<string key="candidateClassName">NSComboBox</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="label_indicator">
-							<string key="name">label_indicator</string>
-							<string key="candidateClassName">NSTextField</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="mainWindow">
-							<string key="name">mainWindow</string>
-							<string key="candidateClassName">NSWindow</string>
-						</object>
-						<object class="IBToOneOutletInfo" key="scrollView">
-							<string key="name">scrollView</string>
-							<string key="candidateClassName">NSScrollView</string>
-						</object>
-					</dictionary>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/CanvasWindowController.h</string>
-					</object>
-				</object>
-				<object class="IBPartialClassDescription">
-					<string key="className">NSTextView</string>
-					<object class="NSMutableDictionary" key="actions">
-						<string key="NS.key.0">toggleQuickLookPreviewPanel:</string>
-						<string key="NS.object.0">id</string>
-					</object>
-					<object class="NSMutableDictionary" key="actionInfosByName">
-						<string key="NS.key.0">toggleQuickLookPreviewPanel:</string>
-						<object class="IBActionInfo" key="NS.object.0">
-							<string key="name">toggleQuickLookPreviewPanel:</string>
-							<string key="candidateClassName">id</string>
-						</object>
-					</object>
-					<object class="IBClassDescriptionSource" key="sourceIdentifier">
-						<string key="majorKey">IBProjectSource</string>
-						<string key="minorKey">./Classes/NSTextView.h</string>
-					</object>
-				</object>
-			</array>
-		</object>
+		<object class="IBClassDescriber" key="IBDocument.Classes"/>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<object class="NSMutableDictionary" key="IBDocument.PluginDeclaredDependencies">

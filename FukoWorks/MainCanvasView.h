@@ -19,11 +19,6 @@
     
     CGColorRef backgroundColor;
     
-    //CGColorRef guideRectFillColor;
-    //CGColorRef guideRectStrokeColor;
-    //CGFloat guideRectStrokeWidth;
-    
-    //CanvasObjectRectangle *editingRect;
     CanvasObject *editingObject;
     
     NSRect baseFrame;

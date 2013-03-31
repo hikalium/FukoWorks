@@ -28,21 +28,16 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code here.
         baseFrame = NSMakeRect(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
         drawingStartPoint.x = 0;
         drawingStartPoint.y = 0;
         
         backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
-        //guideRectFillColor = CGColorCreateGenericRGB(0, 0, 1, 0.75);
-        //guideRectStrokeColor = CGColorCreateGenericRGB(1, 1, 1, 0.75);
-        //guideRectStrokeWidth = 2;
         _canvasScale = 1;
         
         dragging = false;
         
         canvasCursor = [NSCursor crosshairCursor];
-        //[canvasCursor setOnMouseEntered:YES];
         
         editingObject = nil;
     }
@@ -70,28 +65,11 @@
 
 - (void)mouseDown:(NSEvent*)event
 {
-    //NSRect baseRect;
     NSPoint currentPoint;
     
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDw:%@", NSStringFromPoint(currentPoint)]];
 
-    /*
-    //描画開始点を現在の地点に設定
-    drawingStartPoint = currentPoint;
-    dragging = true;
-    
-    //図形を新規作成して、編集中に設定
-    baseRect = [self makeNSRectFromMouseMoving:drawingStartPoint :currentPoint];
-    editingRect = [[CanvasObjectRectangle alloc] initWithFrame:baseRect];
-    if(editingRect != nil){
-        editingRect.FillColor = self.toolboxController.drawingFillColor;
-        editingRect.StrokeColor = self.toolboxController.drawingStrokeColor;
-        editingRect.StrokeWidth = self.toolboxController.drawingStrokeWidth;
-        [self addSubview:editingRect];
-    }
-     */
-    
     if(editingObject == nil){
         //図形の新規作成
         switch(self.toolboxController.drawingObjectType){
@@ -124,10 +102,6 @@
     
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDr:%@", NSStringFromPoint(currentPoint)]];
-    //drawingDragPoint = currentPoint;
-    
-    //[editingRect setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPoint]];
-    //[self setNeedsDisplay:YES];
     
     editingObject = [editingObject drawMouseDragged:currentPoint];
 }
@@ -136,8 +110,6 @@
 {
     NSPoint currentPoint;
 
-    //editingRect = nil;
-    //dragging = false;
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mUp:%@", NSStringFromPoint(currentPoint)]];
  

@@ -50,4 +50,36 @@
     [[PreferenceWindowController sharedPreferenceWindowController] showWindow:sender];
 }
 
+- (void)saveCanvasImageForFile:(id)sender
+{
+    NSSavePanel *savePanel;
+    NSArray *allowedFileType;
+    NSInteger pressedButton;
+    NSURL *path;
+    NSBitmapImageRep *bitmapImage;
+    NSView *targetView;
+    NSData *savedata;
+    
+    savePanel = [NSSavePanel savePanel];
+    allowedFileType = [NSArray arrayWithObjects:@"png", nil];
+    [savePanel setAllowedFileTypes:allowedFileType];
+    
+    pressedButton = [savePanel runModal];
+    
+    switch(pressedButton){
+        case NSOKButton:
+            path = [savePanel URL];
+            targetView = (NSView *)[scrollView documentView];
+            bitmapImage = [targetView bitmapImageRepForCachingDisplayInRect:targetView.frame];
+            [targetView cacheDisplayInRect:targetView.bounds toBitmapImageRep:bitmapImage];
+            savedata = [bitmapImage representationUsingType:NSPNGFileType properties:[NSDictionary dictionary]];
+            [savedata writeToURL:path atomically:YES];
+            
+            break;
+        case NSCancelButton:
+            
+            break;
+    };
+}
+
 @end
