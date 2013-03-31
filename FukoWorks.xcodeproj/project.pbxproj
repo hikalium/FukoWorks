@@ -17,7 +17,6 @@
 		174A841417050F1500A53520 /* icon_cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = 174A841317050F1500A53520 /* icon_cursor.png */; };
 		17B089BF16F7B1520006FA2C /* FukoWorks.icns in Resources */ = {isa = PBXBuildFile; fileRef = 17B089BE16F7B1520006FA2C /* FukoWorks.icns */; };
 		17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B089C816FDAEF10006FA2C /* CanvasWindowController.m */; };
-		17B41E1D1707A5F400E535FB /* ToolboxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B41E1B1707A5F400E535FB /* ToolboxController.m */; };
 		17B41E1E1707A5F400E535FB /* ToolboxController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17B41E1C1707A5F400E535FB /* ToolboxController.xib */; };
 		17BCF7F316F42BDD00E7E472 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 17BCF7F216F42BDD00E7E472 /* Cocoa.framework */; };
 		17BCF7FD16F42BDD00E7E472 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF7FB16F42BDD00E7E472 /* InfoPlist.strings */; };
@@ -44,8 +43,6 @@
 		17B089BE16F7B1520006FA2C /* FukoWorks.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = FukoWorks.icns; sourceTree = "<group>"; };
 		17B089C716FDAEF10006FA2C /* CanvasWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasWindowController.h; sourceTree = "<group>"; };
 		17B089C816FDAEF10006FA2C /* CanvasWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasWindowController.m; sourceTree = "<group>"; };
-		17B41E1A1707A5F400E535FB /* ToolboxController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolboxController.h; sourceTree = "<group>"; };
-		17B41E1B1707A5F400E535FB /* ToolboxController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolboxController.m; sourceTree = "<group>"; };
 		17B41E1C1707A5F400E535FB /* ToolboxController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ToolboxController.xib; sourceTree = "<group>"; };
 		17BCF7EF16F42BDD00E7E472 /* FukoWorks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FukoWorks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		17BCF7F216F42BDD00E7E472 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
@@ -100,8 +97,6 @@
 				170C3AFB170194DE0030CA0C /* PreferenceWindowController.h */,
 				170C3AFC170194DE0030CA0C /* PreferenceWindowController.m */,
 				170C3AFD170194DE0030CA0C /* PreferenceWindowController.xib */,
-				17B41E1A1707A5F400E535FB /* ToolboxController.h */,
-				17B41E1B1707A5F400E535FB /* ToolboxController.m */,
 				17B41E1C1707A5F400E535FB /* ToolboxController.xib */,
 			);
 			name = UserInterface;
@@ -275,7 +270,6 @@
 				170C3AFE170194DE0030CA0C /* PreferenceWindowController.m in Sources */,
 				174A840A170433B500A53520 /* CanvasObject.m in Sources */,
 				174A840D1704397100A53520 /* CanvasObjectEllipse.m in Sources */,
-				17B41E1D1707A5F400E535FB /* ToolboxController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
