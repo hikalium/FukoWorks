@@ -40,7 +40,7 @@
 				<string key="NSClassName">NSApplication</string>
 			</object>
 			<object class="NSWindowTemplate" id="578648170">
-				<int key="NSWindowStyleMask">31</int>
+				<int key="NSWindowStyleMask">23</int>
 				<int key="NSWindowBacking">2</int>
 				<string key="NSWindowRect">{{160, 390}, {112, 480}}</string>
 				<int key="NSWTFlags">1685586944</int>
@@ -48,6 +48,8 @@
 				<string key="NSWindowClass">NSPanel</string>
 				<nil key="NSViewClass"/>
 				<nil key="NSUserInterfaceItemIdentifier"/>
+				<string key="NSWindowContentMaxSize">{112, 480}</string>
+				<string key="NSWindowContentMinSize">{112, 480}</string>
 				<object class="NSView" key="NSWindowView" id="94134183">
 					<reference key="NSNextResponder"/>
 					<int key="NSvFlags">256</int>
@@ -247,7 +249,8 @@
 					<string key="NSHuggingPriority">{123, 250}</string>
 				</object>
 				<string key="NSScreenRect">{{0, 0}, {1920, 1178}}</string>
-				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
+				<string key="NSMinSize">{112, 496}</string>
+				<string key="NSMaxSize">{112, 496}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
 		</array>

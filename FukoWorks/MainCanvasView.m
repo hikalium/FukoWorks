@@ -23,6 +23,15 @@
     [self.superview setNeedsDisplay:YES];
     [self setNeedsDisplay:YES];
 }
+@synthesize focusedObject = _focusedObject;
+- (void)setFocusedObject:(CanvasObject *)focusedObject
+{
+    if(focusedObject != _focusedObject){
+        [_focusedObject setFocused:NO];
+        [focusedObject setFocused:YES];
+    }
+    _focusedObject = focusedObject;
+}
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -40,6 +49,8 @@
         canvasCursor = [NSCursor crosshairCursor];
         
         editingObject = nil;
+        _focusedObject = nil;
+        movingObject = nil;
     }
     
     return self;
@@ -74,6 +85,10 @@
         //図形の新規作成
         switch(self.toolboxController.drawingObjectType){
             case Undefined:
+                movingObject = [self getCanvasObjectAtCursorLocation:event];
+                if(movingObject){
+                    moveHandleOffset = NSMakePoint(currentPoint.x - movingObject.frame.origin.x, currentPoint.y - movingObject.frame.origin.y);
+                }
                 break;
             case Rectangle:
                 editingObject = [[CanvasObjectRectangle alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
@@ -104,6 +119,8 @@
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDr:%@", NSStringFromPoint(currentPoint)]];
     
     editingObject = [editingObject drawMouseDragged:currentPoint];
+    
+    [movingObject setFrameOrigin:NSMakePoint(currentPoint.x - moveHandleOffset.x, currentPoint.y - moveHandleOffset.y)];
 }
 
 - (void)mouseUp:(NSEvent*)event
@@ -114,6 +131,13 @@
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mUp:%@", NSStringFromPoint(currentPoint)]];
  
     editingObject = [editingObject drawMouseUp:currentPoint];
+    
+    movingObject = nil;
+}
+
+- (void)rightMouseUp:(NSEvent *)theEvent
+{
+    self.focusedObject = [self getCanvasObjectAtCursorLocation:theEvent];
 }
 
 -(void)resetCursorRects
@@ -154,6 +178,40 @@
     
     currentPoint = [event locationInWindow];
     return [self convertPoint:currentPoint fromView:nil];
+}
+
+- (CanvasObject *)getCanvasObjectAtCursorLocation:(NSEvent *)event
+{
+    NSPoint currentPoint;
+    CanvasObject *aCanvasObject, *candidateCanvasObject;
+    NSBitmapImageRep *bitmapImage;
+    NSPoint currentPointInObject;
+    NSColor *pointColor;
+    
+    currentPoint = [self getPointerLocationRelativeToSelfView:event];
+    
+    candidateCanvasObject = nil;
+    for(NSView *aSubview in [self.subviews reverseObjectEnumerator]){
+        if([aSubview isKindOfClass:[CanvasObject class]]){
+            //前面にあるオブジェクトから順番に、ポインタの指す座標が含まれているか調べる。
+            aCanvasObject = (CanvasObject *)aSubview;
+            if(NSPointInRect(currentPoint, aCanvasObject.frame)){
+                currentPointInObject = [aCanvasObject getPointerLocationRelativeToSelfView:event];
+                [self.label_indicator setStringValue:NSStringFromPoint(currentPointInObject)];
+                bitmapImage = [aCanvasObject bitmapImageRepForCachingDisplayInRect:aCanvasObject.frame];
+                [aCanvasObject cacheDisplayInRect:aCanvasObject.bounds toBitmapImageRep:bitmapImage];
+                //bitmapimageは表示状態の倍率で保存されているので、座標にCanvasScaleを掛けなければならない。
+                pointColor = [bitmapImage colorAtX:currentPointInObject.x * self.canvasScale y:currentPointInObject.y * self.canvasScale];
+                if([pointColor alphaComponent] != 0 || [pointColor numberOfComponents] == 0){
+                    //指定された座標が、完全に透明でないことを確認
+                    candidateCanvasObject = aCanvasObject;
+                    break;
+                }
+            }
+        }
+    }
+
+    return candidateCanvasObject;
 }
 
 @end

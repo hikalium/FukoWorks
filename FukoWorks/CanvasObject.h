@@ -12,7 +12,6 @@
 
 @interface CanvasObject : NSView
 {
-    
 }
 
 typedef enum : NSInteger {
@@ -25,6 +24,15 @@ typedef enum : NSInteger {
 @property (nonatomic) CGColorRef StrokeColor;
 @property (nonatomic) CGFloat StrokeWidth;
 @property (readonly, nonatomic) CanvasObjectType ObjectType;
+@property (nonatomic) BOOL Focused;
+- (void)setFocused:(BOOL)Focused;
+
+- (id)initWithFrame:(NSRect)frameRect;
+- (void)drawRect:(NSRect)dirtyRect;
+
+
+- (NSString *)encodedStringForObject;
+- (NSString *)encodedStringForCGColorRef:(CGColorRef)cref;
 
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
@@ -34,8 +42,6 @@ typedef enum : NSInteger {
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSRect)makeNSRectWithRealSizeViewFrameInLocal;
-
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
-
 
 @end

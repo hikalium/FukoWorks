@@ -36,18 +36,16 @@ ToolboxController *_sharedToolboxController = nil;
     return _sharedToolboxController;
 }
 
-
 - (void)windowDidLoad
 {
     [super windowDidLoad];
-
+    
     sliderStrokeWidth.maxValue = 10;
     sliderStrokeWidth.minValue = 0;
     [sliderStrokeWidth setIntegerValue:0];
     [textFieldStrokeWidth setIntegerValue:0];
-
+    [toolbox setReleasedWhenClosed:NO];
 }
-
 
 - (void)strokeColorChanged:(id)sender
 {

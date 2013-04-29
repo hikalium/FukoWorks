@@ -15,10 +15,8 @@
 }
 
 - (id)initWithFrame:(NSRect)frameRect;
-
 - (void)drawRect:(NSRect)dirtyRect;
-    //再描画時に呼ばれる。
-
+ 
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;

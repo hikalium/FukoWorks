@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "PreferenceWindowController.h"
+#import "SaveFileFWK.h"
 
 @implementation AppDelegate
 
@@ -50,6 +51,11 @@
     [[PreferenceWindowController sharedPreferenceWindowController] showWindow:sender];
 }
 
+- (IBAction)ShowToolBox:(id)sender {
+    [[ToolboxController sharedToolboxController] showWindow:sender];
+    [window addChildWindow:toolboxController.window ordered:NSWindowAbove];
+}
+
 - (void)saveCanvasImageForFile:(id)sender
 {
     NSSavePanel *savePanel;
@@ -82,4 +88,33 @@
     };
 }
 
+- (void)saveEncodedCanvasStructureForFile:(id)sender
+{
+    NSSavePanel *savePanel;
+    NSArray *allowedFileType;
+    NSInteger pressedButton;
+    NSURL *path;
+    
+    SaveFileFWK *saveFile;
+        
+    savePanel = [NSSavePanel savePanel];
+    allowedFileType = [NSArray arrayWithObjects:@"fwk", nil];
+    [savePanel setAllowedFileTypes:allowedFileType];
+    
+    pressedButton = [savePanel runModal];
+    
+    switch(pressedButton){
+        case NSOKButton:
+            path = [savePanel URL];
+            
+            saveFile = [[SaveFileFWK alloc] initWithCanvas:mainCanvasView];
+            
+            [saveFile writeCanvasToURL:path atomically:YES];
+            break;
+        case NSCancelButton:
+            
+            break;
+    };
+
+}
 @end

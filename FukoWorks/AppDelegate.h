@@ -25,6 +25,8 @@
 }
 
 - (IBAction)showPreferenceWindow:(id)sender;
+- (IBAction)ShowToolBox:(id)sender;
 - (IBAction)saveCanvasImageForFile:(id)sender;
+- (IBAction)saveEncodedCanvasStructureForFile:(id)sender;
 
 @end
