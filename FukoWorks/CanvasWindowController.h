@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "MainCanvasView.h"
+#import "ToolboxController.h"
 
 @interface CanvasWindowController : NSWindowController <NSWindowDelegate>
 {
@@ -15,11 +16,13 @@
     IBOutlet NSScrollView *scrollView;
     IBOutlet NSTextField *label_indicator;
     IBOutlet NSComboBox *comboBoxCanvasScale;
+    ToolboxController *toolboxController;
 }
 
 @property (nonatomic) MainCanvasView *mainCanvasView;
 
 - (id)init;
+- (id)initWithToolbox:(ToolboxController *)aToolbox;
 - (BOOL)windowShouldClose:(id)sender;
 - (void)windowShouldClose_SheetClosed:(id)sheet returnCode:(int)returnCode contextInfo:(id)contextInfo;
 - (void)windowDidLoad;

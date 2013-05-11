@@ -48,9 +48,9 @@
 
 - (IBAction)CreateNewDrawCanvas:(id)sender
 {
-    currentCanvasWindow = [[CanvasWindowController alloc] init];
+    currentCanvasWindow = [[CanvasWindowController alloc] initWithToolbox:toolboxController];
     [currentCanvasWindow showWindow:sender];
-    //[menuWindow close];
+    [menuWindow close];
 }
 
 @end

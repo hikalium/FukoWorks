@@ -24,6 +24,17 @@
     return self;
 }
 
+- (id)initWithToolbox:(ToolboxController *)aToolbox
+{
+    self = [self init];
+    
+    if(self){
+        toolboxController = aToolbox;
+    }
+    
+    return self;
+}
+
 - (BOOL)windowShouldClose:(id)sender
 {
     NSBeginAlertSheet(@"FukoWorks", @"No", @"Yes", nil, mainWindow, self.self, @selector(windowShouldClose_SheetClosed:returnCode:contextInfo:), nil, nil, @"キャンバスを閉じてもよろしいですか？");
@@ -50,7 +61,7 @@
     self.mainCanvasView = [[MainCanvasView alloc] initWithFrame:NSMakeRect(0, 0, 1024, 768)];
     self.mainCanvasView.label_indicator = label_indicator;
     scrollView.documentView = self.mainCanvasView;
-    //mainCanvasView.toolboxController = toolboxController;
+    self.mainCanvasView.toolboxController = toolboxController;
     [label_indicator setStringValue:@"初期化完了"];
 }
 
