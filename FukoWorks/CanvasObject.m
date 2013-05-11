@@ -7,6 +7,7 @@
 //
 
 #import "CanvasObject.h"
+#import "CanvasObjectHandle.h"
 
 @implementation CanvasObject
 
@@ -36,10 +37,44 @@
 @synthesize Focused = _Focused;
 - (void)setFocused:(BOOL)Focused
 {
+    CanvasObjectHandle *aHandle;
+    NSPoint aPoint;
+    
     if(Focused){
-        self.FillColor = CGColorCreateGenericRGB(0, 1, 0, 1);
+        //LD
+        aPoint = self.frame.origin;
+        aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
+        aHandle.ownerCanvasObject = self;
+        aHandle.tag = 0;
+        editHandle[aHandle.tag] = aHandle;
+        //LU
+        aPoint = NSMakePoint(self.frame.origin.x, self.frame.origin.y + self.frame.size.height - 1);
+        aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
+        aHandle.ownerCanvasObject = self;
+        aHandle.tag = 1;
+        editHandle[aHandle.tag] = aHandle;
+        //RD
+        aPoint = NSMakePoint(self.frame.origin.x + self.frame.size.width - 1, self.frame.origin.y);
+        aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
+        aHandle.ownerCanvasObject = self;
+        aHandle.tag = 2;
+        editHandle[aHandle.tag] = aHandle;
+        //RU
+        aPoint = NSMakePoint(self.frame.origin.x + self.frame.size.width - 1, self.frame.origin.y + self.frame.size.height - 1);
+        aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
+        aHandle.ownerCanvasObject = self;
+        aHandle.tag = 3;
+        editHandle[aHandle.tag] = aHandle;
+        
+        for(int i = 0; i < 4; i++){
+            [self.superview addSubview:editHandle[i]];
+        }
+        
     } else{
-        self.FillColor = CGColorCreateGenericRGB(0, 0, 0, 1);
+        for(int i = 0; i < 4; i++){
+            [editHandle[i] removeFromSuperview];
+            editHandle[i] = nil;
+        }
     }
     _Focused = Focused;
 }
@@ -56,6 +91,9 @@
         _StrokeWidth = 0;
         
         _Focused = NO;
+        for(int i = 0; i < 4; i++){
+            editHandle[i] = nil;
+        }
     }
     
     return self;
@@ -116,6 +154,24 @@
     return nil;
 }
 
+- (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
+{
+    switch (tag) {
+        case 0:
+            //LD
+            break;
+        case 1:
+            //LU
+            break;
+        case 2:
+            //RD
+            break;
+        case 3:
+            //RU
+            break;
+    }
+}
+
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
 {
     //StrokeWidthによる補正も入っているので注意
@@ -164,52 +220,7 @@
     currentPoint = [event locationInWindow];
     return [self convertPoint:currentPoint fromView:nil];
 }
-/*
--(void)mouseDown:(NSEvent *)theEvent
-{
-    NSBitmapImageRep *bitmapImage;
-    NSPoint currentCursorLocation;
-    NSColor *pointColor;
-    
-    currentCursorLocation = [self getPointerLocationRelativeToSelfView:theEvent];
-    
-    bitmapImage = [self bitmapImageRepForCachingDisplayInRect:self.frame];
-    [self cacheDisplayInRect:self.bounds toBitmapImageRep:bitmapImage];
-    
-    pointColor = [bitmapImage colorAtX:currentCursorLocation.x y:currentCursorLocation.y];
-    if([pointColor alphaComponent] == 0 || [pointColor numberOfComponents] == 0){
-        mouseHooked = YES;
-        moveHandleOrigin = [theEvent locationInWindow];
-        moveFrameOrigin = NSPointFromCGPoint(self.frame.origin);
-        
-    } else{
-        mouseHooked = NO;
-        [[self superview] mouseDown:theEvent];
-    }
-}
 
--(void)mouseDragged:(NSEvent *)theEvent
-{
-    NSPoint currentCursorLocationInWindow;
 
-    if(mouseHooked){
-        currentCursorLocationInWindow = [theEvent locationInWindow];
-        [self setFrameOrigin:NSMakePoint(moveFrameOrigin.x + (currentCursorLocationInWindow.x - moveHandleOrigin.x), moveFrameOrigin.y + (currentCursorLocationInWindow.y - moveHandleOrigin.y))];
-        [self setNeedsDisplay:YES];
-    } else{
-        [[self superview] mouseDragged:theEvent];
-    }
-}
-
--(void)mouseUp:(NSEvent *)theEvent
-{
-    if(mouseHooked){
-    
-    } else{
-        [[self superview] mouseUp:theEvent];
-    }
-    mouseHooked = NO;
-}
-*/
 @end
 

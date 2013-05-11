@@ -12,6 +12,7 @@
 
 @interface CanvasObject : NSView
 {
+    NSView *editHandle[4];
 }
 
 typedef enum : NSInteger {
@@ -37,6 +38,9 @@ typedef enum : NSInteger {
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;
+
+- (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag;
+
 //上記三関数は、次の描画指示をすべきオブジェクトを返す。
 //つまり、描画処理が完了するとnilを返す。それまではオブジェクト自身を返す。
 

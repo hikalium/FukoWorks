@@ -25,6 +25,7 @@
 @property (nonatomic) CGColorRef drawingFillColor;
 @property (nonatomic) CGColorRef drawingTextColor;
 @property (nonatomic) CanvasObjectType drawingObjectType;
+@property (nonatomic) CanvasObject *editingObject;
 
 - (id)init;
 + (ToolboxController *)sharedToolboxController;

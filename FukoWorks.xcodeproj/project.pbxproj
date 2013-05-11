@@ -17,6 +17,7 @@
 		174A841417050F1500A53520 /* icon_cursor.png in Resources */ = {isa = PBXBuildFile; fileRef = 174A841317050F1500A53520 /* icon_cursor.png */; };
 		176EEFE01707C16800F56FF4 /* ToolboxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 176EEFDF1707C16800F56FF4 /* ToolboxController.m */; };
 		176EEFE9170CF47B00F56FF4 /* SaveFileFWK.m in Sources */ = {isa = PBXBuildFile; fileRef = 176EEFE8170CF47A00F56FF4 /* SaveFileFWK.m */; };
+		177F33F8172E63D9004D6778 /* CanvasObjectHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */; };
 		17B089BF16F7B1520006FA2C /* FukoWorks.icns in Resources */ = {isa = PBXBuildFile; fileRef = 17B089BE16F7B1520006FA2C /* FukoWorks.icns */; };
 		17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17B089C816FDAEF10006FA2C /* CanvasWindowController.m */; };
 		17B41E1E1707A5F400E535FB /* ToolboxController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17B41E1C1707A5F400E535FB /* ToolboxController.xib */; };
@@ -46,6 +47,8 @@
 		176EEFDF1707C16800F56FF4 /* ToolboxController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolboxController.m; sourceTree = "<group>"; };
 		176EEFE7170CF47A00F56FF4 /* SaveFileFWK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SaveFileFWK.h; sourceTree = "<group>"; };
 		176EEFE8170CF47A00F56FF4 /* SaveFileFWK.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SaveFileFWK.m; sourceTree = "<group>"; };
+		177F33F6172E63D9004D6778 /* CanvasObjectHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectHandle.h; sourceTree = "<group>"; };
+		177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectHandle.m; sourceTree = "<group>"; };
 		17B089BE16F7B1520006FA2C /* FukoWorks.icns */ = {isa = PBXFileReference; lastKnownFileType = image.icns; path = FukoWorks.icns; sourceTree = "<group>"; };
 		17B089C716FDAEF10006FA2C /* CanvasWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasWindowController.h; sourceTree = "<group>"; };
 		17B089C816FDAEF10006FA2C /* CanvasWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasWindowController.m; sourceTree = "<group>"; };
@@ -88,6 +91,8 @@
 				174A840C1704397100A53520 /* CanvasObjectEllipse.m */,
 				1723966716F5A8200089DF1E /* CanvasObjectRectangle.h */,
 				1723966816F5A8200089DF1E /* CanvasObjectRectangle.m */,
+				177F33F6172E63D9004D6778 /* CanvasObjectHandle.h */,
+				177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */,
 			);
 			name = CanvasObject;
 			sourceTree = "<group>";
@@ -282,6 +287,7 @@
 				174A840D1704397100A53520 /* CanvasObjectEllipse.m in Sources */,
 				176EEFE01707C16800F56FF4 /* ToolboxController.m in Sources */,
 				176EEFE9170CF47B00F56FF4 /* SaveFileFWK.m in Sources */,
+				177F33F8172E63D9004D6778 /* CanvasObjectHandle.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

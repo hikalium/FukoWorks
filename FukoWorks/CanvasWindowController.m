@@ -9,6 +9,7 @@
 #import "CanvasWindowController.h"
 
 @implementation CanvasWindowController
+//MainCanvasViewの表示倍率変更のみを行う。
 
 @synthesize currentCanvasView = _currentCanvasView;
 
@@ -17,7 +18,10 @@
     double scalePerCent, scale;
     
     scalePerCent = comboBoxCanvasScale.doubleValue;
-    if(scalePerCent < 0){
+    if(scalePerCent <= 0){
+        scalePerCent = 100;
+    }
+    if(scalePerCent > (100 * 500)){
         scalePerCent = 100;
     }
     scale = scalePerCent / 100;

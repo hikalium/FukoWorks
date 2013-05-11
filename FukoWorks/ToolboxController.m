@@ -14,6 +14,7 @@
 @synthesize drawingStrokeWidth = _drawingStrokeWidth;
 @synthesize drawingFillColor = _drawingFillColor;
 @synthesize drawingObjectType = _drawingObjectType;
+@synthesize editingObject = _editingObject;
 
 - (id)init
 {
@@ -22,6 +23,7 @@
     if(self){
         _drawingObjectType = Undefined;
         selectedDrawingObjectTypeButton = nil;
+        _editingObject = nil;
     }
     
     return self;
@@ -42,8 +44,13 @@ ToolboxController *_sharedToolboxController = nil;
     
     sliderStrokeWidth.maxValue = 10;
     sliderStrokeWidth.minValue = 0;
-    [sliderStrokeWidth setIntegerValue:0];
-    [textFieldStrokeWidth setIntegerValue:0];
+    [sliderStrokeWidth setIntegerValue:1];
+    [textFieldStrokeWidth setIntegerValue:[sliderStrokeWidth integerValue]];
+    [self sliderStrokeWidthChanged:self];
+    
+    cWellFillColor.color = [NSColor colorWithDeviceRed:0 green:0 blue:0 alpha:0];
+    [self fillColorChanged:self];
+    
     [toolbox setReleasedWhenClosed:NO];
 }
 
@@ -53,6 +60,8 @@ ToolboxController *_sharedToolboxController = nil;
     
     color = cWellStrokeColor.color;
     _drawingStrokeColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
+
+    _editingObject.StrokeColor = _drawingStrokeColor;
 }
 
 - (void)fillColorChanged:(id)sender
@@ -61,12 +70,16 @@ ToolboxController *_sharedToolboxController = nil;
     
     color = cWellFillColor.color;
     _drawingFillColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
+
+    _editingObject.FillColor = _drawingFillColor;
 }
 
 - (void)sliderStrokeWidthChanged:(id)sender
 {
     _drawingStrokeWidth = sliderStrokeWidth.doubleValue;
     textFieldStrokeWidth.doubleValue = _drawingStrokeWidth;
+    
+    _editingObject.StrokeWidth = _drawingStrokeWidth;
 }
 
 - (void)textFieldStrokeWidthChanged:(id)sender
@@ -86,6 +99,8 @@ ToolboxController *_sharedToolboxController = nil;
     }
     sliderStrokeWidth.doubleValue = width;
     _drawingStrokeWidth = width;
+    
+    _editingObject.StrokeWidth = _drawingStrokeWidth;
 }
 
 - (void)drawingObjectTypeChanged:(id)sender

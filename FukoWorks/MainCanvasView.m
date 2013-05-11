@@ -31,6 +31,7 @@
         [focusedObject setFocused:YES];
     }
     _focusedObject = focusedObject;
+    _toolboxController.editingObject = focusedObject;
 }
 
 - (id)initWithFrame:(NSRect)frame
@@ -59,12 +60,11 @@
 - (void)drawRect:(NSRect)dirtyRect
 {
     CGContextRef mainContext;
-    CGRect rect, guideRect;
+    CGRect rect;
     
     mainContext = [[NSGraphicsContext currentContext] graphicsPort];
     
     rect = CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height);
-    guideRect = NSRectToCGRect([self makeNSRectFromMouseMoving:drawingStartPoint :drawingDragPoint]);
     
     CGContextSaveGState(mainContext);
     {
@@ -85,10 +85,12 @@
         //図形の新規作成
         switch(self.toolboxController.drawingObjectType){
             case Undefined:
+                //図形移動初期化
                 movingObject = [self getCanvasObjectAtCursorLocation:event];
                 if(movingObject){
                     moveHandleOffset = NSMakePoint(currentPoint.x - movingObject.frame.origin.x, currentPoint.y - movingObject.frame.origin.y);
                 }
+                [_focusedObject setFocused:NO];
                 break;
             case Rectangle:
                 editingObject = [[CanvasObjectRectangle alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
@@ -120,6 +122,7 @@
     
     editingObject = [editingObject drawMouseDragged:currentPoint];
     
+    //図形移動
     [movingObject setFrameOrigin:NSMakePoint(currentPoint.x - moveHandleOffset.x, currentPoint.y - moveHandleOffset.y)];
 }
 
@@ -132,7 +135,9 @@
  
     editingObject = [editingObject drawMouseUp:currentPoint];
     
+    //図形移動終了
     movingObject = nil;
+    [_focusedObject setFocused:YES];
 }
 
 - (void)rightMouseUp:(NSEvent *)theEvent
