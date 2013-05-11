@@ -22,22 +22,12 @@
     //表示部分の初期化
     toolboxController = [ToolboxController sharedToolboxController];
     
-    [window addChildWindow:toolboxController.window ordered:NSWindowAbove];
-    [window setHidesOnDeactivate:NO];
+    //[window addChildWindow:toolboxController.window ordered:NSWindowAbove];
+    [menuWindow setHidesOnDeactivate:NO];
     //[panelToolBox setHidesOnDeactivate:NO];
-    
-    
-    [comboBoxCanvasScale setStringValue:@"100%"];
-    mainCanvasView = [[MainCanvasView alloc] initWithFrame:NSMakeRect(0, 0, 1024, 768)];
-    mainCanvasView.label_indicator = label_indicator;
-    scrollView.documentView = mainCanvasView;
-    mainCanvasView.toolboxController = toolboxController;
-    canvasController.currentCanvasView = mainCanvasView;
     
     //ColorWellで透明色を指定できるようにする。
     [NSColor setIgnoresAlpha:NO];
-    
-    [label_indicator setStringValue:@"初期化完了"];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
@@ -53,68 +43,14 @@
 
 - (IBAction)ShowToolBox:(id)sender {
     [[ToolboxController sharedToolboxController] showWindow:sender];
-    [window addChildWindow:toolboxController.window ordered:NSWindowAbove];
+    //[window addChildWindow:toolboxController.window ordered:NSWindowAbove];
 }
 
-- (void)saveCanvasImageForFile:(id)sender
+- (IBAction)CreateNewDrawCanvas:(id)sender
 {
-    NSSavePanel *savePanel;
-    NSArray *allowedFileType;
-    NSInteger pressedButton;
-    NSURL *path;
-    NSBitmapImageRep *bitmapImage;
-    NSView *targetView;
-    NSData *savedata;
-    
-    savePanel = [NSSavePanel savePanel];
-    allowedFileType = [NSArray arrayWithObjects:@"png", nil];
-    [savePanel setAllowedFileTypes:allowedFileType];
-    
-    pressedButton = [savePanel runModal];
-    
-    switch(pressedButton){
-        case NSOKButton:
-            path = [savePanel URL];
-            targetView = (NSView *)[scrollView documentView];
-            bitmapImage = [targetView bitmapImageRepForCachingDisplayInRect:targetView.frame];
-            [targetView cacheDisplayInRect:targetView.bounds toBitmapImageRep:bitmapImage];
-            savedata = [bitmapImage representationUsingType:NSPNGFileType properties:[NSDictionary dictionary]];
-            [savedata writeToURL:path atomically:YES];
-            
-            break;
-        case NSCancelButton:
-            
-            break;
-    };
+    currentCanvasWindow = [[CanvasWindowController alloc] init];
+    [currentCanvasWindow showWindow:sender];
+    //[menuWindow close];
 }
 
-- (void)saveEncodedCanvasStructureForFile:(id)sender
-{
-    NSSavePanel *savePanel;
-    NSArray *allowedFileType;
-    NSInteger pressedButton;
-    NSURL *path;
-    
-    SaveFileFWK *saveFile;
-        
-    savePanel = [NSSavePanel savePanel];
-    allowedFileType = [NSArray arrayWithObjects:@"fwk", nil];
-    [savePanel setAllowedFileTypes:allowedFileType];
-    
-    pressedButton = [savePanel runModal];
-    
-    switch(pressedButton){
-        case NSOKButton:
-            path = [savePanel URL];
-            
-            saveFile = [[SaveFileFWK alloc] initWithCanvas:mainCanvasView];
-            
-            [saveFile writeCanvasToURL:path atomically:YES];
-            break;
-        case NSCancelButton:
-            
-            break;
-    };
-
-}
 @end

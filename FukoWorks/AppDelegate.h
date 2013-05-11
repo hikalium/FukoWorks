@@ -13,20 +13,13 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 {
-    IBOutlet CanvasWindowController *canvasController;
-    
-    IBOutlet NSWindow *window;
-    IBOutlet NSScrollView *scrollView;
-    IBOutlet NSTextField *label_indicator;
-    IBOutlet NSComboBox *comboBoxCanvasScale;
-    
-    MainCanvasView *mainCanvasView;
+    IBOutlet NSWindow *menuWindow;
+    CanvasWindowController *currentCanvasWindow;
     ToolboxController *toolboxController;
 }
 
 - (IBAction)showPreferenceWindow:(id)sender;
 - (IBAction)ShowToolBox:(id)sender;
-- (IBAction)saveCanvasImageForFile:(id)sender;
-- (IBAction)saveEncodedCanvasStructureForFile:(id)sender;
+- (IBAction)CreateNewDrawCanvas:(id)sender;
 
 @end

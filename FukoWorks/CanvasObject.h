@@ -9,19 +9,16 @@
 //MainCanvasViewに描画されるすべてのオブジェクトのスーパークラス
 
 #import <Cocoa/Cocoa.h>
+#import "FukoWorks.h"
 
 @interface CanvasObject : NSView
 {
     NSView *editHandle[4];
 }
 
-typedef enum : NSInteger {
-    Undefined = 0,
-    Rectangle = 1,
-    Ellipse = 2,
-} CanvasObjectType;
 
 @property (nonatomic) CGColorRef FillColor;
+//
 @property (nonatomic) CGColorRef StrokeColor;
 @property (nonatomic) CGFloat StrokeWidth;
 @property (readonly, nonatomic) CanvasObjectType ObjectType;

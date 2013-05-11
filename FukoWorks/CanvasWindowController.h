@@ -6,10 +6,10 @@
 //  Copyright (c) 2013年 TokyoGakugeiUniversitySeniorHighSchool. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
+#import <Cocoa/Cocoa.h>
 #import "MainCanvasView.h"
 
-@interface CanvasWindowController : NSObject
+@interface CanvasWindowController : NSWindowController <NSWindowDelegate>
 {
     IBOutlet NSWindow *mainWindow;
     IBOutlet NSScrollView *scrollView;
@@ -17,8 +17,13 @@
     IBOutlet NSComboBox *comboBoxCanvasScale;
 }
 
-@property (nonatomic) MainCanvasView *currentCanvasView;
+@property (nonatomic) MainCanvasView *mainCanvasView;
 
--(IBAction)comboBoxCanvasScaleChanged:(id)sender;
-
+- (id)init;
+- (BOOL)windowShouldClose:(id)sender;
+- (void)windowShouldClose_SheetClosed:(id)sheet returnCode:(int)returnCode contextInfo:(id)contextInfo;
+- (void)windowDidLoad;
+- (IBAction)comboBoxCanvasScaleChanged:(id)sender;
+- (IBAction)saveCanvasImageForFile:(id)sender;
+- (IBAction)saveEncodedCanvasStructureForFile:(id)sender;
 @end
