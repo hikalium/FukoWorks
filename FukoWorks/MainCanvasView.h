@@ -26,7 +26,6 @@
     NSPoint moveHandleOffset;
     
     NSRect baseFrame;
-    NSCursor *canvasCursor;
 }
 
 @property (strong, nonatomic) NSTextField *label_indicator;
@@ -41,6 +40,8 @@
 - (void)mouseUp:(NSEvent*)event;
 - (void)mouseDragged:(NSEvent*)event;
 - (void)rightMouseUp:(NSEvent *)theEvent;
+
+-(void)resetCursorRects;
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;

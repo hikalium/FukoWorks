@@ -14,12 +14,8 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    //初期化
-}
-
-- (void)awakeFromNib
-{
     //表示部分の初期化
+    Canvases = [NSMutableArray array];
     toolboxController = [ToolboxController sharedToolboxController];
     
     //[window addChildWindow:toolboxController.window ordered:NSWindowAbove];
@@ -28,6 +24,11 @@
     
     //ColorWellで透明色を指定できるようにする。
     [NSColor setIgnoresAlpha:NO];
+}
+
+- (void)awakeFromNib
+{
+
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
@@ -48,9 +49,13 @@
 
 - (IBAction)CreateNewDrawCanvas:(id)sender
 {
-    currentCanvasWindow = [[CanvasWindowController alloc] initWithToolbox:toolboxController];
-    [currentCanvasWindow showWindow:sender];
+    CanvasWindowController *aCanvasWindowController;
+    
+    aCanvasWindowController = [[CanvasWindowController alloc] initWithToolbox:toolboxController];
+    [aCanvasWindowController showWindow:sender];
+    [Canvases addObject:aCanvasWindowController];
     [menuWindow close];
+    [self ShowToolBox:self];
 }
 
 @end

@@ -26,6 +26,7 @@
 - (BOOL)windowShouldClose:(id)sender;
 - (void)windowShouldClose_SheetClosed:(id)sheet returnCode:(int)returnCode contextInfo:(id)contextInfo;
 - (void)windowDidLoad;
+- (void)windowDidBecomeKey:(NSNotification *)notification;
 - (IBAction)comboBoxCanvasScaleChanged:(id)sender;
 - (IBAction)saveCanvasImageForFile:(id)sender;
 - (IBAction)saveEncodedCanvasStructureForFile:(id)sender;

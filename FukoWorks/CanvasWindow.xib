@@ -164,7 +164,6 @@
 							<string key="NSFrame">{{20, -4}, {99, 26}}</string>
 							<reference key="NSSuperview" ref="838504307"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
 							<string key="NSReuseIdentifierKey">_NS:9</string>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSComboBoxCell" key="NSCell" id="238688166">

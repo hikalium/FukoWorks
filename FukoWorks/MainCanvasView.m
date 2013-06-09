@@ -46,9 +46,7 @@
         _canvasScale = 1;
         
         dragging = false;
-        
-        canvasCursor = [NSCursor crosshairCursor];
-        
+                
         editingObject = nil;
         _focusedObject = nil;
         movingObject = nil;
@@ -148,7 +146,11 @@
 -(void)resetCursorRects
 {
     [self discardCursorRects];
-    [self addCursorRect:self.visibleRect cursor:canvasCursor];
+    if(_toolboxController.drawingObjectType == Undefined){
+        [self addCursorRect:self.visibleRect cursor:[NSCursor arrowCursor]];
+    } else{
+        [self addCursorRect:self.visibleRect cursor:[NSCursor crosshairCursor]];
+    }
 }
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint

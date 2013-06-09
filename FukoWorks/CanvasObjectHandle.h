@@ -18,5 +18,7 @@
 @property (nonatomic) NSInteger tag;
 
 - (id)initWithHandlePoint:(NSPoint)handlePoint;
+- (void)setHandlePoint:(NSPoint)handlePoint;
+- (NSPoint)makeNSPointWithHandlePoint;
 
 @end

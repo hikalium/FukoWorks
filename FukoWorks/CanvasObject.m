@@ -28,7 +28,12 @@
 @synthesize StrokeWidth = _StrokeWidth;
 - (void)setStrokeWidth:(CGFloat)StrokeWidth
 {
+    NSRect realRect;
+    
+    realRect = [self makeNSRectWithRealSizeViewFrame];
     _StrokeWidth = StrokeWidth;
+    [self setFrame:[self makeNSRectWithFullSizeViewFrameFromRealSizeViewFrame:realRect]];
+    [self resetHandle];
     [self setNeedsDisplay:YES];
 }
 
@@ -37,30 +42,33 @@
 @synthesize Focused = _Focused;
 - (void)setFocused:(BOOL)Focused
 {
+    NSRect realSizeFrame;
     CanvasObjectHandle *aHandle;
     NSPoint aPoint;
     
+    realSizeFrame = [self makeNSRectWithRealSizeViewFrame];
+    
     if(Focused){
         //LD
-        aPoint = self.frame.origin;
+        aPoint = realSizeFrame.origin;
         aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
         aHandle.ownerCanvasObject = self;
         aHandle.tag = 0;
         editHandle[aHandle.tag] = aHandle;
         //LU
-        aPoint = NSMakePoint(self.frame.origin.x, self.frame.origin.y + self.frame.size.height - 1);
+        aPoint = NSMakePoint(realSizeFrame.origin.x, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
         aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
         aHandle.ownerCanvasObject = self;
         aHandle.tag = 1;
         editHandle[aHandle.tag] = aHandle;
         //RD
-        aPoint = NSMakePoint(self.frame.origin.x + self.frame.size.width - 1, self.frame.origin.y);
+        aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y);
         aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
         aHandle.ownerCanvasObject = self;
         aHandle.tag = 2;
         editHandle[aHandle.tag] = aHandle;
         //RU
-        aPoint = NSMakePoint(self.frame.origin.x + self.frame.size.width - 1, self.frame.origin.y + self.frame.size.height - 1);
+        aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
         aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
         aHandle.ownerCanvasObject = self;
         aHandle.tag = 3;
@@ -77,6 +85,27 @@
         }
     }
     _Focused = Focused;
+}
+
+- (void)resetHandle
+{
+    NSRect realSizeFrame;
+    NSPoint aPoint;
+    
+    realSizeFrame = [self makeNSRectWithRealSizeViewFrame];
+    
+    //LD
+    aPoint = realSizeFrame.origin;
+    [((CanvasObjectHandle *)editHandle[0]) setHandlePoint:aPoint];
+    //LU
+    aPoint = NSMakePoint(realSizeFrame.origin.x, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
+    [((CanvasObjectHandle *)editHandle[1]) setHandlePoint:aPoint];
+    //RD
+    aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y);
+    [((CanvasObjectHandle *)editHandle[2]) setHandlePoint:aPoint];
+    //RU
+    aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
+    [((CanvasObjectHandle *)editHandle[3]) setHandlePoint:aPoint];
 }
 
 - (id)initWithFrame:(NSRect)frameRect
@@ -154,27 +183,77 @@
     return nil;
 }
 
+- (void)editHandleDown:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
+{
+    editingHandleID = tag;
+    
+    switch (tag) {
+        case 0:
+            //LD
+        case 3:
+            //RU
+            [((CanvasObjectHandle *)editHandle[1]) setHidden:YES];
+            [((CanvasObjectHandle *)editHandle[2]) setHidden:YES];
+            break;
+        case 1:
+            //LU
+        case 2:
+            //RD
+            [((CanvasObjectHandle *)editHandle[0]) setHidden:YES];
+            [((CanvasObjectHandle *)editHandle[3]) setHidden:YES];
+            break;
+    }
+}
+
 - (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
 {
     switch (tag) {
         case 0:
             //LD
+            [self setFrame:[self makeNSRectFromMouseMoving:[((CanvasObjectHandle *)editHandle[3]) makeNSPointWithHandlePoint] :currentHandlePointInCanvas]];
             break;
         case 1:
             //LU
+            [self setFrame:[self makeNSRectFromMouseMoving:[((CanvasObjectHandle *)editHandle[2]) makeNSPointWithHandlePoint] :currentHandlePointInCanvas]];
             break;
         case 2:
             //RD
+            [self setFrame:[self makeNSRectFromMouseMoving:[((CanvasObjectHandle *)editHandle[1]) makeNSPointWithHandlePoint] :currentHandlePointInCanvas]];
             break;
         case 3:
             //RU
+            [self setFrame:[self makeNSRectFromMouseMoving:[((CanvasObjectHandle *)editHandle[0]) makeNSPointWithHandlePoint] :currentHandlePointInCanvas]];
             break;
     }
+    [self setNeedsDisplay:YES];
+}
+
+- (void)editHandleUp:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
+{
+    switch (tag) {
+        case 0:
+            //LD
+        case 3:
+            //RU
+            [((CanvasObjectHandle *)editHandle[1]) setHidden:NO];
+            [((CanvasObjectHandle *)editHandle[2]) setHidden:NO];
+            break;
+        case 1:
+            //LU
+        case 2:
+            //RD
+            [((CanvasObjectHandle *)editHandle[0]) setHidden:NO];
+            [((CanvasObjectHandle *)editHandle[3]) setHidden:NO];
+            break;
+
+    }
+    
+    [self resetHandle];
 }
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
 {
-    //StrokeWidthによる補正も入っているので注意
+    //全体を含むframeRectを返す。
     NSPoint p;
     NSSize q;
     
@@ -197,9 +276,24 @@
     return NSMakeRect(p.x - (self.StrokeWidth / 2), p.y - (self.StrokeWidth / 2), q.width + self.StrokeWidth, q.height + self.StrokeWidth);
 }
 
+- (NSRect)makeNSRectWithRealSizeViewFrame
+{
+    //親FrameにおけるRealSizeRect(Fill部分のみのRect)を返す。
+    NSRect realRect;
+    
+    realRect = self.frame;
+    
+    realRect.origin.x += (self.StrokeWidth / 2);
+    realRect.origin.y += (self.StrokeWidth / 2);
+    realRect.size.height -= self.StrokeWidth;
+    realRect.size.width -= self.StrokeWidth;
+    
+    return realRect;
+}
+
 - (NSRect)makeNSRectWithRealSizeViewFrameInLocal
 {
-    //StrokeWidthによる補正も入っているので注意
+    //このViewに対する、ローカル座標のRealSizeRect(Fill部分のみのRect)を返す。
     NSRect realRect;
     
     realRect.origin.x = (self.StrokeWidth / 2);
@@ -210,6 +304,15 @@
     return realRect;
 }
 
+- (NSRect)makeNSRectWithFullSizeViewFrameFromRealSizeViewFrame:(NSRect)RealSizeViewFrame
+{
+    RealSizeViewFrame.origin.x -= (self.StrokeWidth / 2);
+    RealSizeViewFrame.origin.y -= (self.StrokeWidth / 2);
+    RealSizeViewFrame.size.height += self.StrokeWidth;
+    RealSizeViewFrame.size.width += self.StrokeWidth;
+    
+    return RealSizeViewFrame;
+}
 
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event
 {

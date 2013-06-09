@@ -14,7 +14,7 @@
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 {
     IBOutlet NSWindow *menuWindow;
-    CanvasWindowController *currentCanvasWindow;
+    NSMutableArray *Canvases;
     ToolboxController *toolboxController;
 }
 

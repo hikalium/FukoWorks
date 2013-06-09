@@ -65,6 +65,11 @@
     [label_indicator setStringValue:@"初期化完了"];
 }
 
+- (void)windowDidBecomeKey:(NSNotification *)notification
+{
+    [_mainCanvasView resetCursorRects];
+}
+
 -(IBAction)comboBoxCanvasScaleChanged:(id)sender
 {
     double scalePerCent, scale;
