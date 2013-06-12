@@ -48,40 +48,42 @@
     
     realSizeFrame = [self makeNSRectWithRealSizeViewFrame];
     
-    if(Focused){
-        //LD
-        aPoint = realSizeFrame.origin;
-        aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
-        aHandle.ownerCanvasObject = self;
-        aHandle.tag = 0;
-        editHandle[aHandle.tag] = aHandle;
-        //LU
-        aPoint = NSMakePoint(realSizeFrame.origin.x, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
-        aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
-        aHandle.ownerCanvasObject = self;
-        aHandle.tag = 1;
-        editHandle[aHandle.tag] = aHandle;
-        //RD
-        aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y);
-        aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
-        aHandle.ownerCanvasObject = self;
-        aHandle.tag = 2;
-        editHandle[aHandle.tag] = aHandle;
-        //RU
-        aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
-        aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
-        aHandle.ownerCanvasObject = self;
-        aHandle.tag = 3;
-        editHandle[aHandle.tag] = aHandle;
-        
-        for(int i = 0; i < 4; i++){
-            [self.superview addSubview:editHandle[i]];
-        }
-        
-    } else{
-        for(int i = 0; i < 4; i++){
-            [editHandle[i] removeFromSuperview];
-            editHandle[i] = nil;
+    if(Focused != _Focused){
+        if(Focused){
+            //LD
+            aPoint = realSizeFrame.origin;
+            aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
+            aHandle.ownerCanvasObject = self;
+            aHandle.tag = 0;
+            editHandle[aHandle.tag] = aHandle;
+            //LU
+            aPoint = NSMakePoint(realSizeFrame.origin.x, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
+            aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
+            aHandle.ownerCanvasObject = self;
+            aHandle.tag = 1;
+            editHandle[aHandle.tag] = aHandle;
+            //RD
+            aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y);
+            aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
+            aHandle.ownerCanvasObject = self;
+            aHandle.tag = 2;
+            editHandle[aHandle.tag] = aHandle;
+            //RU
+            aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
+            aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
+            aHandle.ownerCanvasObject = self;
+            aHandle.tag = 3;
+            editHandle[aHandle.tag] = aHandle;
+            
+            for(int i = 0; i < 4; i++){
+                [self.superview addSubview:editHandle[i]];
+            }
+            
+        } else{
+            for(int i = 0; i < 4; i++){
+                [editHandle[i] removeFromSuperview];
+                editHandle[i] = nil;
+            }
         }
     }
     _Focused = Focused;
@@ -128,44 +130,79 @@
     return self;
 }
 
+- (id)initWithEncodedString:(NSString *)sourceString
+{
+    NSArray *dataValues;
+    
+    dataValues = [sourceString componentsSeparatedByString:@"|"];
+    
+    self = [self initWithFrame:NSRectFromString([dataValues objectAtIndex:0])];
+    
+    if(self){
+        self.FillColor = [CanvasObject decodedCGColorRefFromString:[dataValues objectAtIndex:1]];
+        self.StrokeColor = [CanvasObject decodedCGColorRefFromString:[dataValues objectAtIndex:2]];
+        self.StrokeWidth = ((NSString *) [dataValues objectAtIndex:3]).floatValue;
+    }
+        
+    return self;
+}
+
+
 - (void)drawRect:(NSRect)dirtyRect
 {
     // Drawing code here.
 }
- 
-- (NSString *)encodedStringForObject
+
+//Frame|FillColor|StrokeColor|StrokeWidth
+- (NSString *)encodedStringForCanvasObject
 {
     NSMutableString *encodedString;
 
     
     encodedString = [[NSMutableString alloc] init];
     
-    [encodedString appendFormat:@"%@:", NSStringFromRect(self.frame)];
-    [encodedString appendFormat:@"%ld:", self.ObjectType];
-
-    [encodedString appendFormat:@"%@:", [self encodedStringForCGColorRef:self.FillColor]];
-    [encodedString appendFormat:@"%@:", [self encodedStringForCGColorRef:self.StrokeColor]];
-    [encodedString appendFormat:@"%f:", self.StrokeWidth];
+    [encodedString appendFormat:@"%@|", NSStringFromRect(self.frame)];
+    [encodedString appendFormat:@"%@|", [CanvasObject encodedStringForCGColorRef:self.FillColor]];
+    [encodedString appendFormat:@"%@|", [CanvasObject encodedStringForCGColorRef:self.StrokeColor]];
+    [encodedString appendFormat:@"%f|", self.StrokeWidth];
     
     return [NSString stringWithString:encodedString];
 }
 
-- (NSString *)encodedStringForCGColorRef:(CGColorRef)cref
++ (NSString *)encodedStringForCGColorRef:(CGColorRef)cref
 {
     NSMutableString *encodedString;
     NSInteger i, i_max;
-    const CGFloat *colorComponents;    
+    const CGFloat *colorComponents;
+    
     encodedString = [[NSMutableString alloc] init];
     
     colorComponents = CGColorGetComponents(cref);
     i_max = CGColorGetNumberOfComponents(cref);
     
-    [encodedString appendFormat:@"%ld,", i_max];
     for(i = 0; i < i_max; i++){
         [encodedString appendFormat:@"%f,", colorComponents[i]];
     }
     
     return [NSString stringWithString:encodedString];
+}
+
++ (CGColorRef)decodedCGColorRefFromString:(NSString *)sourceString
+{
+    NSArray *dataValues;
+    CGColorRef cRef;
+    CGFloat colorComponents[4];
+    NSUInteger i;
+    
+    dataValues = [sourceString componentsSeparatedByString:@","];
+
+    for(i = 0; i < sizeof(colorComponents) / sizeof(CGFloat); i++){
+        colorComponents[i] = ((NSString *)[dataValues objectAtIndex:i]).floatValue;
+    }
+       
+    cRef = CGColorCreateGenericRGB(colorComponents[0], colorComponents[1], colorComponents[2], colorComponents[3]);
+    
+    return cRef;
 }
 
 -(CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas

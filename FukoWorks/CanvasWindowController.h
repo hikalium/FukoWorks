@@ -30,4 +30,5 @@
 - (IBAction)comboBoxCanvasScaleChanged:(id)sender;
 - (IBAction)saveCanvasImageForFile:(id)sender;
 - (IBAction)saveEncodedCanvasStructureForFile:(id)sender;
+- (IBAction)loadEncodedCanvasStructureFromFile:(id)sender;
 @end

@@ -27,11 +27,13 @@
 - (void)setFocused:(BOOL)Focused;
 
 - (id)initWithFrame:(NSRect)frameRect;
+- (id)initWithEncodedString:(NSString *)sourceString;
 - (void)drawRect:(NSRect)dirtyRect;
 
 
-- (NSString *)encodedStringForObject;
-- (NSString *)encodedStringForCGColorRef:(CGColorRef)cref;
+- (NSString *)encodedStringForCanvasObject;
++ (NSString *)encodedStringForCGColorRef:(CGColorRef)cref;
++ (CGColorRef)decodedCGColorRefFromString:(NSString *)sourceString;
 
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;

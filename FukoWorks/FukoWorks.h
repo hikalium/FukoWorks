@@ -13,8 +13,9 @@
 
 typedef enum : NSInteger {
     Undefined = 0,
-    Rectangle = 1,
-    Ellipse = 2,
+    Rectangle,
+    Ellipse,
+    PaintFrame,
 } CanvasObjectType;
 
 

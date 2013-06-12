@@ -7,7 +7,6 @@
 //
 
 #import "CanvasWindowController.h"
-#import "SaveFileFWK.h"
 
 @implementation CanvasWindowController
 
@@ -126,8 +125,6 @@
     NSInteger pressedButton;
     NSURL *path;
     
-    SaveFileFWK *saveFile;
-    
     savePanel = [NSSavePanel savePanel];
     allowedFileType = [NSArray arrayWithObjects:@"fwk", nil];
     [savePanel setAllowedFileTypes:allowedFileType];
@@ -138,9 +135,8 @@
         case NSOKButton:
             path = [savePanel URL];
             
-            saveFile = [[SaveFileFWK alloc] initWithCanvas:self.mainCanvasView];
+            [self.mainCanvasView writeCanvasToURL:path atomically:YES];
             
-            [saveFile writeCanvasToURL:path atomically:YES];
             break;
         case NSCancelButton:
             
@@ -149,5 +145,30 @@
     
 }
 
+- (void)loadEncodedCanvasStructureFromFile:(id)sender
+{
+    NSOpenPanel *openPanel;
+    NSArray *allowedFileType;
+    
+    allowedFileType = [NSArray arrayWithObjects:@"fwk", nil];
+    
+    openPanel = [NSOpenPanel openPanel];
+    
+    [openPanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
+        NSURL *path;
+        
+        switch(result){
+            case NSOKButton:
+                path = [[openPanel URLs] objectAtIndex:0];
+                [self.mainCanvasView loadCanvasFromURL:path];
+                
+                break;
+            case NSCancelButton:
+                
+                break;
+        };
+    }];
+    
+}
 
 @end

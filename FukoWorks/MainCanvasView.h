@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "ToolboxController.h"
+#import "InspectorWindowController.h"
 #import "CanvasObject.h"
 #import "CanvasObjectRectangle.h"
 #import "CanvasObjectEllipse.h"
@@ -16,7 +17,7 @@
 {
     NSPoint drawingStartPoint;
     NSPoint drawingDragPoint;
-    bool dragging;
+    bool clickOnly;
     
     CGColorRef backgroundColor;
     
@@ -26,12 +27,15 @@
     NSPoint moveHandleOffset;
     
     NSRect baseFrame;
+    
+    NSMutableArray *inspectorWindows;
 }
 
 @property (strong, nonatomic) NSTextField *label_indicator;
 @property (nonatomic) ToolboxController *toolboxController;
 @property (nonatomic) CGFloat canvasScale;
 @property (nonatomic) CanvasObject *focusedObject;
+@property (nonatomic) NSSize canvasSize;
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)drawRect:(NSRect)dirtyRect;
@@ -41,11 +45,13 @@
 - (void)mouseDragged:(NSEvent*)event;
 - (void)rightMouseUp:(NSEvent *)theEvent;
 
--(void)resetCursorRects;
+- (void)resetCursorRects;
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
 - (CanvasObject *)getCanvasObjectAtCursorLocation:(NSEvent *)event;
 
+- (void)writeCanvasToURL:(NSURL *)url atomically:(BOOL)isAtomically;
+- (void)loadCanvasFromURL:(NSURL *)url;
 
 @end

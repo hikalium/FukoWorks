@@ -8,7 +8,6 @@
 
 #import "AppDelegate.h"
 #import "PreferenceWindowController.h"
-#import "SaveFileFWK.h"
 
 @implementation AppDelegate
 

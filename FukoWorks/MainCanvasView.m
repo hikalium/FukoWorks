@@ -14,6 +14,15 @@
 
 @synthesize toolboxController = _toolboxController;
 @synthesize canvasScale = _canvasScale;
+- (NSSize)canvasSize{
+    return baseFrame.size;
+}
+- (void)setCanvasSize:(NSSize)canvasSize
+{
+    baseFrame.size = canvasSize;
+    [self setCanvasScale:self.canvasScale];
+}
+
 - (void)setCanvasScale:(CGFloat)canvasScale
 {
     [self scaleUnitSquareToSize:NSMakeSize(1/_canvasScale, 1/_canvasScale)];
@@ -45,11 +54,15 @@
         backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
         _canvasScale = 1;
         
-        dragging = false;
+        clickOnly = false;
                 
         editingObject = nil;
         _focusedObject = nil;
         movingObject = nil;
+        
+        inspectorWindows = [NSMutableArray array];
+        
+        NSLog(@"Init %@ \n%@\n", self.className, self.subviews.description);
     }
     
     return self;
@@ -76,11 +89,15 @@
 {
     NSPoint currentPoint;
     
+    //ドラッグしたらNOにする。
+    clickOnly = YES;
+    
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDw:%@", NSStringFromPoint(currentPoint)]];
 
     if(editingObject == nil){
-        //図形の新規作成
+        //作成中の図形はない
+        //図形の新規作成or移動
         switch(self.toolboxController.drawingObjectType){
             case Undefined:
                 //図形移動初期化
@@ -96,12 +113,16 @@
             case Ellipse:
                 editingObject = [[CanvasObjectEllipse alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
                 break;
+            default:
+                NSLog(@"Not implemented operation to make a new object.\n");
+                break;
         }
         if(editingObject != nil){
             editingObject.FillColor = self.toolboxController.drawingFillColor;
             editingObject.StrokeColor = self.toolboxController.drawingStrokeColor;
             editingObject.StrokeWidth = self.toolboxController.drawingStrokeWidth;
             [self addSubview:editingObject];
+            NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
             
             editingObject = [editingObject drawMouseDown:currentPoint];
         }
@@ -114,6 +135,8 @@
 - (void)mouseDragged:(NSEvent*)event
 {
     NSPoint currentPoint;
+    
+    clickOnly = NO;
     
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDr:%@", NSStringFromPoint(currentPoint)]];
@@ -136,11 +159,38 @@
     //図形移動終了
     movingObject = nil;
     [_focusedObject setFocused:YES];
+    
+    if(clickOnly){
+        //ドラッグしなかったので、クリックのみ。
+        //フォーカスを与える。
+        self.focusedObject = [self getCanvasObjectAtCursorLocation:event];
+    }
+}
+
+- (void)rightMouseDown:(NSEvent *)theEvent
+{
+    //編集終了or詳細設定
+    CanvasObject *aCanvasObject;
+    InspectorWindowController *anInspectorWindowController;
+    
+    if(editingObject == nil){
+        //詳細設定を開く
+        aCanvasObject = [self getCanvasObjectAtCursorLocation:theEvent];
+        if(aCanvasObject == nil){
+            //キャンバスの詳細設定
+            anInspectorWindowController = [[InspectorWindowController alloc] initWithEditView:self];
+        } else{
+            //オブジェクトの詳細設定
+            anInspectorWindowController = [[InspectorWindowController alloc] initWithEditView:aCanvasObject];
+        }
+        [inspectorWindows addObject:anInspectorWindowController];
+        [anInspectorWindowController showWindow:self];
+    }
 }
 
 - (void)rightMouseUp:(NSEvent *)theEvent
 {
-    self.focusedObject = [self getCanvasObjectAtCursorLocation:theEvent];
+    //self.focusedObject = [self getCanvasObjectAtCursorLocation:theEvent];
 }
 
 -(void)resetCursorRects
@@ -209,7 +259,7 @@
                 [aCanvasObject cacheDisplayInRect:aCanvasObject.bounds toBitmapImageRep:bitmapImage];
                 //bitmapimageは表示状態の倍率で保存されているので、座標にCanvasScaleを掛けなければならない。
                 pointColor = [bitmapImage colorAtX:currentPointInObject.x * self.canvasScale y:currentPointInObject.y * self.canvasScale];
-                if([pointColor alphaComponent] != 0 || [pointColor numberOfComponents] == 0){
+                if([pointColor numberOfComponents] == 0 || [pointColor alphaComponent] != 0){
                     //指定された座標が、完全に透明でないことを確認
                     candidateCanvasObject = aCanvasObject;
                     break;
@@ -219,6 +269,112 @@
     }
 
     return candidateCanvasObject;
+}
+
+
+//
+//TypeID:data1a,data1b,data1c|data2a,data2b,data2c\n
+//
+- (void)writeCanvasToURL:(NSURL *)url atomically:(BOOL)isAtomically
+{
+    NSMutableString *saveData;
+    NSInteger count;
+    CanvasObject *aCanvasObject;
+    NSError *error;
+    
+    saveData = [[NSMutableString alloc] initWithFormat:@"[FukoWorKs]:%ld\n", [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] integerValue]];
+    
+    count = 0;
+    for(NSView *aSubview in self.subviews){
+        if([aSubview isKindOfClass:[CanvasObject class]]){
+            aCanvasObject = (CanvasObject *)aSubview;
+            
+            switch(aCanvasObject.ObjectType){
+                case Undefined:
+                    //Do nothing.
+                    break;
+                    
+                case Rectangle:
+                    [saveData appendFormat:@"%ld:", aCanvasObject.ObjectType];
+                    [saveData appendFormat:@"%@\n",[aCanvasObject encodedStringForCanvasObject]];
+                    break;
+                case Ellipse:
+                    [saveData appendFormat:@"%ld:", aCanvasObject.ObjectType];
+                    [saveData appendFormat:@"%@\n",[aCanvasObject encodedStringForCanvasObject]];
+                    break;
+                
+                default:
+                    NSLog(@"Not implemented operation to save object type %ld.\n", aCanvasObject.ObjectType);
+                    break;
+            }
+            
+            count++;
+        }
+    }
+    
+    error = nil;
+    if(![saveData writeToURL:url atomically:isAtomically encoding:NSUTF8StringEncoding error:&error]){
+        NSRunAlertPanel(@"FukoWorks-Error-", [error localizedDescription], @"OK", nil, nil);
+    }
+}
+
+- (void)loadCanvasFromURL:(NSURL *)url
+{
+    NSString *dataString;
+    NSArray *dataList;
+    NSArray *dataItem;
+    NSError *error;
+    NSString *aDataString;
+    NSString *dataItemsString;
+    NSUInteger i, i_max;
+    CanvasObject *aCanvasObject;
+    
+    error = nil;
+    dataString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
+    dataList = [dataString componentsSeparatedByString:@"\n"];
+    
+    //Validation data.
+    dataItemsString = [dataList objectAtIndex:0];
+    dataItem = [dataItemsString componentsSeparatedByString:@":"];
+    aDataString = [dataItem objectAtIndex:0];
+    if(![aDataString isEqualToString:@"[FukoWorKs]"]){
+        NSRunAlertPanel(@"FukoWorks-データ読み込みエラー-", @"ヘッダが見つかりません", @"OK", nil, nil);
+        return;
+    }
+    aDataString = [dataItem objectAtIndex:1];
+    if(aDataString.integerValue > [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] integerValue]){
+        //もし新たなバージョンで作成されたファイルであったら、警告を出す。
+        NSRunAlertPanel(@"FukoWorks-警告-", @"読み込もうとしているファイルは、より新しいバージョンのFukoWorksで作成されたものであり、正常に読み込めない可能性があります。", @"OK", nil, nil);
+    }
+    
+    //データ読み込み
+    i_max = [dataList count];
+    for(i = 1; i < i_max; i++){
+        dataItemsString = [dataList objectAtIndex:i];
+        dataItem = [dataItemsString componentsSeparatedByString:@":"];
+        aDataString = [dataItem objectAtIndex:0];
+        aCanvasObject = nil;
+        switch ((CanvasObjectType)aDataString.integerValue) {
+            case Undefined:
+                //Do nothing.
+                break;
+            case Rectangle:
+                aCanvasObject = [[CanvasObjectRectangle alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
+                break;
+                
+            case Ellipse:
+                aCanvasObject = [[CanvasObjectEllipse alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
+                break;
+                
+            default:
+                NSLog(@"Not implemented operation to load object type %ld.\n", aDataString.integerValue);
+                break;
+        }
+        if(aCanvasObject != nil){
+            [self addSubview:aCanvasObject];
+            NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
+        }
+    }
 }
 
 @end

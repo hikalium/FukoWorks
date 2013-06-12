@@ -48,8 +48,11 @@ ToolboxController *_sharedToolboxController = nil;
     [textFieldStrokeWidth setIntegerValue:[sliderStrokeWidth integerValue]];
     [self sliderStrokeWidthChanged:self];
     
-    cWellFillColor.color = [NSColor colorWithDeviceRed:0 green:0 blue:0 alpha:0];
+    cWellFillColor.color = [NSColor colorWithDeviceRed:1 green:1 blue:1 alpha:0.5];;
     [self fillColorChanged:self];
+    
+    cWellStrokeColor.color = [NSColor colorWithDeviceRed:0 green:0 blue:0 alpha:1];
+    [self strokeColorChanged:self];
     
     [toolbox setReleasedWhenClosed:NO];
 }
