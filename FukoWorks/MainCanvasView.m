@@ -62,6 +62,7 @@
         
         inspectorWindows = [NSMutableArray array];
         
+        
         NSLog(@"Init %@ \n%@\n", self.className, self.subviews.description);
     }
     
@@ -89,6 +90,8 @@
 {
     NSPoint currentPoint;
     
+    //key取得のためにFirstResponderに設定
+    [self.superview.window makeFirstResponder:self];
     //ドラッグしたらNOにする。
     clickOnly = YES;
     
@@ -193,6 +196,23 @@
     //self.focusedObject = [self getCanvasObjectAtCursorLocation:theEvent];
 }
 
+- (void)keyDown:(NSEvent *)theEvent
+{
+    NSInteger keyCode;
+    
+    keyCode = [theEvent keyCode];
+    NSLog(@"%ld", keyCode);
+    
+    switch(keyCode){
+        case 51:
+            //Backspace
+        case 117:
+            //Delete(Backspace+Fn)
+            [self removeCanvasObject:_focusedObject];
+            break;
+    }
+}
+
 -(void)resetCursorRects
 {
     [self discardCursorRects];
@@ -200,6 +220,23 @@
         [self addCursorRect:self.visibleRect cursor:[NSCursor arrowCursor]];
     } else{
         [self addCursorRect:self.visibleRect cursor:[NSCursor crosshairCursor]];
+    }
+}
+
+-(void)removeCanvasObject:(CanvasObject *)aCanvasObject
+{
+    if(_focusedObject == aCanvasObject){
+        self.focusedObject = nil;
+    }
+    if(editingObject == aCanvasObject){
+        editingObject = nil;
+    }
+    if(movingObject == aCanvasObject){
+        movingObject = nil;
+    }
+    [aCanvasObject removeFromSuperview];
+    if(aCanvasObject != nil){
+        NSLog(@"Removed CanvasObject. \n%@\n", self.subviews.description);
     }
 }
 
@@ -375,6 +412,64 @@
             NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
         }
     }
+}
+
+//
+// Printing
+//
+
+// https://developer.apple.com/library/mac/documentation/cocoa/conceptual/Printing/osxp_pagination/osxp_pagination.html
+- (NSSize)calculatePrintPaperSize
+{
+    //用紙の大きさを取得
+    NSPrintInfo *pinfo = [[NSPrintOperation currentOperation] printInfo];
+    
+    NSSize paperSize = [pinfo paperSize];
+    
+    float pageHeight = paperSize.height - [pinfo topMargin] - [pinfo bottomMargin];
+    float pageWidth = paperSize.width - [pinfo leftMargin] - [pinfo rightMargin];
+
+    float scale = [[[pinfo dictionary] objectForKey:NSPrintScalingFactor]
+                   floatValue];
+    
+    return NSMakeSize(pageWidth / scale, pageHeight / scale);
+
+}
+
+- (BOOL)knowsPageRange:(NSRangePointer)range
+{
+    //必要なページ数をrangeに設定
+    NSSize paperSize = [self calculatePrintPaperSize];
+    CGFloat pages;
+    pages = ceil(self.frame.size.width / paperSize.width) * ceil(self.frame.size.height / paperSize.height);
+    *range = NSMakeRange(1, pages);
+    NSLog(@"pages:%f", pages);
+    
+    return YES;
+}
+
+- (NSRect)rectForPage:(NSInteger)page
+{
+    //指定されたページ番号に該当するview上の範囲を返す。
+    NSInteger xpages, ypages, x, y;
+    NSSize paperSize = [self calculatePrintPaperSize];
+    NSRect rect;
+    xpages = ceil(self.frame.size.width / paperSize.width);
+    ypages = ceil(self.frame.size.height / paperSize.height);
+    if(page > xpages * ypages){
+        //範囲外のページ番号だった
+        NSLog(@"zerorect:");
+        return NSZeroRect;
+    }
+    page--;
+    y = (page / xpages);
+    x = (page % xpages);
+    
+    rect = NSMakeRect(paperSize.width * x, paperSize.height * y,
+                      paperSize.width, paperSize.height);
+    NSLog(@"rect:%@", NSStringFromRect(rect));
+    
+    return rect;
 }
 
 @end

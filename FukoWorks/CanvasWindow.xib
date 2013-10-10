@@ -462,12 +462,22 @@
 					<string key="superclassName">NSWindowController</string>
 					<dictionary class="NSMutableDictionary" key="actions">
 						<string key="comboBoxCanvasScaleChanged:">id</string>
+						<string key="loadEncodedCanvasStructureFromFile:">id</string>
+						<string key="printCanvas:">id</string>
 						<string key="saveCanvasImageForFile:">id</string>
 						<string key="saveEncodedCanvasStructureForFile:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
 						<object class="IBActionInfo" key="comboBoxCanvasScaleChanged:">
 							<string key="name">comboBoxCanvasScaleChanged:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="loadEncodedCanvasStructureFromFile:">
+							<string key="name">loadEncodedCanvasStructureFromFile:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="printCanvas:">
+							<string key="name">printCanvas:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="saveCanvasImageForFile:">

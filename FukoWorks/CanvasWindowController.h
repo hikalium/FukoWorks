@@ -31,4 +31,5 @@
 - (IBAction)saveCanvasImageForFile:(id)sender;
 - (IBAction)saveEncodedCanvasStructureForFile:(id)sender;
 - (IBAction)loadEncodedCanvasStructureFromFile:(id)sender;
+- (IBAction)printCanvas:(id)sender;
 @end

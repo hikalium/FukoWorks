@@ -60,6 +60,7 @@
     self.mainCanvasView = [[MainCanvasView alloc] initWithFrame:NSMakeRect(0, 0, 1024, 768)];
     self.mainCanvasView.label_indicator = label_indicator;
     scrollView.documentView = self.mainCanvasView;
+    [mainWindow makeFirstResponder:self.mainCanvasView];
     self.mainCanvasView.toolboxController = toolboxController;
     [label_indicator setStringValue:@"初期化完了"];
 }
@@ -169,6 +170,20 @@
         };
     }];
     
+}
+
+- (void)printCanvas:(id)sender
+{
+    NSLog(@"print");
+    /*
+    NSPrintInfo *pinfo = [NSPrintInfo sharedPrintInfo];
+    NSPrintOperation *op = [NSPrintOperation
+                            printOperationWithView:scrollView.documentView
+                            printInfo:pinfo];
+    [op setShowsPrintPanel:YES];
+    [op runOperation];
+     */
+    [scrollView.documentView print:self];
 }
 
 @end

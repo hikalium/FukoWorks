@@ -51,10 +51,22 @@ CGColorRef handleStrokeColor;
 {
     CGContextRef mainContext;
     CGRect ellipseRect;
+    CGAffineTransform affine;
+    CGFloat handleStrokeWidthTransformed;
     
     mainContext = [[NSGraphicsContext currentContext] graphicsPort];
     
-    ellipseRect = [self makeNSRectWithRealSizeViewFrameInLocal];
+    ellipseRect = self.frame;
+    affine = CGContextGetCTM(mainContext);
+    ellipseRect.size.width /= affine.a;
+    ellipseRect.size.height /= affine.d;
+    ellipseRect.origin.x = (self.frame.size.width - ellipseRect.size.width) / 2;
+    ellipseRect.origin.y = (self.frame.size.height - ellipseRect.size.height) / 2;
+    handleStrokeWidthTransformed = handleStrokeWidth / affine.a;
+    ellipseRect.origin.x += (handleStrokeWidthTransformed / 2);
+    ellipseRect.origin.y += (handleStrokeWidthTransformed / 2);
+    ellipseRect.size.height -= handleStrokeWidthTransformed;
+    ellipseRect.size.width -= handleStrokeWidthTransformed;
     
     CGContextSaveGState(mainContext);
     {
@@ -64,7 +76,7 @@ CGColorRef handleStrokeColor;
         
         CGContextAddEllipseInRect(mainContext, ellipseRect);
         CGContextSetStrokeColorWithColor(mainContext, handleStrokeColor);
-        CGContextSetLineWidth(mainContext, handleStrokeWidth);
+        CGContextSetLineWidth(mainContext, handleStrokeWidthTransformed);
         CGContextStrokePath(mainContext);
     }
     CGContextRestoreGState(mainContext);

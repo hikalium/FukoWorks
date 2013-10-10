@@ -43,9 +43,11 @@
 - (void)mouseDown:(NSEvent*)event;
 - (void)mouseUp:(NSEvent*)event;
 - (void)mouseDragged:(NSEvent*)event;
+
 - (void)rightMouseUp:(NSEvent *)theEvent;
 
 - (void)resetCursorRects;
+-(void)removeCanvasObject:(CanvasObject *)aCanvasObject;
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
