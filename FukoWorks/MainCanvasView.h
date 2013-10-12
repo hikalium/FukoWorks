@@ -12,6 +12,7 @@
 #import "CanvasObject.h"
 #import "CanvasObjectRectangle.h"
 #import "CanvasObjectEllipse.h"
+#import "CanvasObjectPaintFrame.h"
 
 @interface MainCanvasView : NSView
 {
@@ -25,6 +26,8 @@
     
     CanvasObject *movingObject;
     NSPoint moveHandleOffset;
+    
+    CanvasObjectPaintFrame *drawingPaintFrame;
     
     NSRect baseFrame;
     

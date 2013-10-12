@@ -23,7 +23,7 @@
     return self;
 }
 
-NSString *objectTypeName[] = {@"キャンバス", @"矩形", @"楕円"};
+NSString *objectTypeName[] = {@"キャンバス", @"矩形", @"楕円", @"ペイント枠"};
 
 - (id)initWithEditView:(NSView *)editView
 {

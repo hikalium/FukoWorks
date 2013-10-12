@@ -12,9 +12,10 @@
 {
     void *bmpBuffer;
     NSPoint drawingStartPoint;
+    CGContextRef paintContext;
+    CGContextRef editingContext;
+    CGRect contextRect;
 }
-
-@property CGContextRef paintContext;
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)resetPaintContext;
@@ -22,4 +23,7 @@
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;
+- (void)drawPaintFrameMouseDown:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;
+- (void)drawPaintFrameMouseDragged:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;
+- (void)drawPaintFrameMouseUp:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;
 @end

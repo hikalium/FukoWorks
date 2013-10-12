@@ -16,8 +16,9 @@ typedef enum : NSInteger {
     Rectangle,
     Ellipse,
     PaintFrame,
+    PaintToolsBase = 100,
+    PaintRectangle,
+    PaintEllipse,
 } CanvasObjectType;
-
-
 
 #endif

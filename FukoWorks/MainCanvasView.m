@@ -11,18 +11,8 @@
 @implementation MainCanvasView
 
 @synthesize label_indicator = _label_indicator;
-
 @synthesize toolboxController = _toolboxController;
 @synthesize canvasScale = _canvasScale;
-- (NSSize)canvasSize{
-    return baseFrame.size;
-}
-- (void)setCanvasSize:(NSSize)canvasSize
-{
-    baseFrame.size = canvasSize;
-    [self setCanvasScale:self.canvasScale];
-}
-
 - (void)setCanvasScale:(CGFloat)canvasScale
 {
     [self scaleUnitSquareToSize:NSMakeSize(1/_canvasScale, 1/_canvasScale)];
@@ -41,6 +31,21 @@
     }
     _focusedObject = focusedObject;
     _toolboxController.editingObject = focusedObject;
+    //ペイント枠だったら記憶しておく
+    if([_focusedObject isKindOfClass:[CanvasObjectPaintFrame class]]){
+        drawingPaintFrame = (CanvasObjectPaintFrame *)_focusedObject;
+        NSLog(@"paintFrame!");
+    } else{
+        drawingPaintFrame = nil;
+    }
+}
+- (NSSize)canvasSize{
+    return baseFrame.size;
+}
+- (void)setCanvasSize:(NSSize)canvasSize
+{
+    baseFrame.size = canvasSize;
+    [self setCanvasScale:self.canvasScale];
 }
 
 - (id)initWithFrame:(NSRect)frame
@@ -103,11 +108,13 @@
         //図形の新規作成or移動
         switch(self.toolboxController.drawingObjectType){
             case Undefined:
-                //図形移動初期化
+                //カーソルモード
+                //図形移動を初期化
                 movingObject = [self getCanvasObjectAtCursorLocation:event];
                 if(movingObject){
                     moveHandleOffset = NSMakePoint(currentPoint.x - movingObject.frame.origin.x, currentPoint.y - movingObject.frame.origin.y);
                 }
+                //移動中はフォーカスを消す
                 [_focusedObject setFocused:NO];
                 break;
             case Rectangle:
@@ -115,6 +122,13 @@
                 break;
             case Ellipse:
                 editingObject = [[CanvasObjectEllipse alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
+                break;
+            case PaintFrame:
+                editingObject = [[CanvasObjectPaintFrame alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
+                break;
+            case PaintRectangle:
+            case PaintEllipse:
+                NSLog(@"Draw in paint frame.\n");
                 break;
             default:
                 NSLog(@"Not implemented operation to make a new object.\n");
@@ -133,21 +147,33 @@
         //図形描画の途中
         editingObject = [editingObject drawMouseDown:currentPoint];
     }
+    //ペイント枠に描くなら描く
+    if(drawingPaintFrame){
+        drawingPaintFrame.FillColor = self.toolboxController.drawingFillColor;
+        drawingPaintFrame.StrokeColor = self.toolboxController.drawingStrokeColor;
+        drawingPaintFrame.StrokeWidth = self.toolboxController.drawingStrokeWidth;
+        [drawingPaintFrame drawPaintFrameMouseDown:currentPoint mode:self.toolboxController.drawingObjectType];
+    }
 }
 
 - (void)mouseDragged:(NSEvent*)event
 {
     NSPoint currentPoint;
     
+    //ドラッグしたのでクリックのみではなかったと記録
     clickOnly = NO;
     
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDr:%@", NSStringFromPoint(currentPoint)]];
     
+    //作成中の図形があるなら座標を送る
     editingObject = [editingObject drawMouseDragged:currentPoint];
     
-    //図形移動
+    //図形移動するならする
     [movingObject setFrameOrigin:NSMakePoint(currentPoint.x - moveHandleOffset.x, currentPoint.y - moveHandleOffset.y)];
+
+    //ペイント枠に描くなら描く
+    [drawingPaintFrame drawPaintFrameMouseDragged:currentPoint mode:self.toolboxController.drawingObjectType];
 }
 
 - (void)mouseUp:(NSEvent*)event
@@ -161,13 +187,19 @@
     
     //図形移動終了
     movingObject = nil;
+    //フォーカスを戻す
     [_focusedObject setFocused:YES];
+    
+    //ペイント枠に描くなら描く
+    [drawingPaintFrame drawPaintFrameMouseUp:currentPoint mode:self.toolboxController.drawingObjectType];
     
     if(clickOnly){
         //ドラッグしなかったので、クリックのみ。
         //フォーカスを与える。
         self.focusedObject = [self getCanvasObjectAtCursorLocation:event];
     }
+    
+    
 }
 
 - (void)rightMouseDown:(NSEvent *)theEvent
@@ -304,6 +336,8 @@
             }
         }
     }
+    
+    NSLog(@"%@", candidateCanvasObject);
 
     return candidateCanvasObject;
 }

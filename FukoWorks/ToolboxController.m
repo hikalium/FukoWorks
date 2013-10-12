@@ -15,6 +15,17 @@
 @synthesize drawingFillColor = _drawingFillColor;
 @synthesize drawingObjectType = _drawingObjectType;
 @synthesize editingObject = _editingObject;
+- (void)setEditingObject:(CanvasObject *)editingObject
+{
+    _editingObject = editingObject;
+    if([_editingObject isKindOfClass:[CanvasObjectPaintFrame class]]){
+        [toolPaintRect setEnabled:YES];
+        [toolPaintEllipse setEnabled:YES];
+    } else{
+        [toolPaintRect setEnabled:NO];
+        [toolPaintEllipse setEnabled:NO];
+    }
+}
 
 - (id)init
 {

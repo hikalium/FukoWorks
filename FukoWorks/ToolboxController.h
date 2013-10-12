@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "CanvasObject.h"
+#import "CanvasObjectPaintFrame.h"
 
 @interface ToolboxController : NSWindowController
 {
@@ -17,6 +18,9 @@
     IBOutlet NSSlider *sliderStrokeWidth;
     IBOutlet NSTextField *textFieldStrokeWidth;
     
+    IBOutlet NSButton *toolPaintRect;
+    IBOutlet NSButton *toolPaintEllipse;
+    
     NSButton *selectedDrawingObjectTypeButton;
 }
 
@@ -25,6 +29,13 @@
 @property (nonatomic) CGColorRef drawingFillColor;
 @property (nonatomic) CGColorRef drawingTextColor;
 @property (nonatomic) CanvasObjectType drawingObjectType;
+//  0   カーソル
+//  1   矩形
+//  2   楕円
+//  3   ペイント枠
+//
+//  101 ペイント矩形
+//  102 ペイント楕円
 @property (nonatomic) CanvasObject *editingObject;
 
 - (id)init;

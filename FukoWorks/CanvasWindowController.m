@@ -72,8 +72,15 @@
 
 -(IBAction)comboBoxCanvasScaleChanged:(id)sender
 {
-    double scalePerCent, scale;
+    double scalePerCent, scale, changeScale, beforeScale;
+    NSPoint scrollPoint;
     
+    //現在のスクロール位置を取得
+    scrollPoint = scrollView.contentView.bounds.origin;
+    scrollPoint.x -= _mainCanvasView.frame.origin.x;
+    scrollPoint.y -= _mainCanvasView.frame.origin.y;
+    
+    //表示倍率をパーセントから実数へ変換
     scalePerCent = comboBoxCanvasScale.doubleValue;
     if(scalePerCent <= 0){
         scalePerCent = 100;
@@ -82,9 +89,27 @@
         scalePerCent = 100;
     }
     scale = scalePerCent / 100;
+    //changeScale:倍率変更前の座標上の大きさを倍率変更後の大きさに直接変換する係数
+    beforeScale = self.mainCanvasView.canvasScale;
+    changeScale = scale / beforeScale;
+    
+    [self.mainCanvasView setCanvasScale:scale];
+    
+    //中央の表示位置を維持するようにスクロール
+    scrollPoint.x += scrollView.contentSize.width / 2;
+    scrollPoint.x *= changeScale;
+    scrollPoint.x -= scrollView.contentSize.width / 2;
+    scrollPoint.x /= scale;
+    
+    scrollPoint.y += scrollView.contentSize.height / 2;
+    scrollPoint.y *= changeScale;
+    scrollPoint.y -= scrollView.contentSize.height / 2;
+    scrollPoint.y /= scale;
+    
+    [scrollView.documentView scrollPoint:scrollPoint];
     
     [label_indicator setStringValue:[NSString stringWithFormat:@"scaleSet:%f", scale]];
-    [self.mainCanvasView setCanvasScale:scale];
+    NSLog(@"scaleSet:%@ %f", NSStringFromPoint(scrollPoint), changeScale);
 }
 
 - (void)saveCanvasImageForFile:(id)sender
