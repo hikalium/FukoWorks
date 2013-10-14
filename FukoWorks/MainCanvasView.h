@@ -39,6 +39,7 @@
 @property (nonatomic) CGFloat canvasScale;
 @property (nonatomic) CanvasObject *focusedObject;
 @property (nonatomic) NSSize canvasSize;
+@property (nonatomic, readonly) NSMutableArray *canvasObjects;
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)drawRect:(NSRect)dirtyRect;
@@ -50,7 +51,9 @@
 - (void)rightMouseUp:(NSEvent *)theEvent;
 
 - (void)resetCursorRects;
--(void)removeCanvasObject:(CanvasObject *)aCanvasObject;
+
+- (void)addCanvasObject:(CanvasObject *)aCanvasObject;
+- (void)removeCanvasObject:(CanvasObject *)aCanvasObject;
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;

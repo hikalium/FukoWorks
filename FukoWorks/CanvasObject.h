@@ -23,6 +23,8 @@
 @property (nonatomic) CGColorRef StrokeColor;
 @property (nonatomic) CGFloat StrokeWidth;
 @property (readonly, nonatomic) CanvasObjectType ObjectType;
+@property (readonly, nonatomic) NSString *ObjectTypeName;
+@property (nonatomic) NSString *objectName;
 @property (nonatomic) BOOL Focused;
 - (void)setFocused:(BOOL)Focused;
 

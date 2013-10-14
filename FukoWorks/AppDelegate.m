@@ -16,6 +16,7 @@
     //表示部分の初期化
     Canvases = [NSMutableArray array];
     toolboxController = [ToolboxController sharedToolboxController];
+    objectListController = [CanvasObjectListWindowController sharedCanvasObjectListWindowController];
     
     //[window addChildWindow:toolboxController.window ordered:NSWindowAbove];
     [menuWindow setHidesOnDeactivate:NO];

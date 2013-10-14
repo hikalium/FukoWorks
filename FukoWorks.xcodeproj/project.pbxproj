@@ -32,6 +32,8 @@
 		17BCF80916F42BDD00E7E472 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF80716F42BDD00E7E472 /* MainMenu.xib */; };
 		17BCF81316F43F9100E7E472 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF81216F43F9100E7E472 /* Credits.rtf */; };
 		17BCF81616F4400300E7E472 /* MainCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BCF81516F4400300E7E472 /* MainCanvasView.m */; };
+		17FFED70180A66BF0029F6F4 /* CanvasObjectListWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17FFED6E180A66BF0029F6F4 /* CanvasObjectListWindowController.m */; };
+		17FFED71180A66BF0029F6F4 /* CanvasObjectListWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17FFED6F180A66BF0029F6F4 /* CanvasObjectListWindowController.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -79,6 +81,9 @@
 		17BCF81216F43F9100E7E472 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		17BCF81416F4400300E7E472 /* MainCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainCanvasView.h; sourceTree = "<group>"; };
 		17BCF81516F4400300E7E472 /* MainCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainCanvasView.m; sourceTree = "<group>"; };
+		17FFED6D180A66BF0029F6F4 /* CanvasObjectListWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectListWindowController.h; sourceTree = "<group>"; };
+		17FFED6E180A66BF0029F6F4 /* CanvasObjectListWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectListWindowController.m; sourceTree = "<group>"; };
+		17FFED6F180A66BF0029F6F4 /* CanvasObjectListWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CanvasObjectListWindowController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,21 +118,24 @@
 		170A83251707A35F003A6AB9 /* UserInterface */ = {
 			isa = PBXGroup;
 			children = (
+				17BCF80716F42BDD00E7E472 /* MainMenu.xib */,
 				176EEFDF1707C16800F56FF4 /* ToolboxController.m */,
 				176EEFDE1707C16200F56FF4 /* ToolboxController.h */,
+				17B41E1C1707A5F400E535FB /* ToolboxController.xib */,
 				17B089C716FDAEF10006FA2C /* CanvasWindowController.h */,
 				17B089C816FDAEF10006FA2C /* CanvasWindowController.m */,
-				17BCF81416F4400300E7E472 /* MainCanvasView.h */,
-				17BCF81516F4400300E7E472 /* MainCanvasView.m */,
-				17BCF80716F42BDD00E7E472 /* MainMenu.xib */,
+				1728940E173E41E000071834 /* CanvasWindow.xib */,
 				170C3AFB170194DE0030CA0C /* PreferenceWindowController.h */,
 				170C3AFC170194DE0030CA0C /* PreferenceWindowController.m */,
 				170C3AFD170194DE0030CA0C /* PreferenceWindowController.xib */,
-				17B41E1C1707A5F400E535FB /* ToolboxController.xib */,
-				1728940E173E41E000071834 /* CanvasWindow.xib */,
 				17677F4217648AE900F12210 /* InspectorWindowController.h */,
 				17677F4317648AE900F12210 /* InspectorWindowController.m */,
 				17677F4417648AE900F12210 /* InspectorWindowController.xib */,
+				17FFED6D180A66BF0029F6F4 /* CanvasObjectListWindowController.h */,
+				17FFED6E180A66BF0029F6F4 /* CanvasObjectListWindowController.m */,
+				17FFED6F180A66BF0029F6F4 /* CanvasObjectListWindowController.xib */,
+				17BCF81416F4400300E7E472 /* MainCanvasView.h */,
+				17BCF81516F4400300E7E472 /* MainCanvasView.m */,
 			);
 			name = UserInterface;
 			sourceTree = "<group>";
@@ -271,6 +279,7 @@
 				17B41E1E1707A5F400E535FB /* ToolboxController.xib in Resources */,
 				1728940F173E41E000071834 /* CanvasWindow.xib in Resources */,
 				17677F4617648AEA00F12210 /* InspectorWindowController.xib in Resources */,
+				17FFED71180A66BF0029F6F4 /* CanvasObjectListWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -310,6 +319,7 @@
 				17677F4117647BC600F12210 /* CanvasObjectPaintFrame.m in Sources */,
 				17677F4517648AEA00F12210 /* InspectorWindowController.m in Sources */,
 				17677F7417678B1900F12210 /* NSData+HexadecimalConversion.m in Sources */,
+				17FFED70180A66BF0029F6F4 /* CanvasObjectListWindowController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

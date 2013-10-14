@@ -7,8 +7,13 @@
 //
 
 #import "MainCanvasView.h"
+#import "CanvasObjectListWindowController.h"
 
 @implementation MainCanvasView
+
+//
+// Property
+//
 
 @synthesize label_indicator = _label_indicator;
 @synthesize toolboxController = _toolboxController;
@@ -48,6 +53,12 @@
     [self setCanvasScale:self.canvasScale];
 }
 
+@synthesize canvasObjects = _canvasObjects;
+
+//
+// Function
+//
+
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
@@ -66,7 +77,7 @@
         movingObject = nil;
         
         inspectorWindows = [NSMutableArray array];
-        
+        _canvasObjects = [NSMutableArray array];
         
         NSLog(@"Init %@ \n%@\n", self.className, self.subviews.description);
     }
@@ -138,8 +149,7 @@
             editingObject.FillColor = self.toolboxController.drawingFillColor;
             editingObject.StrokeColor = self.toolboxController.drawingStrokeColor;
             editingObject.StrokeWidth = self.toolboxController.drawingStrokeWidth;
-            [self addSubview:editingObject];
-            NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
+            [self addCanvasObject:editingObject];
             
             editingObject = [editingObject drawMouseDown:currentPoint];
         }
@@ -255,7 +265,17 @@
     }
 }
 
--(void)removeCanvasObject:(CanvasObject *)aCanvasObject
+// add / remove CanvasObject
+
+- (void)addCanvasObject:(CanvasObject *)aCanvasObject
+{
+    [self addSubview:aCanvasObject];
+    [_canvasObjects addObject:aCanvasObject];
+    NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
+    [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] reloadData];
+}
+
+- (void)removeCanvasObject:(CanvasObject *)aCanvasObject
 {
     if(_focusedObject == aCanvasObject){
         self.focusedObject = nil;
@@ -267,9 +287,11 @@
         movingObject = nil;
     }
     [aCanvasObject removeFromSuperview];
+    [_canvasObjects removeObject:aCanvasObject];
     if(aCanvasObject != nil){
         NSLog(@"Removed CanvasObject. \n%@\n", self.subviews.description);
     }
+    [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] reloadData];
 }
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
@@ -373,6 +395,11 @@
                     [saveData appendFormat:@"%ld:", aCanvasObject.ObjectType];
                     [saveData appendFormat:@"%@\n",[aCanvasObject encodedStringForCanvasObject]];
                     break;
+                    
+                case PaintFrame:
+                    [saveData appendFormat:@"%ld:", aCanvasObject.ObjectType];
+                    [saveData appendFormat:@"%@\n",[aCanvasObject encodedStringForCanvasObject]];
+                    break;
                 
                 default:
                     NSLog(@"Not implemented operation to save object type %ld.\n", aCanvasObject.ObjectType);
@@ -437,12 +464,16 @@
                 aCanvasObject = [[CanvasObjectEllipse alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
                 break;
                 
+            case PaintFrame:
+                aCanvasObject = [[CanvasObjectPaintFrame alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
+                break;
+                
             default:
                 NSLog(@"Not implemented operation to load object type %ld.\n", aDataString.integerValue);
                 break;
         }
         if(aCanvasObject != nil){
-            [self addSubview:aCanvasObject];
+            [self addCanvasObject:aCanvasObject];
             NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
         }
     }

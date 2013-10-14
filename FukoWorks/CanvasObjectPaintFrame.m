@@ -7,6 +7,7 @@
 //
 
 #import "CanvasObjectPaintFrame.h"
+#import "NSData+HexadecimalConversion.h"
 
 @implementation CanvasObjectPaintFrame
 
@@ -26,6 +27,45 @@
     }
     
     return self;
+}
+
+- (id)initWithEncodedString:(NSString *)sourceString
+{
+    NSArray *dataValues;
+    NSBitmapImageRep *bitmap;
+    
+    dataValues = [sourceString componentsSeparatedByString:@"|"];
+    
+    self = [self initWithFrame:NSRectFromString([dataValues objectAtIndex:0])];
+    
+    if(self){
+        bitmap = [NSBitmapImageRep imageRepWithData:[[NSData alloc] initWithHexadecimalString:[dataValues objectAtIndex:1]]];
+        NSLog(@"%@", bitmap);
+        CGContextDrawImage(paintContext, CGRectMake(0, 0, bitmap.size.width, bitmap.size.height), [bitmap CGImage]);
+        [self setNeedsDisplay:YES];
+    }
+    
+    return self;
+}
+
+//Frame|Data
+- (NSString *)encodedStringForCanvasObject
+{
+    NSMutableString *encodedString;
+    NSImage *contextImage;
+    NSData *contextData;
+    
+    encodedString = [[NSMutableString alloc] init];
+    
+    //PNGデータを生成
+    contextImage = [[NSImage alloc] initWithCGImage:CGBitmapContextCreateImage(paintContext) size:self.frame.size];
+    
+    contextData = [contextImage TIFFRepresentation];
+    
+    [encodedString appendFormat:@"%@|", NSStringFromRect(self.frame)];
+    [encodedString appendFormat:@"%@|", [contextData hexadecimalString]];
+    
+    return [NSString stringWithString:encodedString];
 }
 
 - (void)resetPaintContext
@@ -67,10 +107,12 @@
     if(paintContext == NULL){
         return;
     }
-    CGContextSetRGBFillColor(paintContext, 0, 1, 0, 0.5);
+    CGContextSetShouldAntialias(paintContext, false);
+    CGContextSetShouldAntialias(editingContext, false);
+    CGContextSetRGBFillColor(paintContext, 1, 1, 1, 1);
     CGContextFillRect(paintContext, contextRect);
-    //CGContextClearRect(paintContext, contextRect);
-    //CGContextClearRect(editingContext, contextRect);
+    CGContextSetRGBFillColor(editingContext, 0, 0, 0, 0);
+    CGContextFillRect(editingContext, self.bounds);
 }
 
 - (void)drawRect:(NSRect)dirtyRect
@@ -78,26 +120,16 @@
     
     CGContextRef mainContext;
     CGImageRef paintImage, editingImage;
-    /*
     mainContext = [[NSGraphicsContext currentContext] graphicsPort];
     if(paintContext && editingContext){
-        CGContextClearRect(mainContext, contextRect);
-        
+        CGContextSetShouldAntialias(mainContext, false);
         paintImage = CGBitmapContextCreateImage(paintContext);
         editingImage = CGBitmapContextCreateImage(editingContext);
-        
         CGContextDrawImage(mainContext, contextRect, paintImage);
         CGContextDrawImage(mainContext, contextRect, editingImage);
-        
         CGImageRelease(paintImage);
         CGImageRelease(editingImage);
     }
-     */
-    mainContext = [[NSGraphicsContext currentContext] graphicsPort];
-    paintImage = CGBitmapContextCreateImage(paintContext);
-    CGContextDrawImage(mainContext, contextRect, paintImage);
-    
-    
 }
 
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas

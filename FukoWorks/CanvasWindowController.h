@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "MainCanvasView.h"
 #import "ToolboxController.h"
+#import "CanvasObjectListWindowController.h"
 
 @interface CanvasWindowController : NSWindowController <NSWindowDelegate>
 {

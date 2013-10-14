@@ -42,14 +42,14 @@
     const char *invchar;
     NSInteger i;
     NSData *anData;
-    NSUInteger length;
+    NSUInteger dataLength;
     
-    rawData = malloc([self length]);
+    dataLength = [hexString length] / 3;
     rawHexString = [hexString UTF8String];
-    length = [hexString lengthOfBytesUsingEncoding:NSUTF8StringEncoding];
+    rawData = malloc(dataLength);
     
     invchar = rawHexString;
-    for(i = 0; i < length; i++){
+    for(i = 0; i < dataLength; i++){
         if(*invchar == '\0'){
             break;
         }

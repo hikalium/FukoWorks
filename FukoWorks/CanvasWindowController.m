@@ -68,6 +68,7 @@
 - (void)windowDidBecomeKey:(NSNotification *)notification
 {
     [_mainCanvasView resetCursorRects];
+    [CanvasObjectListWindowController sharedCanvasObjectListWindowController].currentCanvas = _mainCanvasView;
 }
 
 -(IBAction)comboBoxCanvasScaleChanged:(id)sender

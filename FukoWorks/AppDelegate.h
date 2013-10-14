@@ -10,12 +10,14 @@
 #import "MainCanvasView.h"
 #import "ToolboxController.h"
 #import "CanvasWindowController.h"
+#import "CanvasObjectListWindowController.h"
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 {
     IBOutlet NSWindow *menuWindow;
     NSMutableArray *Canvases;
     ToolboxController *toolboxController;
+    CanvasObjectListWindowController *objectListController;
 }
 
 - (IBAction)showPreferenceWindow:(id)sender;

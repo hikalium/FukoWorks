@@ -39,6 +39,19 @@
 
 @synthesize ObjectType = _ObjectType;
 
+NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"ペイント枠"};
+
+- (NSString *)ObjectTypeName
+{
+    NSInteger t = self.ObjectType;
+    if(0 <= t && t < (sizeof(objectTypeNameList) / sizeof(objectTypeNameList[0]))){
+        return objectTypeNameList[t];
+    }
+    return nil;
+}
+
+@synthesize objectName = _objectName;
+
 @synthesize Focused = _Focused;
 - (void)setFocused:(BOOL)Focused
 {
@@ -50,6 +63,7 @@
     
     if(Focused != _Focused){
         if(Focused){
+            //ハンドルを表示
             //LD
             aPoint = realSizeFrame.origin;
             aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
@@ -80,6 +94,7 @@
             }
             
         } else{
+            //ハンドルを消去
             for(int i = 0; i < 4; i++){
                 [editHandle[i] removeFromSuperview];
                 editHandle[i] = nil;
@@ -125,8 +140,9 @@
         for(int i = 0; i < 4; i++){
             editHandle[i] = nil;
         }
+        _objectName = @"NoName";
     }
-    
+
     return self;
 }
 
