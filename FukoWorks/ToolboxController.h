@@ -24,10 +24,9 @@
     NSButton *selectedDrawingObjectTypeButton;
 }
 
-@property (nonatomic) CGColorRef drawingStrokeColor;
+@property (nonatomic) NSColor *drawingStrokeColor;
 @property (nonatomic) CGFloat drawingStrokeWidth;
-@property (nonatomic) CGColorRef drawingFillColor;
-@property (nonatomic) CGColorRef drawingTextColor;
+@property (nonatomic) NSColor *drawingFillColor;
 @property (nonatomic) CanvasObjectType drawingObjectType;
 //  0   カーソル
 //  1   矩形

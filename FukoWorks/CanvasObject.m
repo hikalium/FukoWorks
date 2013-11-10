@@ -8,19 +8,27 @@
 
 #import "CanvasObject.h"
 #import "CanvasObjectHandle.h"
+#import "NSColor+StringConversion.h"
 
 @implementation CanvasObject
+//
+// Property
+//
 
 @synthesize FillColor = _FillColor;
-- (void)setFillColor:(CGColorRef)FillColor
+- (void)setFillColor:(NSColor *)FillColor
 {
+    [[_undoManager prepareWithInvocationTarget:self] setFillColor:_FillColor];
+    //
     _FillColor = FillColor;
     [self setNeedsDisplay:YES];
 }
 
 @synthesize StrokeColor = _StrokeColor;
-- (void)setStrokeColor:(CGColorRef)StrokeColor
+- (void)setStrokeColor:(NSColor *)StrokeColor
 {
+    [[_undoManager prepareWithInvocationTarget:self] setStrokeColor:_StrokeColor];
+    //
     _StrokeColor = StrokeColor;
     [self setNeedsDisplay:YES];
 }
@@ -29,7 +37,9 @@
 - (void)setStrokeWidth:(CGFloat)StrokeWidth
 {
     NSRect realRect;
-    
+    //
+    [[_undoManager prepareWithInvocationTarget:self] setStrokeWidth:_StrokeWidth];
+    //
     realRect = [self makeNSRectWithRealSizeViewFrame];
     _StrokeWidth = StrokeWidth;
     [self setFrame:[self makeNSRectWithFullSizeViewFrameFromRealSizeViewFrame:realRect]];
@@ -104,6 +114,12 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
     _Focused = Focused;
 }
 
+@synthesize undoManager = _undoManager;
+
+//
+// Function
+//
+
 - (void)resetHandle
 {
     NSRect realSizeFrame;
@@ -133,7 +149,7 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
         _ObjectType = Undefined;
         
         _FillColor = nil;
-        _FillColor = nil;
+        _StrokeColor = nil;
         _StrokeWidth = 0;
         
         _Focused = NO;
@@ -155,11 +171,10 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
     self = [self initWithFrame:NSRectFromString([dataValues objectAtIndex:0])];
     
     if(self){
-        self.FillColor = [CanvasObject decodedCGColorRefFromString:[dataValues objectAtIndex:1]];
-        self.StrokeColor = [CanvasObject decodedCGColorRefFromString:[dataValues objectAtIndex:2]];
+        self.FillColor = [NSColor colorFromString:[dataValues objectAtIndex:1] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        self.StrokeColor = [NSColor colorFromString:[dataValues objectAtIndex:2] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
         self.StrokeWidth = ((NSString *) [dataValues objectAtIndex:3]).floatValue;
     }
-        
     return self;
 }
 
@@ -167,6 +182,13 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
 - (void)drawRect:(NSRect)dirtyRect
 {
     // Drawing code here.
+}
+
+- (void)setFrame:(NSRect)frameRect
+{
+    [[_undoManager prepareWithInvocationTarget:self] setFrame:self.frame];
+    //
+    [super setFrame:frameRect];
 }
 
 //Frame|FillColor|StrokeColor|StrokeWidth
@@ -178,8 +200,8 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
     encodedString = [[NSMutableString alloc] init];
     
     [encodedString appendFormat:@"%@|", NSStringFromRect(self.frame)];
-    [encodedString appendFormat:@"%@|", [CanvasObject encodedStringForCGColorRef:self.FillColor]];
-    [encodedString appendFormat:@"%@|", [CanvasObject encodedStringForCGColorRef:self.StrokeColor]];
+    [encodedString appendFormat:@"%@|", [self.FillColor stringRepresentation]];
+    [encodedString appendFormat:@"%@|", [self.StrokeColor stringRepresentation]];
     [encodedString appendFormat:@"%f|", self.StrokeWidth];
     
     return [NSString stringWithString:encodedString];
@@ -239,7 +261,12 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
 - (void)editHandleDown:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
 {
     editingHandleID = tag;
-    
+    //
+    [[_undoManager prepareWithInvocationTarget:self] setFrame:self.frame];
+    //https://github.com/Pixen/Pixen/issues/228
+    [_undoManager endUndoGrouping];
+    [_undoManager disableUndoRegistration];
+    //
     switch (tag) {
         case 0:
             //LD
@@ -300,8 +327,10 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
             break;
 
     }
-    
     [self resetHandle];
+    //
+    [_undoManager enableUndoRegistration];
+    //
 }
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint

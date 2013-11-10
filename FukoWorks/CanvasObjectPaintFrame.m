@@ -89,12 +89,12 @@
     
     bmpBuffer = malloc(4 * px * py);
     if(bmpBuffer != NULL){
-        paintContext = CGBitmapContextCreate(bmpBuffer, px, py, 8, px * 4, aColorSpace, kCGImageAlphaPremultipliedLast);
+        paintContext = CGBitmapContextCreate(bmpBuffer, px, py, 8, px * 4, aColorSpace, (CGBitmapInfo)kCGImageAlphaPremultipliedLast);
         if(paintContext == NULL){
             free(bmpBuffer);
             NSRunAlertPanel(@"FukoWorks:PaintFrame", @"paintコンテキスト生成に失敗しました。", @"OK", nil, nil);
         }
-        editingContext = CGBitmapContextCreate(nil, px, py, 8, px * 4, aColorSpace, kCGImageAlphaPremultipliedLast);
+        editingContext = CGBitmapContextCreate(nil, px, py, 8, px * 4, aColorSpace, (CGBitmapInfo)kCGImageAlphaPremultipliedLast);
         if(editingContext == NULL){
             NSRunAlertPanel(@"FukoWorks:PaintFrame", @"editingコンテキスト生成に失敗しました。", @"OK", nil, nil);
         }
@@ -134,15 +134,12 @@
 
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
 {
+    [[self.undoManager prepareWithInvocationTarget:self] setFrame:self.frame];
+    //https://github.com/Pixen/Pixen/issues/228
+    [self.undoManager endUndoGrouping];
+    [self.undoManager disableUndoRegistration];
+    //
     drawingStartPoint = currentPointInCanvas;
-    
-    return self;
-}
-
-- (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas
-{
-    [self setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
-    [self setNeedsDisplay:YES];
     
     return self;
 }
@@ -150,11 +147,14 @@
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
 {
     [self setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
-    [self resetPaintContext];
     [self setNeedsDisplay:YES];
-    
+    //
+    [self.undoManager enableUndoRegistration];
+    //
+    [self resetPaintContext];
     return nil;
 }
+
 
 - (void)editHandleUp:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
 {
@@ -190,18 +190,18 @@
     {
         switch(mode){
             case PaintRectangle:
-                CGContextSetFillColorWithColor(editingContext, self.FillColor);
+                CGContextSetFillColorWithColor(editingContext, self.FillColor.CGColor);
                 CGContextFillRect(editingContext, rect);
-                CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor);
+                CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
                 CGContextStrokeRectWithWidth(editingContext, rect, self.StrokeWidth);
                 break;
             case PaintEllipse:
                 CGContextAddEllipseInRect(editingContext, rect);
-                CGContextSetFillColorWithColor(editingContext, self.FillColor);
+                CGContextSetFillColorWithColor(editingContext, self.FillColor.CGColor);
                 CGContextFillPath(editingContext);
                 
                 CGContextAddEllipseInRect(editingContext, rect);
-                CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor);
+                CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
                 CGContextSetLineWidth(editingContext, self.StrokeWidth);
                 CGContextStrokePath(editingContext);
                 break;

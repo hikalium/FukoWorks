@@ -6,12 +6,11 @@
 //  Copyright (c) 2013年 TokyoGakugeiUniversitySeniorHighSchool. All rights reserved.
 //
 
-#import "CanvasObject.h"
+#import "CanvasObjectRectFrameBase.h"
 
-@interface CanvasObjectPaintFrame : CanvasObject
+@interface CanvasObjectPaintFrame : CanvasObjectRectFrameBase
 {
     void *bmpBuffer;
-    NSPoint drawingStartPoint;
     CGContextRef paintContext;
     CGContextRef editingContext;
     CGRect contextRect;
@@ -20,9 +19,6 @@
 - (id)initWithFrame:(NSRect)frame;
 - (void)resetPaintContext;
 - (void)drawRect:(NSRect)dirtyRect;
-- (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
-- (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
-- (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;
 - (void)drawPaintFrameMouseDown:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;
 - (void)drawPaintFrameMouseDragged:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;
 - (void)drawPaintFrameMouseUp:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;

@@ -16,6 +16,7 @@
 
 @interface MainCanvasView : NSView
 {
+    NSUndoManager *undoManager;
     NSPoint drawingStartPoint;
     NSPoint drawingDragPoint;
     bool clickOnly;
@@ -52,14 +53,25 @@
 
 - (void)resetCursorRects;
 
-- (void)addCanvasObject:(CanvasObject *)aCanvasObject;
+- (void)appendCanvasObject:(CanvasObject *)aCanvasObject;
 - (void)removeCanvasObject:(CanvasObject *)aCanvasObject;
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
+- (NSPoint)getPointerLocationInScreen:(NSEvent *)event;
 - (CanvasObject *)getCanvasObjectAtCursorLocation:(NSEvent *)event;
 
 - (void)writeCanvasToURL:(NSURL *)url atomically:(BOOL)isAtomically;
+- (NSString *)convertCanvasObjectsToString:(NSArray *)canvasObjects;
+- (void)appendCanvasObjectsFromString:(NSString *)stringRep;
 - (void)loadCanvasFromURL:(NSURL *)url;
+
+- (IBAction)copy:(id)sender;
+- (IBAction)paste:(id)sender;
+- (IBAction)cut:(id)sender;
+- (IBAction)delete:(id)sender;
+
+- (IBAction)undo:(id)sender;
+- (IBAction)redo:(id)sender;
 
 @end

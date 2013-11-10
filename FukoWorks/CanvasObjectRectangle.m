@@ -38,35 +38,11 @@
     
     CGContextSaveGState(mainContext);
     {
-        CGContextSetFillColorWithColor(mainContext, self.FillColor);
+        CGContextSetFillColorWithColor(mainContext, self.FillColor.CGColor);
         CGContextFillRect(mainContext, rect);
-        CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor);
+        CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor.CGColor);
         CGContextStrokeRectWithWidth(mainContext, rect, self.StrokeWidth);
     }
     CGContextRestoreGState(mainContext);
 }
-
-- (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
-{
-    drawingStartPoint = currentPointInCanvas;
-    
-    return self;
-}
-
-- (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas
-{
-    [self setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
-    [self setNeedsDisplay:YES];
-    
-    return self;
-}
-
-- (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
-{
-    [self setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
-    [self setNeedsDisplay:YES];
-    
-    return nil;
-}
-
 @end

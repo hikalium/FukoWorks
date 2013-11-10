@@ -7,18 +7,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "CanvasObject.h"
+#import "CanvasObjectRectFrameBase.h"
 
-@interface CanvasObjectRectangle : CanvasObject
+@interface CanvasObjectRectangle : CanvasObjectRectFrameBase
 {
-    NSPoint drawingStartPoint;
+
 }
 
 - (id)initWithFrame:(NSRect)frameRect;
 - (void)drawRect:(NSRect)dirtyRect;
- 
-- (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
-- (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
-- (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;
 
 @end

@@ -21,7 +21,8 @@
 }
 
 - (IBAction)showPreferenceWindow:(id)sender;
-- (IBAction)ShowToolBox:(id)sender;
-- (IBAction)CreateNewDrawCanvas:(id)sender;
+- (IBAction)showToolBox:(id)sender;
+- (IBAction)showCanvasObjectListWindow:(id)sender;
+- (IBAction)createNewDrawCanvas:(id)sender;
 
 @end

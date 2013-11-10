@@ -36,39 +36,15 @@
     CGContextSaveGState(mainContext);
     {
         CGContextAddEllipseInRect(mainContext, ellipseRect);
-        CGContextSetFillColorWithColor(mainContext, self.FillColor);
+        CGContextSetFillColorWithColor(mainContext, self.FillColor.CGColor);
         CGContextFillPath(mainContext);
         
         CGContextAddEllipseInRect(mainContext, ellipseRect);
-        CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor);
+        CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor.CGColor);
         CGContextSetLineWidth(mainContext, self.StrokeWidth);
         CGContextStrokePath(mainContext);
     }
     CGContextRestoreGState(mainContext);
 
 }
-
-- (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
-{
-    drawingStartPoint = currentPointInCanvas;
-    
-    return self;
-}
-
-- (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas
-{
-    [self setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
-    [self setNeedsDisplay:YES];
-    
-    return self;
-}
-
-- (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
-{
-    [self setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
-    [self setNeedsDisplay:YES];
-    
-    return nil;
-}
-
 @end

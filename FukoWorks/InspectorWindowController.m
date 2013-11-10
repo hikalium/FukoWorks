@@ -7,6 +7,7 @@
 //
 
 #import "InspectorWindowController.h"
+#import "NSString+PixelConversion.h"
 #import "MainCanvasView.h"
 
 @implementation InspectorWindowController
@@ -44,6 +45,10 @@ NSString *objectTypeName[] = {@"キャンバス", @"矩形", @"楕円", @"ペイ
         //オブジェクト設定
         editingCanvasObject = (CanvasObject *)editingView;
         editTypeLabel.stringValue = objectTypeName[editingCanvasObject.ObjectType];
+        [tboxSizeX setEnabled:YES];
+        [tboxSizeY setEnabled:YES];
+        tboxSizeX.floatValue = editingCanvasObject.frame.size.width;
+        tboxSizeY.floatValue = editingCanvasObject.frame.size.height;
     } else if([editingView isKindOfClass:[MainCanvasView class]]){
         //キャンバス設定
         editTypeLabel.stringValue = objectTypeName[0];
@@ -65,25 +70,25 @@ NSString *objectTypeName[] = {@"キャンバス", @"矩形", @"楕円", @"ペイ
         switch (anTextField.tag) {
             case 1:
                 //SizeX
-                tempValue = anTextField.floatValue;
+                tempValue = [anTextField.stringValue convertPixelUnitWithDefaultValue:0];
                 if(tempValue > 0){
                     if([editingView isKindOfClass:[MainCanvasView class]]){
                         //キャンバス設定
-                        [((MainCanvasView *)editingView) setCanvasSize:NSMakeSize(anTextField.floatValue, ((MainCanvasView *)editingView).canvasSize.height)];
+                        [((MainCanvasView *)editingView) setCanvasSize:NSMakeSize(tempValue, ((MainCanvasView *)editingView).canvasSize.height)];
                     } else{
-                        [editingView setFrameSize:NSMakeSize(anTextField.floatValue, editingView.frame.size.height)];
+                        [editingView setFrameSize:NSMakeSize(tempValue, editingView.frame.size.height)];
                     }
                 }
                 break;
             case 2:
                 //SizeY
-                tempValue = anTextField.floatValue;
+                tempValue = [anTextField.stringValue convertPixelUnitWithDefaultValue:0];
                 if(tempValue > 0){
                     if([editingView isKindOfClass:[MainCanvasView class]]){
                         //キャンバス設定
-                        [((MainCanvasView *)editingView) setCanvasSize:NSMakeSize(((MainCanvasView *)editingView).canvasSize.width, anTextField.floatValue)];
+                        [((MainCanvasView *)editingView) setCanvasSize:NSMakeSize(((MainCanvasView *)editingView).canvasSize.width, tempValue)];
                     } else{
-                        [editingView setFrameSize:NSMakeSize(editingView.frame.size.width, anTextField.floatValue)];
+                        [editingView setFrameSize:NSMakeSize(editingView.frame.size.width, tempValue)];
                     }
                 }
                 break;

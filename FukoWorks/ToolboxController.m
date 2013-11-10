@@ -25,6 +25,19 @@
         [toolPaintRect setEnabled:NO];
         [toolPaintEllipse setEnabled:NO];
     }
+    if([_editingObject isKindOfClass:[CanvasObject class]]){
+        if(editingObject.FillColor){
+            [cWellFillColor setColor:editingObject.FillColor];
+            _drawingFillColor = editingObject.FillColor;
+        }
+        if(editingObject.StrokeColor){
+            [cWellStrokeColor setColor:editingObject.StrokeColor];
+            _drawingStrokeColor = editingObject.StrokeColor;
+        }
+        sliderStrokeWidth.doubleValue = editingObject.StrokeWidth;
+        textFieldStrokeWidth.doubleValue = editingObject.StrokeWidth;
+        _drawingStrokeWidth = editingObject.StrokeWidth;
+    }
 }
 
 - (id)init
@@ -73,9 +86,9 @@ ToolboxController *_sharedToolboxController = nil;
     NSColor *color;
     
     color = cWellStrokeColor.color;
-    _drawingStrokeColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
+    _drawingStrokeColor = color;
 
-    _editingObject.StrokeColor = _drawingStrokeColor;
+    _editingObject.StrokeColor = color;
 }
 
 - (void)fillColorChanged:(id)sender
@@ -83,9 +96,9 @@ ToolboxController *_sharedToolboxController = nil;
     NSColor *color;
     
     color = cWellFillColor.color;
-    _drawingFillColor = CGColorCreateGenericRGB(color.redComponent, color.greenComponent, color.blueComponent, color.alphaComponent);
+    _drawingFillColor = color;
 
-    _editingObject.FillColor = _drawingFillColor;
+    _editingObject.FillColor = color;
 }
 
 - (void)sliderStrokeWidthChanged:(id)sender

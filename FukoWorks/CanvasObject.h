@@ -18,14 +18,15 @@
 }
 
 
-@property (nonatomic) CGColorRef FillColor;
-//
-@property (nonatomic) CGColorRef StrokeColor;
+@property (nonatomic) NSColor *FillColor;
+@property (nonatomic) NSColor *StrokeColor;
 @property (nonatomic) CGFloat StrokeWidth;
 @property (readonly, nonatomic) CanvasObjectType ObjectType;
 @property (readonly, nonatomic) NSString *ObjectTypeName;
 @property (nonatomic) NSString *objectName;
 @property (nonatomic) BOOL Focused;
+@property (nonatomic) NSUndoManager *undoManager;
+
 - (void)setFocused:(BOOL)Focused;
 
 - (id)initWithFrame:(NSRect)frameRect;

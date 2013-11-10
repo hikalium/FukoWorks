@@ -6,18 +6,14 @@
 //  Copyright (c) 2013年 TokyoGakugeiUniversitySeniorHighSchool. All rights reserved.
 //
 
-#import "CanvasObject.h"
+#import "CanvasObjectRectFrameBase.h"
 
-@interface CanvasObjectEllipse : CanvasObject
+@interface CanvasObjectEllipse : CanvasObjectRectFrameBase
 {
-    NSPoint drawingStartPoint;
+    
 }
 
 - (id)initWithFrame:(NSRect)frameRect;
 - (void)drawRect:(NSRect)dirtyRect;
- 
-- (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
-- (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
-- (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;
 
 @end

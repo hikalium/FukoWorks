@@ -20,6 +20,7 @@
     
     //[window addChildWindow:toolboxController.window ordered:NSWindowAbove];
     [menuWindow setHidesOnDeactivate:NO];
+    
     //[panelToolBox setHidesOnDeactivate:NO];
     
     //ColorWellで透明色を指定できるようにする。
@@ -28,7 +29,14 @@
 
 - (void)awakeFromNib
 {
-
+    //中央に表示させる
+    NSRect screen_frame = [[NSScreen mainScreen] visibleFrame];
+    NSRect panel_frame = [menuWindow frame];
+    NSPoint panel_origin;
+    panel_origin.x = (screen_frame.size.width - panel_frame.size.width) / 2.0;
+    panel_origin.y = (screen_frame.size.height - panel_frame.size.height) / 2.0;
+    panel_origin.y += screen_frame.origin.y; // for Dock Height
+    [menuWindow setFrameOrigin:panel_origin];
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
@@ -42,12 +50,18 @@
     [[PreferenceWindowController sharedPreferenceWindowController] showWindow:sender];
 }
 
-- (IBAction)ShowToolBox:(id)sender {
+- (IBAction)showToolBox:(id)sender
+{
     [[ToolboxController sharedToolboxController] showWindow:sender];
     //[window addChildWindow:toolboxController.window ordered:NSWindowAbove];
 }
 
-- (IBAction)CreateNewDrawCanvas:(id)sender
+- (IBAction)showCanvasObjectListWindow:(id)sender
+{
+    [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] showWindow:sender];
+}
+
+- (IBAction)createNewDrawCanvas:(id)sender
 {
     CanvasWindowController *aCanvasWindowController;
     
@@ -55,7 +69,6 @@
     [aCanvasWindowController showWindow:sender];
     [Canvases addObject:aCanvasWindowController];
     [menuWindow close];
-    [self ShowToolBox:self];
+    [self showToolBox:self];
 }
-
 @end

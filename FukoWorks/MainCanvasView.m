@@ -63,6 +63,8 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
+        undoManager = [[NSUndoManager alloc] init];
+        
         baseFrame = NSMakeRect(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
         drawingStartPoint.x = 0;
         drawingStartPoint.y = 0;
@@ -149,7 +151,8 @@
             editingObject.FillColor = self.toolboxController.drawingFillColor;
             editingObject.StrokeColor = self.toolboxController.drawingStrokeColor;
             editingObject.StrokeWidth = self.toolboxController.drawingStrokeWidth;
-            [self addCanvasObject:editingObject];
+            editingObject.undoManager = undoManager;
+            [self appendCanvasObject:editingObject];
             
             editingObject = [editingObject drawMouseDown:currentPoint];
         }
@@ -214,6 +217,9 @@
 
 - (void)rightMouseDown:(NSEvent *)theEvent
 {
+    NSPoint currentPointInScreen;
+    currentPointInScreen = [self getPointerLocationInScreen:theEvent];
+    
     //編集終了or詳細設定
     CanvasObject *aCanvasObject;
     InspectorWindowController *anInspectorWindowController;
@@ -230,6 +236,7 @@
         }
         [inspectorWindows addObject:anInspectorWindowController];
         [anInspectorWindowController showWindow:self];
+        [[anInspectorWindowController window]setFrameOrigin:currentPointInScreen];
     }
 }
 
@@ -237,14 +244,14 @@
 {
     //self.focusedObject = [self getCanvasObjectAtCursorLocation:theEvent];
 }
-
+/*
 - (void)keyDown:(NSEvent *)theEvent
 {
     NSInteger keyCode;
     
     keyCode = [theEvent keyCode];
     NSLog(@"%ld", keyCode);
-    
+ 
     switch(keyCode){
         case 51:
             //Backspace
@@ -253,7 +260,9 @@
             [self removeCanvasObject:_focusedObject];
             break;
     }
+ 
 }
+*/
 
 -(void)resetCursorRects
 {
@@ -267,7 +276,7 @@
 
 // add / remove CanvasObject
 
-- (void)addCanvasObject:(CanvasObject *)aCanvasObject
+- (void)appendCanvasObject:(CanvasObject *)aCanvasObject
 {
     [self addSubview:aCanvasObject];
     [_canvasObjects addObject:aCanvasObject];
@@ -328,6 +337,15 @@
     return [self convertPoint:currentPoint fromView:nil];
 }
 
+- (NSPoint)getPointerLocationInScreen:(NSEvent *)event
+{
+    NSPoint currentPoint;
+    
+    currentPoint = [event locationInWindow];
+    currentPoint = [self.window convertBaseToScreen:currentPoint];
+    return currentPoint;
+}
+
 - (CanvasObject *)getCanvasObjectAtCursorLocation:(NSEvent *)event
 {
     NSPoint currentPoint;
@@ -370,66 +388,56 @@
 //
 - (void)writeCanvasToURL:(NSURL *)url atomically:(BOOL)isAtomically
 {
-    NSMutableString *saveData;
-    NSInteger count;
-    CanvasObject *aCanvasObject;
+    NSString *saveData;
     NSError *error;
     
-    saveData = [[NSMutableString alloc] initWithFormat:@"[FukoWorKs]:%ld\n", [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] integerValue]];
-    
-    count = 0;
-    for(NSView *aSubview in self.subviews){
-        if([aSubview isKindOfClass:[CanvasObject class]]){
-            aCanvasObject = (CanvasObject *)aSubview;
-            
-            switch(aCanvasObject.ObjectType){
-                case Undefined:
-                    //Do nothing.
-                    break;
-                    
-                case Rectangle:
-                    [saveData appendFormat:@"%ld:", aCanvasObject.ObjectType];
-                    [saveData appendFormat:@"%@\n",[aCanvasObject encodedStringForCanvasObject]];
-                    break;
-                case Ellipse:
-                    [saveData appendFormat:@"%ld:", aCanvasObject.ObjectType];
-                    [saveData appendFormat:@"%@\n",[aCanvasObject encodedStringForCanvasObject]];
-                    break;
-                    
-                case PaintFrame:
-                    [saveData appendFormat:@"%ld:", aCanvasObject.ObjectType];
-                    [saveData appendFormat:@"%@\n",[aCanvasObject encodedStringForCanvasObject]];
-                    break;
-                
-                default:
-                    NSLog(@"Not implemented operation to save object type %ld.\n", aCanvasObject.ObjectType);
-                    break;
-            }
-            
-            count++;
-        }
-    }
-    
+    saveData = [self convertCanvasObjectsToString:self.subviews];
+
     error = nil;
     if(![saveData writeToURL:url atomically:isAtomically encoding:NSUTF8StringEncoding error:&error]){
         NSRunAlertPanel(@"FukoWorks-Error-", [error localizedDescription], @"OK", nil, nil);
     }
 }
 
-- (void)loadCanvasFromURL:(NSURL *)url
+- (NSString *)convertCanvasObjectsToString:(NSArray *)canvasObjects
 {
-    NSString *dataString;
+    //渡されたNSArray中のCanvasObjectを示す文字列を生成し返す。
+    CanvasObject *aCanvasObject;
+    NSMutableString *stringRep;
+    stringRep = [[NSMutableString alloc] initWithFormat:@"[FukoWorKs]:%ld\n", [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] integerValue]];
+    
+    for(NSView *aSubview in canvasObjects){
+        if([aSubview isKindOfClass:[CanvasObject class]]){
+            aCanvasObject = (CanvasObject *)aSubview;
+            
+            switch(aCanvasObject.ObjectType){
+                case Rectangle:
+                case Ellipse:
+                case PaintFrame:
+                    [stringRep appendFormat:@"%ld:", aCanvasObject.ObjectType];
+                    [stringRep appendFormat:@"%@\n",[aCanvasObject encodedStringForCanvasObject]];
+                    break;
+                default:
+                    NSLog(@"Not implemented operation to save object type %ld.\n", aCanvasObject.ObjectType);
+                    break;
+            }
+        }
+    }
+
+    return [NSString stringWithString:stringRep];
+}
+
+- (void)appendCanvasObjectsFromString:(NSString *)stringRep
+{
+    //渡された文字列からCanvasObjectを生成し追加する。
     NSArray *dataList;
     NSArray *dataItem;
-    NSError *error;
     NSString *aDataString;
     NSString *dataItemsString;
     NSUInteger i, i_max;
     CanvasObject *aCanvasObject;
-    
-    error = nil;
-    dataString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
-    dataList = [dataString componentsSeparatedByString:@"\n"];
+
+    dataList = [stringRep componentsSeparatedByString:@"\n"];
     
     //Validation data.
     dataItemsString = [dataList objectAtIndex:0];
@@ -442,7 +450,7 @@
     aDataString = [dataItem objectAtIndex:1];
     if(aDataString.integerValue > [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] integerValue]){
         //もし新たなバージョンで作成されたファイルであったら、警告を出す。
-        NSRunAlertPanel(@"FukoWorks-警告-", @"読み込もうとしているファイルは、より新しいバージョンのFukoWorksで作成されたものであり、正常に読み込めない可能性があります。", @"OK", nil, nil);
+        NSRunAlertPanel(@"FukoWorks-警告-", @"読み込もうとしているデータは、より新しいバージョンのFukoWorksで作成されたものであり、正常に読み込めない可能性があります。", @"OK", nil, nil);
     }
     
     //データ読み込み
@@ -473,11 +481,22 @@
                 break;
         }
         if(aCanvasObject != nil){
-            [self addCanvasObject:aCanvasObject];
+            [self appendCanvasObject:aCanvasObject];
             NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
         }
     }
 }
+
+- (void)loadCanvasFromURL:(NSURL *)url
+{
+    NSString *dataString;
+    NSError *error;
+    
+    error = nil;
+    dataString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
+
+    [self appendCanvasObjectsFromString:dataString];
+ }
 
 //
 // Printing
@@ -535,6 +554,76 @@
     NSLog(@"rect:%@", NSStringFromRect(rect));
     
     return rect;
+}
+
+//
+// MenuItem
+//
+
+- (BOOL)validateMenuItem:(NSMenuItem *)menuItem
+{
+    if( [menuItem action] == @selector(cut:) ||
+       [menuItem action] == @selector(copy:) ||
+       [menuItem action] == @selector(delete:) ){
+        return (_focusedObject != nil);
+    } else if([menuItem action] == @selector(paste:)){
+        return [self pasteboardHas:FWK_PASTEBOARD_TYPE];
+    } else if([menuItem action] == @selector(undo:)){
+        return [undoManager canUndo];
+    } else if([menuItem action] == @selector(redo:)){
+        return [undoManager canRedo];
+    }
+    return YES;
+}
+
+//
+// Pasteboard
+//
+
+- (BOOL)pasteboardHas:(NSString *)theType
+{
+    NSPasteboard    *pasteboard = [NSPasteboard generalPasteboard];
+    NSArray         *types = [NSArray arrayWithObject:theType];
+    
+    return  ([pasteboard availableTypeFromArray:types] != nil);
+}
+
+- (IBAction)copy:(id)sender
+{
+    if(_focusedObject){
+        NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+        [pasteboard declareTypes:[NSArray arrayWithObject:FWK_PASTEBOARD_TYPE] owner:nil];
+        [pasteboard setData:[[self convertCanvasObjectsToString:[NSArray arrayWithObject:_focusedObject]] dataUsingEncoding:NSUTF8StringEncoding] forType:FWK_PASTEBOARD_TYPE];
+    }
+}
+- (IBAction)paste:(id)sender
+{
+    NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
+    NSData *data = [pasteboard dataForType:FWK_PASTEBOARD_TYPE];
+    NSString *str = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];
+    [self appendCanvasObjectsFromString:str];
+}
+- (IBAction)cut:(id)sender
+{
+    [self copy:sender];
+    [self delete:sender];
+}
+- (IBAction)delete:(id)sender
+{
+    [self removeCanvasObject:_focusedObject];
+}
+
+//
+// Undo / Redo
+//
+
+- (IBAction)undo:(id)sender
+{
+    [undoManager undo];
+}
+- (IBAction)redo:(id)sender
+{
+    [undoManager redo];
 }
 
 @end
