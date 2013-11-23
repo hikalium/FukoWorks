@@ -19,6 +19,7 @@
 - (void)setCurrentCanvas:(MainCanvasView *)currentCanvas
 {
     _currentCanvas = currentCanvas;
+    //[canvasObjectArrayController setContent:currentCanvas.subviews];
     [self reloadData];
 }
 
@@ -27,7 +28,7 @@
     self = [super initWithWindowNibName:[self className]];
     
     if(self){
-        
+        //[listOutlineView registerForDraggedTypes:[NSArray arrayWithObjects:FWK_PASTEBOARD_TYPE, nil]];
     }
     
     return self;
@@ -50,6 +51,13 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
     [listPanel setReleasedWhenClosed:NO];
 }
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    
+    
+}
+
 - (void)showWindow:(id)sender
 {
     [super showWindow:sender];
@@ -58,7 +66,49 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
 
 - (void)reloadData
 {
-    [outlineView reloadData];
+    [listOutlineView reloadData];
+}
+
+- (void)selectCanvasObject: (CanvasObject *)co byExtendingSelection:(BOOL)ext
+{
+    NSIndexSet *indexSet;
+    if(co){
+        NSArray *list = [[_currentCanvas.canvasObjects reverseObjectEnumerator] allObjects];
+        indexSet = [NSIndexSet indexSetWithIndex:[list indexOfObject:co]];
+    } else{
+        indexSet = [NSIndexSet indexSet];
+    }
+    [listOutlineView selectRowIndexes:indexSet byExtendingSelection:ext];
+}
+
+- (IBAction)bringFront:(id)sender {
+    if(_currentCanvas){
+        NSInteger index = [listOutlineView selectedRow];
+        if(index == NSNotFound){
+            return;
+        }
+        NSArray *list = [[_currentCanvas.canvasObjects reverseObjectEnumerator] allObjects];
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:index - 1];
+        if([_currentCanvas bringCanvasObjectToFront:[list objectAtIndex:index]]){
+            [listOutlineView selectRowIndexes:indexSet byExtendingSelection:NO];
+            [self reloadData];
+        }
+    }
+}
+
+- (IBAction)bringBack:(id)sender {
+    if(_currentCanvas){
+        NSInteger index = [listOutlineView selectedRow];
+        if(index == NSNotFound){
+            return;
+        }
+        NSArray *list = [[_currentCanvas.canvasObjects reverseObjectEnumerator] allObjects];
+        NSIndexSet *indexSet = [NSIndexSet indexSetWithIndex:index + 1];
+        if([_currentCanvas bringCanvasObjectToBack:[list objectAtIndex:index]]){
+            [listOutlineView selectRowIndexes:indexSet byExtendingSelection:NO];
+            [self reloadData];
+        }
+    }
 }
 
 - (NSInteger)outlineView:(NSOutlineView *)outlineView numberOfChildrenOfItem:(id)item
@@ -105,6 +155,29 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
     }
     return @"???";
 }
+/*
+- (void)outlineView:(NSOutlineView *)outlineView draggingSession:(NSDraggingSession *)session willBeginAtPoint:(NSPoint)screenPoint forItems:(NSArray *)draggedItems {
+    draggingItemList = draggedItems;
+    [session.draggingPasteboard setData:[NSData data] forType:FWK_PASTEBOARD_TYPE];
+}
 
-
+- (void)outlineView:(NSOutlineView *)outlineView draggingSession:(NSDraggingSession *)session endedAtPoint:(NSPoint)screenPoint operation:(NSDragOperation)operation {
+    // If the session ended in the trash, then delete all the items
+    if (operation == NSDragOperationDelete) {
+        [outlineView beginUpdates];
+        
+        [draggingItemList enumerateObjectsWithOptions:NSEnumerationReverse usingBlock:^(id node, NSUInteger index, BOOL *stop) {
+            id parent = [node parentNode];
+            NSMutableArray *children = [parent mutableChildNodes];
+            NSInteger childIndex = [children indexOfObject:node];
+            [children removeObjectAtIndex:childIndex];
+            //[outlineView removeItemsAtIndexes:[NSIndexSet indexSetWithIndex:childIndex] inParent:parent == outlineView. ? nil : parent withAnimation:NSTableViewAnimationEffectFade];
+        }];
+        
+        [outlineView endUpdates];
+    }
+    
+    draggingItemList = nil;
+}
+*/
 @end

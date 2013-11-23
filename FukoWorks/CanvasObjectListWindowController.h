@@ -13,7 +13,9 @@
 @interface CanvasObjectListWindowController : NSWindowController <NSOutlineViewDelegate, NSOutlineViewDataSource>
 {
     IBOutlet NSPanel *listPanel;
-    IBOutlet NSOutlineView *outlineView;
+    IBOutlet NSOutlineView *listOutlineView;
+    //IBOutlet NSArrayController *canvasObjectArrayController;
+    NSArray *draggingItemList;
 }
 
 + (CanvasObjectListWindowController *)sharedCanvasObjectListWindowController;
@@ -21,5 +23,8 @@
 @property (nonatomic) MainCanvasView *currentCanvas;
 
 - (void)reloadData;
+- (void)selectCanvasObject: (CanvasObject *)co byExtendingSelection:(BOOL)ext;
+- (IBAction)bringFront:(id)sender;
+- (IBAction)bringBack:(id)sender;
 
 @end

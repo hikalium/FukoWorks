@@ -11,6 +11,8 @@
 		170C3AFF170194DE0030CA0C /* PreferenceWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 170C3AFD170194DE0030CA0C /* PreferenceWindowController.xib */; };
 		1723966916F5A8200089DF1E /* CanvasObjectRectangle.m in Sources */ = {isa = PBXBuildFile; fileRef = 1723966816F5A8200089DF1E /* CanvasObjectRectangle.m */; };
 		1728940F173E41E000071834 /* CanvasWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1728940E173E41E000071834 /* CanvasWindow.xib */; };
+		173E70191840DF6E0046C002 /* arrow_up.png in Resources */ = {isa = PBXBuildFile; fileRef = 173E70181840DF6E0046C002 /* arrow_up.png */; };
+		173E701B1840DF760046C002 /* arrow_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 173E701A1840DF760046C002 /* arrow_down.png */; };
 		174A840A170433B500A53520 /* CanvasObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 174A8409170433B500A53520 /* CanvasObject.m */; };
 		174A840D1704397100A53520 /* CanvasObjectEllipse.m in Sources */ = {isa = PBXBuildFile; fileRef = 174A840C1704397100A53520 /* CanvasObjectEllipse.m */; };
 		174A841017043F9600A53520 /* icon_rectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 174A840E17043F9600A53520 /* icon_rectangle.png */; };
@@ -50,6 +52,8 @@
 		1723966816F5A8200089DF1E /* CanvasObjectRectangle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectRectangle.m; sourceTree = "<group>"; };
 		1728940D173E402F00071834 /* FukoWorks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FukoWorks.h; sourceTree = "<group>"; };
 		1728940E173E41E000071834 /* CanvasWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CanvasWindow.xib; sourceTree = "<group>"; };
+		173E70181840DF6E0046C002 /* arrow_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_up.png; sourceTree = "<group>"; };
+		173E701A1840DF760046C002 /* arrow_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_down.png; sourceTree = "<group>"; };
 		174A8408170433B500A53520 /* CanvasObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObject.h; sourceTree = "<group>"; };
 		174A8409170433B500A53520 /* CanvasObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObject.m; sourceTree = "<group>"; };
 		174A840B1704397100A53520 /* CanvasObjectEllipse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectEllipse.h; sourceTree = "<group>"; };
@@ -160,6 +164,8 @@
 		174A841217043FB200A53520 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				173E701A1840DF760046C002 /* arrow_down.png */,
+				173E70181840DF6E0046C002 /* arrow_up.png */,
 				17968632181CEAA600BA65E4 /* iconEllipse.png */,
 				17968633181CEAA600BA65E4 /* iconPaintFrame.png */,
 				17968634181CEAA600BA65E4 /* iconRect.png */,
@@ -297,6 +303,7 @@
 				17BCF81316F43F9100E7E472 /* Credits.rtf in Resources */,
 				17968635181CEAA600BA65E4 /* iconEllipse.png in Resources */,
 				17968637181CEAA600BA65E4 /* iconRect.png in Resources */,
+				173E701B1840DF760046C002 /* arrow_down.png in Resources */,
 				17B089BF16F7B1520006FA2C /* FukoWorks.icns in Resources */,
 				170C3AFF170194DE0030CA0C /* PreferenceWindowController.xib in Resources */,
 				174A841017043F9600A53520 /* icon_rectangle.png in Resources */,
@@ -306,6 +313,7 @@
 				17B41E1E1707A5F400E535FB /* ToolboxController.xib in Resources */,
 				1728940F173E41E000071834 /* CanvasWindow.xib in Resources */,
 				17677F4617648AEA00F12210 /* InspectorWindowController.xib in Resources */,
+				173E70191840DF6E0046C002 /* arrow_up.png in Resources */,
 				17FFED71180A66BF0029F6F4 /* CanvasObjectListWindowController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

@@ -7,6 +7,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="CanvasObjectListWindowController">
             <connections>
+                <outlet property="listOutlineView" destination="12" id="Oir-jq-csq"/>
                 <outlet property="listPanel" destination="5" id="22"/>
                 <outlet property="outlineView" destination="12" id="23"/>
             </connections>
@@ -23,14 +24,14 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="11">
-                        <rect key="frame" x="16" y="20" width="440" height="338"/>
+                        <rect key="frame" x="16" y="48" width="440" height="310"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="hsU-QK-S4d">
-                            <rect key="frame" x="1" y="17" width="438" height="320"/>
+                            <rect key="frame" x="1" y="17" width="438" height="292"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <outlineView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" headerView="14" indentationPerLevel="16" outlineTableColumn="16" id="12">
-                                    <rect key="frame" x="0.0" y="0.0" width="438" height="320"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="438" height="292"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <size key="intercellSpacing" width="3" height="2"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -101,7 +102,7 @@
                             <rect key="frame" x="1" y="322" width="412" height="15"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
-                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="37" horizontal="NO" id="15">
+                        <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="15">
                             <rect key="frame" x="224" y="17" width="15" height="102"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
@@ -110,8 +111,35 @@
                             <autoresizingMask key="autoresizingMask"/>
                         </tableHeaderView>
                     </scrollView>
+                    <button id="uGT-oV-jsh">
+                        <rect key="frame" x="16" y="16" width="24" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="arrow_up" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4X5-Uz-bcy">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="bringFront:" target="-2" id="DtU-80-ZTR"/>
+                        </connections>
+                    </button>
+                    <button id="HBh-0l-wzs">
+                        <rect key="frame" x="50" y="16" width="24" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="arrow_down" imagePosition="overlaps" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="4dn-Cl-MxP">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="bringBack:" target="-2" id="z2O-8b-eS3"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
         </window>
+        <userDefaultsController representsSharedInstance="YES" id="8WS-SK-kTF"/>
     </objects>
+    <resources>
+        <image name="arrow_down" width="32" height="32"/>
+        <image name="arrow_up" width="32" height="32"/>
+    </resources>
 </document>

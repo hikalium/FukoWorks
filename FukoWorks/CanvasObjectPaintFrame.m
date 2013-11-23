@@ -203,7 +203,7 @@
         CGContextAddLineToPoint(editingContext, drawingStartPoint.x + (self.StrokeWidth / 2), drawingStartPoint.y);
         CGContextClosePath(editingContext);
         CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
-        CGContextSetLineWidth(editingContext, self.StrokeWidth);
+        CGContextSetLineWidth(editingContext, floor(self.StrokeWidth + 0.5));
         CGContextStrokePath(editingContext);
         NSLog(@"drawPoint!%f",self.StrokeWidth);
         [self setNeedsDisplay:YES];
@@ -230,7 +230,7 @@
                 CGContextFillRect(editingContext, rect);
                 //
                 CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
-                CGContextStrokeRectWithWidth(editingContext, rect, self.StrokeWidth);
+                CGContextStrokeRectWithWidth(editingContext, rect, floor(self.StrokeWidth + 0.5));
                 break;
             case PaintEllipse:
                 CGContextAddEllipseInRect(editingContext, rect);
@@ -239,14 +239,14 @@
                 //
                 CGContextAddEllipseInRect(editingContext, rect);
                 CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
-                CGContextSetLineWidth(editingContext, self.StrokeWidth);
+                CGContextSetLineWidth(editingContext, floor(self.StrokeWidth + 0.5));
                 CGContextStrokePath(editingContext);
                 break;
             case PaintPen:
                 CGContextMoveToPoint(editingContext, drawingStartPoint.x, drawingStartPoint.y);
                 CGContextAddLineToPoint(editingContext, localPoint.x, localPoint.y);
                 CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
-                CGContextSetLineWidth(editingContext, self.StrokeWidth);
+                CGContextSetLineWidth(editingContext, floor(self.StrokeWidth + 0.5));
                 CGContextStrokePath(editingContext);
                 drawingStartPoint = localPoint;
                 break;

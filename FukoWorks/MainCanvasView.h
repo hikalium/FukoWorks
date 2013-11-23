@@ -55,6 +55,10 @@
 - (void)appendCanvasObject:(CanvasObject *)aCanvasObject;
 - (void)removeCanvasObject:(CanvasObject *)aCanvasObject;
 
+- (BOOL)bringCanvasObjectToFront:(CanvasObject *)aCanvasObject;
+- (BOOL)bringCanvasObjectToBack:(CanvasObject *)aCanvasObject;
+
+
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
 - (NSPoint)getPointerLocationInScreen:(NSEvent *)event;

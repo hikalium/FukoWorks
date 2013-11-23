@@ -7,6 +7,7 @@
 //
 
 #import "ToolboxController.h"
+#import "CanvasObjectListWindowController.h"
 
 @implementation ToolboxController
 
@@ -25,7 +26,7 @@
     } else{
         [toolPaintRect setEnabled:NO];
         [toolPaintEllipse setEnabled:NO];
-        [toolPaintPen setEnabled:YES];
+        [toolPaintPen setEnabled:NO];
     }
     if([_editingObject isKindOfClass:[CanvasObject class]]){
         if(editingObject.FillColor){
@@ -40,6 +41,7 @@
         textFieldStrokeWidth.doubleValue = editingObject.StrokeWidth;
         _drawingStrokeWidth = editingObject.StrokeWidth;
     }
+    [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] selectCanvasObject:editingObject byExtendingSelection:NO];
 }
 
 - (id)init

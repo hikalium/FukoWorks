@@ -103,6 +103,8 @@
     CGContextRestoreGState(mainContext);
 }
 
+// User interaction
+
 - (void)mouseDown:(NSEvent*)event
 {
     NSPoint currentPoint;
@@ -299,6 +301,42 @@
         NSLog(@"Removed CanvasObject. \n%@\n", self.subviews.description);
     }
     [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] reloadData];
+}
+
+- (BOOL)bringCanvasObjectToFront:(CanvasObject *)aCanvasObject
+{
+    //retv:isChanged
+    NSUInteger index = [self.canvasObjects indexOfObject:aCanvasObject];
+    if(index == self.canvasObjects.count - 1){
+        //すでに最前面なので何もしない
+        return NO;
+    }
+    if(index == NSNotFound){
+        return NO;
+    }
+    CanvasObject *coBelow = [self.canvasObjects objectAtIndex:index + 1];
+    [aCanvasObject removeFromSuperview];
+    [self addSubview:aCanvasObject positioned:NSWindowAbove relativeTo:coBelow];
+    [self.canvasObjects exchangeObjectAtIndex:index withObjectAtIndex:index + 1];
+    return YES;
+}
+
+- (BOOL)bringCanvasObjectToBack:(CanvasObject *)aCanvasObject
+{
+    //retv:isChanged
+    NSUInteger index = [self.canvasObjects indexOfObject:aCanvasObject];
+    if(index == 0){
+        //すでに最背面なので何もしない
+        return NO;
+    }
+    if(index == NSNotFound){
+        return NO;
+    }
+    CanvasObject *coAbove = [self.canvasObjects objectAtIndex:index - 1];
+    [aCanvasObject removeFromSuperview];
+    [self addSubview:aCanvasObject positioned:NSWindowBelow relativeTo:coAbove];
+    [self.canvasObjects exchangeObjectAtIndex:index withObjectAtIndex:index - 1];
+    return YES;
 }
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
