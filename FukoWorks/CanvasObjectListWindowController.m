@@ -28,7 +28,7 @@
     self = [super initWithWindowNibName:[self className]];
     
     if(self){
-        //[listOutlineView registerForDraggedTypes:[NSArray arrayWithObjects:FWK_PASTEBOARD_TYPE, nil]];
+        
     }
     
     return self;
@@ -55,7 +55,7 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
 {
     [super awakeFromNib];
     
-    
+    [listOutlineView registerForDraggedTypes:[NSArray arrayWithObjects:FWK_PASTEBOARD_TYPE, nil]];
 }
 
 - (void)showWindow:(id)sender
@@ -126,6 +126,11 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
     return (item == nil) ? YES : NO;
 }
 
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldTrackCell:(NSCell *)cell forTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+    return (item == nil) ? YES : NO;
+}
+
 - (id)outlineView:(NSOutlineView *)outlineView child:(NSInteger)index ofItem:(id)item
 {
     //NSLog(@"child ofItem %@ %ld", item, (long)index);
@@ -155,14 +160,65 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
     }
     return @"???";
 }
-/*
+
+//
+// Drag and Drop function
+//
+
+- (id <NSPasteboardWriting>)outlineView:(NSOutlineView *)outlineView pasteboardWriterForItem:(id)item
+{
+    //1
+    NSLog(@"writer");
+    // With all the blocking conditions out of the way,
+    // return a pasteboard writer.
+    
+    NSPasteboardItem *pboardItem = [[NSPasteboardItem alloc] init];
+    
+    //[pboardItem setString:@"abc" forType: FWK_PASTEBOARD_TYPE];
+    [pboardItem setData:[NSData data] forType:FWK_PASTEBOARD_TYPE];
+    
+    
+    return pboardItem;
+}
+
 - (void)outlineView:(NSOutlineView *)outlineView draggingSession:(NSDraggingSession *)session willBeginAtPoint:(NSPoint)screenPoint forItems:(NSArray *)draggedItems {
+    //2
+    NSLog(@"sessionstart");
     draggingItemList = draggedItems;
     [session.draggingPasteboard setData:[NSData data] forType:FWK_PASTEBOARD_TYPE];
 }
 
+- (NSDragOperation)outlineView:(NSOutlineView *)outlineView validateDrop:(id < NSDraggingInfo >)info proposedItem:(id)item proposedChildIndex:(NSInteger)index
+{
+    //retv:
+    //NSDragOperationNone:なにもしない
+    //NSDragOperationMove:間に入れることも、重ねていれることもできる
+    //あるアイテムがドラッグを受け付けるかどうかを教えてあげる
+    NSLog(@"validate");
+    return (item == nil) ? NSDragOperationMove : NSDragOperationNone;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id < NSDraggingInfo >)info item:(id)item childIndex:(NSInteger)index
+{
+    NSLog(@"accept %@ %ld", item, index);
+    // Move the dragged item(s) to their new position in the data model
+    // and reload the view or move the rows in the view.
+    // This is of course quite dependent on your implementation
+    NSArray *list = [[_currentCanvas.canvasObjects reverseObjectEnumerator] allObjects];
+    CanvasObject *coBelow = nil;
+    if(index < list.count){
+        coBelow = [list objectAtIndex:index];
+    }
+    [_currentCanvas moveCanvasObjects:draggingItemList aboveOf:coBelow];
+    [self reloadData];
+    
+    return YES;
+}
+
 - (void)outlineView:(NSOutlineView *)outlineView draggingSession:(NSDraggingSession *)session endedAtPoint:(NSPoint)screenPoint operation:(NSDragOperation)operation {
+    NSLog(@"sessionend");
     // If the session ended in the trash, then delete all the items
+    /*
     if (operation == NSDragOperationDelete) {
         [outlineView beginUpdates];
         
@@ -176,8 +232,9 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
         
         [outlineView endUpdates];
     }
+     */
     
     draggingItemList = nil;
 }
-*/
+
 @end

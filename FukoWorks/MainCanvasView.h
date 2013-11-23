@@ -13,6 +13,7 @@
 #import "CanvasObjectRectangle.h"
 #import "CanvasObjectEllipse.h"
 #import "CanvasObjectPaintFrame.h"
+#import "OverlayCanvasView.h"
 
 @interface MainCanvasView : NSView
 {
@@ -32,6 +33,7 @@
     NSRect baseFrame;
     
     NSMutableArray *inspectorWindows;
+    OverlayCanvasView *overlayView;
 }
 
 @property (strong, nonatomic) NSTextField *label_indicator;
@@ -54,6 +56,8 @@
 
 - (void)appendCanvasObject:(CanvasObject *)aCanvasObject;
 - (void)removeCanvasObject:(CanvasObject *)aCanvasObject;
+
+- (void)moveCanvasObjects:(NSArray *)mcoList aboveOf:(CanvasObject *)coBelow;
 
 - (BOOL)bringCanvasObjectToFront:(CanvasObject *)aCanvasObject;
 - (BOOL)bringCanvasObjectToBack:(CanvasObject *)aCanvasObject;

@@ -26,24 +26,24 @@
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
                     <scrollView horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" usesPredominantAxisScrolling="NO" id="5">
-                        <rect key="frame" x="-1" y="20" width="642" height="440"/>
+                        <rect key="frame" x="0.0" y="24" width="641" height="436"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <clipView key="contentView" id="SLD-9h-iWm">
-                            <rect key="frame" x="1" y="1" width="625" height="422"/>
+                            <rect key="frame" x="1" y="1" width="624" height="418"/>
                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                             <subviews>
                                 <view id="12">
-                                    <rect key="frame" x="0.0" y="0.0" width="640" height="437"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="639" height="433"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 </view>
                             </subviews>
                         </clipView>
                         <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="11">
-                            <rect key="frame" x="1" y="423" width="625" height="16"/>
+                            <rect key="frame" x="1" y="419" width="624" height="16"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                         <scroller key="verticalScroller" verticalHuggingPriority="750" doubleValue="1" horizontal="NO" id="10">
-                            <rect key="frame" x="626" y="1" width="15" height="422"/>
+                            <rect key="frame" x="625" y="1" width="15" height="418"/>
                             <autoresizingMask key="autoresizingMask"/>
                         </scroller>
                     </scrollView>
@@ -57,7 +57,7 @@
                         </textFieldCell>
                     </textField>
                     <comboBox verticalHuggingPriority="750" id="6">
-                        <rect key="frame" x="20" y="-2" width="99" height="26"/>
+                        <rect key="frame" x="64" y="0.0" width="99" height="26"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" refusesFirstResponder="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" usesSingleLineMode="YES" completes="NO" numberOfVisibleItems="4" id="9">
                             <font key="font" metaFont="system"/>
@@ -74,6 +74,28 @@
                             <action selector="comboBoxCanvasScaleChanged:" target="-2" id="50"/>
                         </connections>
                     </comboBox>
+                    <button id="vPv-s9-WWB">
+                        <rect key="frame" x="4" y="0.0" width="24" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="magnifying_glass_add" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="JnI-DM-tcz">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="zoomIn:" target="-2" id="haE-fH-kWU"/>
+                        </connections>
+                    </button>
+                    <button id="oOB-ux-2Vi">
+                        <rect key="frame" x="32" y="0.0" width="24" height="24"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="magnifying_glass_remove" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="1A3-aU-CCS">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="zoomOut:" target="-2" id="ifJ-Vb-Mge"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
             <connections>
@@ -81,4 +103,8 @@
             </connections>
         </window>
     </objects>
+    <resources>
+        <image name="magnifying_glass_add" width="32" height="32"/>
+        <image name="magnifying_glass_remove" width="32" height="32"/>
+    </resources>
 </document>

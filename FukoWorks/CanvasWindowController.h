@@ -29,6 +29,9 @@
 - (void)windowDidLoad;
 - (void)windowDidBecomeKey:(NSNotification *)notification;
 - (IBAction)comboBoxCanvasScaleChanged:(id)sender;
+- (IBAction)zoomIn:(id)sender;
+- (IBAction)zoomOut:(id)sender;
+
 - (IBAction)saveCanvasImageForFile:(id)sender;
 - (IBAction)saveEncodedCanvasStructureForFile:(id)sender;
 - (IBAction)loadEncodedCanvasStructureFromFile:(id)sender;

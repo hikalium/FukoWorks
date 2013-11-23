@@ -13,6 +13,9 @@
 		1728940F173E41E000071834 /* CanvasWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 1728940E173E41E000071834 /* CanvasWindow.xib */; };
 		173E70191840DF6E0046C002 /* arrow_up.png in Resources */ = {isa = PBXBuildFile; fileRef = 173E70181840DF6E0046C002 /* arrow_up.png */; };
 		173E701B1840DF760046C002 /* arrow_down.png in Resources */ = {isa = PBXBuildFile; fileRef = 173E701A1840DF760046C002 /* arrow_down.png */; };
+		173E701D1840F4830046C002 /* magnifying_glass_add.png in Resources */ = {isa = PBXBuildFile; fileRef = 173E701C1840F4830046C002 /* magnifying_glass_add.png */; };
+		173E701F1840F4890046C002 /* magnifying_glass_remove.png in Resources */ = {isa = PBXBuildFile; fileRef = 173E701E1840F4890046C002 /* magnifying_glass_remove.png */; };
+		173E70221840FCEA0046C002 /* OverlayCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 173E70211840FCEA0046C002 /* OverlayCanvasView.m */; };
 		174A840A170433B500A53520 /* CanvasObject.m in Sources */ = {isa = PBXBuildFile; fileRef = 174A8409170433B500A53520 /* CanvasObject.m */; };
 		174A840D1704397100A53520 /* CanvasObjectEllipse.m in Sources */ = {isa = PBXBuildFile; fileRef = 174A840C1704397100A53520 /* CanvasObjectEllipse.m */; };
 		174A841017043F9600A53520 /* icon_rectangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 174A840E17043F9600A53520 /* icon_rectangle.png */; };
@@ -54,6 +57,10 @@
 		1728940E173E41E000071834 /* CanvasWindow.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CanvasWindow.xib; sourceTree = "<group>"; };
 		173E70181840DF6E0046C002 /* arrow_up.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_up.png; sourceTree = "<group>"; };
 		173E701A1840DF760046C002 /* arrow_down.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = arrow_down.png; sourceTree = "<group>"; };
+		173E701C1840F4830046C002 /* magnifying_glass_add.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = magnifying_glass_add.png; sourceTree = "<group>"; };
+		173E701E1840F4890046C002 /* magnifying_glass_remove.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = magnifying_glass_remove.png; sourceTree = "<group>"; };
+		173E70201840FCEA0046C002 /* OverlayCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OverlayCanvasView.h; sourceTree = "<group>"; };
+		173E70211840FCEA0046C002 /* OverlayCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OverlayCanvasView.m; sourceTree = "<group>"; };
 		174A8408170433B500A53520 /* CanvasObject.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObject.h; sourceTree = "<group>"; };
 		174A8409170433B500A53520 /* CanvasObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObject.m; sourceTree = "<group>"; };
 		174A840B1704397100A53520 /* CanvasObjectEllipse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectEllipse.h; sourceTree = "<group>"; };
@@ -157,6 +164,8 @@
 				17FFED6F180A66BF0029F6F4 /* CanvasObjectListWindowController.xib */,
 				17BCF81416F4400300E7E472 /* MainCanvasView.h */,
 				17BCF81516F4400300E7E472 /* MainCanvasView.m */,
+				173E70201840FCEA0046C002 /* OverlayCanvasView.h */,
+				173E70211840FCEA0046C002 /* OverlayCanvasView.m */,
 			);
 			name = UserInterface;
 			sourceTree = "<group>";
@@ -164,6 +173,8 @@
 		174A841217043FB200A53520 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				173E701E1840F4890046C002 /* magnifying_glass_remove.png */,
+				173E701C1840F4830046C002 /* magnifying_glass_add.png */,
 				173E701A1840DF760046C002 /* arrow_down.png */,
 				173E70181840DF6E0046C002 /* arrow_up.png */,
 				17968632181CEAA600BA65E4 /* iconEllipse.png */,
@@ -298,6 +309,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				173E701F1840F4890046C002 /* magnifying_glass_remove.png in Resources */,
 				17BCF7FD16F42BDD00E7E472 /* InfoPlist.strings in Resources */,
 				17BCF80916F42BDD00E7E472 /* MainMenu.xib in Resources */,
 				17BCF81316F43F9100E7E472 /* Credits.rtf in Resources */,
@@ -309,6 +321,7 @@
 				174A841017043F9600A53520 /* icon_rectangle.png in Resources */,
 				17968636181CEAA600BA65E4 /* iconPaintFrame.png in Resources */,
 				174A841117043F9600A53520 /* icon_ellipse.png in Resources */,
+				173E701D1840F4830046C002 /* magnifying_glass_add.png in Resources */,
 				174A841417050F1500A53520 /* icon_cursor.png in Resources */,
 				17B41E1E1707A5F400E535FB /* ToolboxController.xib in Resources */,
 				1728940F173E41E000071834 /* CanvasWindow.xib in Resources */,
@@ -356,6 +369,7 @@
 				17677F4517648AEA00F12210 /* InspectorWindowController.m in Sources */,
 				17677F7417678B1900F12210 /* NSData+HexadecimalConversion.m in Sources */,
 				17968631181C9D3300BA65E4 /* NSColor+StringConversion.m in Sources */,
+				173E70221840FCEA0046C002 /* OverlayCanvasView.m in Sources */,
 				1796862E181BC15E00BA65E4 /* NSString+PixelConversion.m in Sources */,
 				17FFED70180A66BF0029F6F4 /* CanvasObjectListWindowController.m in Sources */,
 			);

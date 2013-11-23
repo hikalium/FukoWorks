@@ -111,6 +111,18 @@
     
     [label_indicator setStringValue:[NSString stringWithFormat:@"scaleSet:%f", scale]];
     NSLog(@"scaleSet:%@ %f", NSStringFromPoint(scrollPoint), changeScale);
+    comboBoxCanvasScale.integerValue = scale * 100;
+}
+
+- (IBAction)zoomIn:(id)sender {
+    comboBoxCanvasScale.integerValue *= sqrt(sqrt(2));
+    [self comboBoxCanvasScaleChanged:sender];
+}
+
+- (IBAction)zoomOut:(id)sender {
+    comboBoxCanvasScale.integerValue /= sqrt(sqrt(2));
+    
+    [self comboBoxCanvasScaleChanged:sender];
 }
 
 - (void)saveCanvasImageForFile:(id)sender

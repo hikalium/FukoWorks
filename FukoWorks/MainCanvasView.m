@@ -9,6 +9,7 @@
 #import "MainCanvasView.h"
 #import "CanvasObjectListWindowController.h"
 
+
 @implementation MainCanvasView
 
 //
@@ -44,6 +45,7 @@
         drawingPaintFrame = nil;
     }
     
+    [overlayView setNeedsDisplay:YES];
 }
 - (NSSize)canvasSize{
     return baseFrame.size;
@@ -51,6 +53,7 @@
 - (void)setCanvasSize:(NSSize)canvasSize
 {
     baseFrame.size = canvasSize;
+    [overlayView setFrameSize:baseFrame.size];
     [self setCanvasScale:self.canvasScale];
 }
 
@@ -79,6 +82,10 @@
         
         inspectorWindows = [NSMutableArray array];
         _canvasObjects = [NSMutableArray array];
+        
+        overlayView = [[OverlayCanvasView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        [self addSubview:overlayView];
+        overlayView.canvasObjectList = _canvasObjects;
         
         NSLog(@"Init %@ \n%@\n", self.className, self.subviews.description);
     }
@@ -278,7 +285,7 @@
 
 - (void)appendCanvasObject:(CanvasObject *)aCanvasObject
 {
-    [self addSubview:aCanvasObject];
+    [self addSubview:aCanvasObject positioned:NSWindowBelow relativeTo:overlayView];
     [_canvasObjects addObject:aCanvasObject];
     NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
     [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] reloadData];
@@ -301,6 +308,33 @@
         NSLog(@"Removed CanvasObject. \n%@\n", self.subviews.description);
     }
     [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] reloadData];
+}
+
+- (void)moveCanvasObjects:(NSArray *)mcoList aboveOf:(CanvasObject *)coBelow
+{
+    //coBelow == nilの時は、一番下に追加することを示す。
+    NSUInteger i, coBelowIndex;
+    CanvasObject *co;
+    for(i = 0; i < mcoList.count; i++){
+        co = mcoList[i];
+        [co removeFromSuperview];
+        [_canvasObjects removeObject:co];
+    }
+    coBelowIndex = [_canvasObjects indexOfObject:coBelow];
+    if(coBelow && coBelowIndex == NSNotFound){
+        return;
+    }
+    for(i = 0; i < mcoList.count; i++){
+        co = mcoList[i];
+        if(coBelow){
+            [self addSubview:co positioned:NSWindowAbove relativeTo:coBelow];
+            [_canvasObjects insertObject:co atIndex:coBelowIndex + 1];
+        } else{
+            [self addSubview:co positioned:NSWindowBelow relativeTo:nil];
+            [_canvasObjects insertObject:co atIndex:0];
+        }
+        
+    }
 }
 
 - (BOOL)bringCanvasObjectToFront:(CanvasObject *)aCanvasObject
