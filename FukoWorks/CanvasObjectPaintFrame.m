@@ -134,6 +134,8 @@
 
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
 {
+    currentPointInCanvas = [self getNSPointIntegral:currentPointInCanvas];
+    //
     [[self.undoManager prepareWithInvocationTarget:self] setFrame:self.frame];
     //https://github.com/Pixen/Pixen/issues/228
     [self.undoManager endUndoGrouping];
@@ -144,8 +146,15 @@
     return self;
 }
 
+- (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas
+{
+    return [super drawMouseDragged:[self getNSPointIntegral:currentPointInCanvas]];
+}
+
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
 {
+    currentPointInCanvas = [self getNSPointIntegral:currentPointInCanvas];
+    //
     [self setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
     [self setNeedsDisplay:YES];
     //
@@ -155,9 +164,24 @@
     return nil;
 }
 
+//
+//
+//
+
+- (void)editHandleDown:(NSPoint)currentHandlePointInCanvas :(NSInteger)tag
+{
+    [super editHandleDown:[self getNSPointIntegral:currentHandlePointInCanvas] :tag];
+}
+
+- (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas :(NSInteger)tag
+{
+    [super editHandleDragged:[self getNSPointIntegral:currentHandlePointInCanvas] :tag];
+}
 
 - (void)editHandleUp:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
 {
+    currentHandlePointInCanvas = [self getNSPointIntegral:currentHandlePointInCanvas];
+
     [super editHandleUp:currentHandlePointInCanvas :tag];
     [self resetPaintContext];
 }
@@ -168,17 +192,29 @@
 
 - (void)drawPaintFrameMouseDown:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode
 {
-    NSPoint localPoint = [self convertPoint:currentPointInCanvas fromView:self.superview];
+    NSPoint localPoint = [self getNSPointIntegral:[self convertPoint:currentPointInCanvas fromView:self.superview]];
     
     drawingStartPoint = localPoint;
     
+    if(mode == PaintPen){
+        //ペンはクリックした時点で点を打つ
+        CGContextBeginPath(editingContext);
+        CGContextMoveToPoint(editingContext, drawingStartPoint.x - (self.StrokeWidth / 2), drawingStartPoint.y);
+        CGContextAddLineToPoint(editingContext, drawingStartPoint.x + (self.StrokeWidth / 2), drawingStartPoint.y);
+        CGContextClosePath(editingContext);
+        CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
+        CGContextSetLineWidth(editingContext, self.StrokeWidth);
+        CGContextStrokePath(editingContext);
+        NSLog(@"drawPoint!%f",self.StrokeWidth);
+        [self setNeedsDisplay:YES];
+    }
 }
 - (void)drawPaintFrameMouseDragged:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode
 {
-    NSPoint localPoint = [self convertPoint:currentPointInCanvas fromView:self.superview];
+    NSPoint localPoint = [self getNSPointIntegral:[self convertPoint:currentPointInCanvas fromView:self.superview]];
     CGRect rect;
     
-    if(mode > PaintToolsBase){
+    if(mode > PaintToolsBase && mode != PaintPen){
         //描画中なので、編集中コンテキストをクリア
         //NSLog(@"%@", NSStringFromPoint(localPoint));
         CGContextClearRect(editingContext, contextRect);
@@ -192,6 +228,7 @@
             case PaintRectangle:
                 CGContextSetFillColorWithColor(editingContext, self.FillColor.CGColor);
                 CGContextFillRect(editingContext, rect);
+                //
                 CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
                 CGContextStrokeRectWithWidth(editingContext, rect, self.StrokeWidth);
                 break;
@@ -199,11 +236,19 @@
                 CGContextAddEllipseInRect(editingContext, rect);
                 CGContextSetFillColorWithColor(editingContext, self.FillColor.CGColor);
                 CGContextFillPath(editingContext);
-                
+                //
                 CGContextAddEllipseInRect(editingContext, rect);
                 CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
                 CGContextSetLineWidth(editingContext, self.StrokeWidth);
                 CGContextStrokePath(editingContext);
+                break;
+            case PaintPen:
+                CGContextMoveToPoint(editingContext, drawingStartPoint.x, drawingStartPoint.y);
+                CGContextAddLineToPoint(editingContext, localPoint.x, localPoint.y);
+                CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
+                CGContextSetLineWidth(editingContext, self.StrokeWidth);
+                CGContextStrokePath(editingContext);
+                drawingStartPoint = localPoint;
                 break;
             default:
                 break;
@@ -215,7 +260,7 @@
 }
 - (void)drawPaintFrameMouseUp:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode
 {
-    //NSPoint localPoint = [self convertPoint:currentPointInCanvas fromView:self.superview];
+    //NSPoint localPoint = [self getNSPointIntegral:[self convertPoint:currentPointInCanvas fromView:self.superview]];
     
     CGImageRef editingImage;
     
@@ -223,11 +268,21 @@
     if(mode > PaintToolsBase){
         editingImage = CGBitmapContextCreateImage(editingContext);
         
+        CGContextSetShouldAntialias(paintContext, false);
         CGContextDrawImage(paintContext, contextRect, editingImage);
         CGContextClearRect(editingContext, contextRect);
         
         CGImageRelease(editingImage);
     }
+}
+
+- (NSPoint)getNSPointIntegral: (NSPoint)basePoint
+{
+    basePoint.x += 0.5;
+    basePoint.y += 0.5;
+    basePoint.x = floor(basePoint.x) + 0.5;
+    basePoint.y = floor(basePoint.y) + 0.5;
+    return basePoint;
 }
 
 @end

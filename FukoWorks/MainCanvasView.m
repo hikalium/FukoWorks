@@ -43,6 +43,7 @@
     } else{
         drawingPaintFrame = nil;
     }
+    
 }
 - (NSSize)canvasSize{
     return baseFrame.size;
@@ -72,8 +73,6 @@
         backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
         _canvasScale = 1;
         
-        clickOnly = false;
-                
         editingObject = nil;
         _focusedObject = nil;
         movingObject = nil;
@@ -110,8 +109,6 @@
     
     //key取得のためにFirstResponderに設定
     [self.superview.window makeFirstResponder:self];
-    //ドラッグしたらNOにする。
-    clickOnly = YES;
     
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDw:%@", NSStringFromPoint(currentPoint)]];
@@ -141,6 +138,7 @@
                 break;
             case PaintRectangle:
             case PaintEllipse:
+            case PaintPen:
                 NSLog(@"Draw in paint frame.\n");
                 break;
             default:
@@ -172,10 +170,7 @@
 - (void)mouseDragged:(NSEvent*)event
 {
     NSPoint currentPoint;
-    
-    //ドラッグしたのでクリックのみではなかったと記録
-    clickOnly = NO;
-    
+        
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDr:%@", NSStringFromPoint(currentPoint)]];
     
@@ -206,8 +201,8 @@
     //ペイント枠に描くなら描く
     [drawingPaintFrame drawPaintFrameMouseUp:currentPoint mode:self.toolboxController.drawingObjectType];
     
-    if(clickOnly){
-        //ドラッグしなかったので、クリックのみ。
+    if([event clickCount] == 1){
+        //クリック。
         //フォーカスを与える。
         self.focusedObject = [self getCanvasObjectAtCursorLocation:event];
     }
@@ -244,6 +239,9 @@
 {
     //self.focusedObject = [self getCanvasObjectAtCursorLocation:theEvent];
 }
+
+
+
 /*
 - (void)keyDown:(NSEvent *)theEvent
 {

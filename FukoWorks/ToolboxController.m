@@ -21,9 +21,11 @@
     if([_editingObject isKindOfClass:[CanvasObjectPaintFrame class]]){
         [toolPaintRect setEnabled:YES];
         [toolPaintEllipse setEnabled:YES];
+        [toolPaintPen setEnabled:YES];
     } else{
         [toolPaintRect setEnabled:NO];
         [toolPaintEllipse setEnabled:NO];
+        [toolPaintPen setEnabled:YES];
     }
     if([_editingObject isKindOfClass:[CanvasObject class]]){
         if(editingObject.FillColor){

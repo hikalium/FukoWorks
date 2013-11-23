@@ -20,6 +20,7 @@
     
     IBOutlet NSButton *toolPaintRect;
     IBOutlet NSButton *toolPaintEllipse;
+    IBOutlet NSButton *toolPaintPen;
     
     NSButton *selectedDrawingObjectTypeButton;
 }
@@ -35,6 +36,7 @@
 //
 //  101 ペイント矩形
 //  102 ペイント楕円
+//  103 ペイントペン
 @property (nonatomic) CanvasObject *editingObject;
 
 - (id)init;

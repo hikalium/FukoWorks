@@ -19,6 +19,7 @@ typedef enum : NSInteger {
     PaintToolsBase = 100,
     PaintRectangle,
     PaintEllipse,
+    PaintPen,
 } CanvasObjectType;
 
 #define FWK_PASTEBOARD_TYPE @"FWKCanvasObjDataStr"

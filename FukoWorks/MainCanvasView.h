@@ -19,7 +19,6 @@
     NSUndoManager *undoManager;
     NSPoint drawingStartPoint;
     NSPoint drawingDragPoint;
-    bool clickOnly;
     
     CGColorRef backgroundColor;
     

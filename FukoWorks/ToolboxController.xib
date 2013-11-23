@@ -12,6 +12,7 @@
                 <outlet property="sliderStrokeWidth" destination="13" id="57"/>
                 <outlet property="textFieldStrokeWidth" destination="12" id="58"/>
                 <outlet property="toolPaintEllipse" destination="71" id="77"/>
+                <outlet property="toolPaintPen" destination="01A-af-Tpb" id="ju9-LU-wE8"/>
                 <outlet property="toolPaintRect" destination="70" id="76"/>
                 <outlet property="toolbox" destination="5" id="54"/>
                 <outlet property="window" destination="5" id="66"/>
@@ -100,7 +101,7 @@
                         </connections>
                     </button>
                     <button tag="3" id="67">
-                        <rect key="frame" x="20" y="347" width="32" height="33"/>
+                        <rect key="frame" x="20" y="344" width="32" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconPaintFrame" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="68">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
@@ -130,6 +131,17 @@
                         </buttonCell>
                         <connections>
                             <action selector="drawingObjectTypeChanged:" target="-2" id="75"/>
+                        </connections>
+                    </button>
+                    <button tag="103" id="01A-af-Tpb">
+                        <rect key="frame" x="20" y="180" width="32" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconRect" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="Lyb-P0-SCP">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="drawingObjectTypeChanged:" target="-2" id="WqE-rh-NTW"/>
                         </connections>
                     </button>
                 </subviews>
