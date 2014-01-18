@@ -36,8 +36,16 @@
 
 - (BOOL)windowShouldClose:(id)sender
 {
-    NSBeginAlertSheet(@"FukoWorks", @"No", @"Yes", nil, mainWindow, self.self, @selector(windowShouldClose_SheetClosed:returnCode:contextInfo:), nil, nil, @"キャンバスを閉じてもよろしいですか？");
-    
+    NSBeginAlertSheet(@"FukoWorks",
+                      @"No",
+                      @"Yes",
+                      nil,
+                      mainWindow,
+                      self.self,
+                      @selector(windowShouldClose_SheetClosed:returnCode:contextInfo:),
+                      nil,
+                      nil,
+                      @"キャンバスを閉じてもよろしいですか？");
     return NO;
 }
 
@@ -45,9 +53,7 @@
 {
     switch (returnCode) {
         case NSAlertDefaultReturn:
-            
             break;
-            
         case NSAlertAlternateReturn:
             [mainWindow close];
             break;

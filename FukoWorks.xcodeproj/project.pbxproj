@@ -25,6 +25,9 @@
 		17677F4517648AEA00F12210 /* InspectorWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17677F4317648AE900F12210 /* InspectorWindowController.m */; };
 		17677F4617648AEA00F12210 /* InspectorWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17677F4417648AE900F12210 /* InspectorWindowController.xib */; };
 		17677F7417678B1900F12210 /* NSData+HexadecimalConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 17677F7317678B1900F12210 /* NSData+HexadecimalConversion.m */; };
+		176E66A6188AB2D9007216EB /* icon_512x512.png in Resources */ = {isa = PBXBuildFile; fileRef = 176E66A5188AB2D9007216EB /* icon_512x512.png */; };
+		176E66A8188AB2ED007216EB /* icon_256x256.png in Resources */ = {isa = PBXBuildFile; fileRef = 176E66A7188AB2ED007216EB /* icon_256x256.png */; };
+		176E66AB188AC4C0007216EB /* SubCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E66AA188AC4BF007216EB /* SubCanvasView.m */; };
 		176EEFE01707C16800F56FF4 /* ToolboxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 176EEFDF1707C16800F56FF4 /* ToolboxController.m */; };
 		177F33F8172E63D9004D6778 /* CanvasObjectHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */; };
 		1796862E181BC15E00BA65E4 /* NSString+PixelConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1796862D181BC15E00BA65E4 /* NSString+PixelConversion.m */; };
@@ -75,6 +78,10 @@
 		17677F4417648AE900F12210 /* InspectorWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = InspectorWindowController.xib; sourceTree = "<group>"; };
 		17677F7217678B1900F12210 /* NSData+HexadecimalConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+HexadecimalConversion.h"; sourceTree = "<group>"; };
 		17677F7317678B1900F12210 /* NSData+HexadecimalConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSData+HexadecimalConversion.m"; sourceTree = "<group>"; };
+		176E66A5188AB2D9007216EB /* icon_512x512.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_512x512.png; sourceTree = "<group>"; };
+		176E66A7188AB2ED007216EB /* icon_256x256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_256x256.png; sourceTree = "<group>"; };
+		176E66A9188AC4BF007216EB /* SubCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubCanvasView.h; sourceTree = "<group>"; };
+		176E66AA188AC4BF007216EB /* SubCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubCanvasView.m; sourceTree = "<group>"; };
 		176EEFDE1707C16200F56FF4 /* ToolboxController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolboxController.h; sourceTree = "<group>"; };
 		176EEFDF1707C16800F56FF4 /* ToolboxController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolboxController.m; sourceTree = "<group>"; };
 		177F33F6172E63D9004D6778 /* CanvasObjectHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectHandle.h; sourceTree = "<group>"; };
@@ -105,8 +112,8 @@
 		17BCF80F16F4354D00E7E472 /* ja */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = ja; path = ja.lproj/MainMenu.xib; sourceTree = "<group>"; };
 		17BCF81016F4354D00E7E472 /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		17BCF81216F43F9100E7E472 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
-		17BCF81416F4400300E7E472 /* MainCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainCanvasView.h; sourceTree = "<group>"; };
-		17BCF81516F4400300E7E472 /* MainCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainCanvasView.m; sourceTree = "<group>"; };
+		17BCF81416F4400300E7E472 /* MainCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MainCanvasView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		17BCF81516F4400300E7E472 /* MainCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MainCanvasView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		17FFED6D180A66BF0029F6F4 /* CanvasObjectListWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectListWindowController.h; sourceTree = "<group>"; };
 		17FFED6E180A66BF0029F6F4 /* CanvasObjectListWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectListWindowController.m; sourceTree = "<group>"; };
 		17FFED6F180A66BF0029F6F4 /* CanvasObjectListWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CanvasObjectListWindowController.xib; sourceTree = "<group>"; };
@@ -164,6 +171,8 @@
 				17FFED6F180A66BF0029F6F4 /* CanvasObjectListWindowController.xib */,
 				17BCF81416F4400300E7E472 /* MainCanvasView.h */,
 				17BCF81516F4400300E7E472 /* MainCanvasView.m */,
+				176E66A9188AC4BF007216EB /* SubCanvasView.h */,
+				176E66AA188AC4BF007216EB /* SubCanvasView.m */,
 				173E70201840FCEA0046C002 /* OverlayCanvasView.h */,
 				173E70211840FCEA0046C002 /* OverlayCanvasView.m */,
 			);
@@ -173,6 +182,8 @@
 		174A841217043FB200A53520 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				176E66A5188AB2D9007216EB /* icon_512x512.png */,
+				176E66A7188AB2ED007216EB /* icon_256x256.png */,
 				173E701E1840F4890046C002 /* magnifying_glass_remove.png */,
 				173E701C1840F4830046C002 /* magnifying_glass_add.png */,
 				173E701A1840DF760046C002 /* arrow_down.png */,
@@ -323,11 +334,13 @@
 				17BCF81316F43F9100E7E472 /* Credits.rtf in Resources */,
 				17968635181CEAA600BA65E4 /* iconEllipse.png in Resources */,
 				17968637181CEAA600BA65E4 /* iconRect.png in Resources */,
+				176E66A8188AB2ED007216EB /* icon_256x256.png in Resources */,
 				173E701B1840DF760046C002 /* arrow_down.png in Resources */,
 				17B089BF16F7B1520006FA2C /* FukoWorks.icns in Resources */,
 				170C3AFF170194DE0030CA0C /* PreferenceWindowController.xib in Resources */,
 				174A841017043F9600A53520 /* icon_rectangle.png in Resources */,
 				17968636181CEAA600BA65E4 /* iconPaintFrame.png in Resources */,
+				176E66A6188AB2D9007216EB /* icon_512x512.png in Resources */,
 				174A841117043F9600A53520 /* icon_ellipse.png in Resources */,
 				173E701D1840F4830046C002 /* magnifying_glass_add.png in Resources */,
 				174A841417050F1500A53520 /* icon_cursor.png in Resources */,
@@ -369,6 +382,7 @@
 				17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */,
 				1796863A181D0BED00BA65E4 /* CanvasObjectRectFrameBase.m in Sources */,
 				170C3AFE170194DE0030CA0C /* PreferenceWindowController.m in Sources */,
+				176E66AB188AC4C0007216EB /* SubCanvasView.m in Sources */,
 				174A840A170433B500A53520 /* CanvasObject.m in Sources */,
 				174A840D1704397100A53520 /* CanvasObjectEllipse.m in Sources */,
 				176EEFE01707C16800F56FF4 /* ToolboxController.m in Sources */,

@@ -14,15 +14,21 @@
 
 @interface AppDelegate : NSObject <NSApplicationDelegate>
 {
-    IBOutlet NSWindow *menuWindow;
+    //IBOutlet NSWindow *menuWindow;
     NSMutableArray *Canvases;
     ToolboxController *toolboxController;
     CanvasObjectListWindowController *objectListController;
+    
+    //For splashWindow
+    IBOutlet NSWindow *splashWindow;
+    IBOutlet NSTextField *splashVersionLabel;
+    IBOutlet NSTextField *splashBuildLabel;
 }
 
 - (IBAction)showPreferenceWindow:(id)sender;
 - (IBAction)showToolBox:(id)sender;
 - (IBAction)showCanvasObjectListWindow:(id)sender;
 - (IBAction)createNewDrawCanvas:(id)sender;
+- (IBAction)openFile:(id)sender;
 
 @end

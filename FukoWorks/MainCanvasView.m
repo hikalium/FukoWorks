@@ -83,9 +83,12 @@
         inspectorWindows = [NSMutableArray array];
         _canvasObjects = [NSMutableArray array];
         
-        overlayView = [[OverlayCanvasView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
-        [self addSubview:overlayView];
-        overlayView.canvasObjectList = _canvasObjects;
+        //overlayView = [[OverlayCanvasView alloc] initWithFrame:CGRectMake(0, 0, frame.size.width, frame.size.height)];
+        //[self addSubview:overlayView];
+        //overlayView.canvasObjectList = _canvasObjects;
+        
+        rootSubCanvas = [[SubCanvasView alloc] initWithFrame:frame];
+        [self addSubview:rootSubCanvas];
         
         NSLog(@"Init %@ \n%@\n", self.className, self.subviews.description);
     }
@@ -159,7 +162,7 @@
             editingObject.StrokeColor = self.toolboxController.drawingStrokeColor;
             editingObject.StrokeWidth = self.toolboxController.drawingStrokeWidth;
             editingObject.undoManager = undoManager;
-            [self appendCanvasObject:editingObject];
+            [self addCanvasObject:editingObject];
             
             editingObject = [editingObject drawMouseDown:currentPoint];
         }
@@ -283,11 +286,12 @@
 
 // add / remove CanvasObject
 
-- (void)appendCanvasObject:(CanvasObject *)aCanvasObject
+- (void)addCanvasObject:(CanvasObject *)aCanvasObject
 {
-    [self addSubview:aCanvasObject positioned:NSWindowBelow relativeTo:overlayView];
+    //最上面に追加
+    [rootSubCanvas addSubview:aCanvasObject positioned:NSWindowAbove relativeTo:nil];
     [_canvasObjects addObject:aCanvasObject];
-    NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
+    NSLog(@"Added CanvasObject to %@ \n%@\n", rootSubCanvas.className, rootSubCanvas.subviews.description);
     [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] reloadData];
 }
 
@@ -305,7 +309,7 @@
     [aCanvasObject removeFromSuperview];
     [_canvasObjects removeObject:aCanvasObject];
     if(aCanvasObject != nil){
-        NSLog(@"Removed CanvasObject. \n%@\n", self.subviews.description);
+        NSLog(@"Removed CanvasObject. \n%@\n", rootSubCanvas.subviews.description);
     }
     [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] reloadData];
 }
@@ -551,7 +555,7 @@
                 break;
         }
         if(aCanvasObject != nil){
-            [self appendCanvasObject:aCanvasObject];
+            [self addCanvasObject:aCanvasObject];
             NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
         }
     }
