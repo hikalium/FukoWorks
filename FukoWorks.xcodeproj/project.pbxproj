@@ -65,9 +65,9 @@
 		174A8409170433B500A53520 /* CanvasObject.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObject.m; sourceTree = "<group>"; };
 		174A840B1704397100A53520 /* CanvasObjectEllipse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectEllipse.h; sourceTree = "<group>"; };
 		174A840C1704397100A53520 /* CanvasObjectEllipse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectEllipse.m; sourceTree = "<group>"; };
-		174A840E17043F9600A53520 /* icon_rectangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_rectangle.png; path = ../icon_rectangle.png; sourceTree = "<group>"; };
-		174A840F17043F9600A53520 /* icon_ellipse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_ellipse.png; path = ../icon_ellipse.png; sourceTree = "<group>"; };
-		174A841317050F1500A53520 /* icon_cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = icon_cursor.png; path = ../icon_cursor.png; sourceTree = "<group>"; };
+		174A840E17043F9600A53520 /* icon_rectangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_rectangle.png; sourceTree = "<group>"; };
+		174A840F17043F9600A53520 /* icon_ellipse.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_ellipse.png; sourceTree = "<group>"; };
+		174A841317050F1500A53520 /* icon_cursor.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_cursor.png; sourceTree = "<group>"; };
 		17677F3F17647BC500F12210 /* CanvasObjectPaintFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectPaintFrame.h; sourceTree = "<group>"; };
 		17677F4017647BC500F12210 /* CanvasObjectPaintFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectPaintFrame.m; sourceTree = "<group>"; };
 		17677F4217648AE900F12210 /* InspectorWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = InspectorWindowController.h; sourceTree = "<group>"; };
@@ -187,6 +187,19 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
+		176E66A4188AAEE9007216EB /* Categories */ = {
+			isa = PBXGroup;
+			children = (
+				17677F7217678B1900F12210 /* NSData+HexadecimalConversion.h */,
+				17677F7317678B1900F12210 /* NSData+HexadecimalConversion.m */,
+				1796862C181BC15E00BA65E4 /* NSString+PixelConversion.h */,
+				1796862D181BC15E00BA65E4 /* NSString+PixelConversion.m */,
+				1796862F181C9D3300BA65E4 /* NSColor+StringConversion.h */,
+				17968630181C9D3300BA65E4 /* NSColor+StringConversion.m */,
+			);
+			name = Categories;
+			sourceTree = "<group>";
+		};
 		17BCF7E616F42BDC00E7E472 = {
 			isa = PBXGroup;
 			children = (
@@ -226,15 +239,10 @@
 		17BCF7F816F42BDD00E7E472 /* FukoWorks */ = {
 			isa = PBXGroup;
 			children = (
+				176E66A4188AAEE9007216EB /* Categories */,
 				1728940D173E402F00071834 /* FukoWorks.h */,
 				17BCF80416F42BDD00E7E472 /* AppDelegate.h */,
 				17BCF80516F42BDD00E7E472 /* AppDelegate.m */,
-				17677F7217678B1900F12210 /* NSData+HexadecimalConversion.h */,
-				17677F7317678B1900F12210 /* NSData+HexadecimalConversion.m */,
-				1796862C181BC15E00BA65E4 /* NSString+PixelConversion.h */,
-				1796862D181BC15E00BA65E4 /* NSString+PixelConversion.m */,
-				1796862F181C9D3300BA65E4 /* NSColor+StringConversion.h */,
-				17968630181C9D3300BA65E4 /* NSColor+StringConversion.m */,
 				170A83241707A302003A6AB9 /* CanvasObject */,
 				174A841217043FB200A53520 /* Resources */,
 				17BCF7F916F42BDD00E7E472 /* Supporting Files */,
