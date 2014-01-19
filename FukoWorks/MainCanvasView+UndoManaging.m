@@ -1,0 +1,24 @@
+//
+//  MainCanvasView+UndoManaging.m
+//  FukoWorks
+//
+//  Created by 西田　耀 on 2014/01/19.
+//  Copyright (c) 2014年 TokyoGakugeiUniversitySeniorHighSchool. All rights reserved.
+//
+
+#import "MainCanvasView.h"
+
+@implementation MainCanvasView (UndoManaging)
+//
+// Undo / Redo
+//
+
+- (IBAction)undo:(id)sender
+{
+    [undoManager undo];
+}
+- (IBAction)redo:(id)sender
+{
+    [undoManager redo];
+}
+@end

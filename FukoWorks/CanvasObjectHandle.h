@@ -8,6 +8,7 @@
 
 #import <Cocoa/Cocoa.h>
 #import "CanvasObject.h"
+#import "CanvasObjectHandling.h"
 
 @interface CanvasObjectHandle : NSView
 {

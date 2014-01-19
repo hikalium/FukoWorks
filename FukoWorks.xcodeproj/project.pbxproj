@@ -28,6 +28,12 @@
 		176E66A6188AB2D9007216EB /* icon_512x512.png in Resources */ = {isa = PBXBuildFile; fileRef = 176E66A5188AB2D9007216EB /* icon_512x512.png */; };
 		176E66A8188AB2ED007216EB /* icon_256x256.png in Resources */ = {isa = PBXBuildFile; fileRef = 176E66A7188AB2ED007216EB /* icon_256x256.png */; };
 		176E66AB188AC4C0007216EB /* SubCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E66AA188AC4BF007216EB /* SubCanvasView.m */; };
+		176E66B6188BA3C0007216EB /* NSString+UUIDGeneration.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E66B5188BA3C0007216EB /* NSString+UUIDGeneration.m */; };
+		176E66BA188BB543007216EB /* MainCanvasView+CanvasObjectSelection.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E66B9188BB543007216EB /* MainCanvasView+CanvasObjectSelection.m */; };
+		176E66BD188BB6FF007216EB /* MainCanvasView+UndoManaging.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E66BC188BB6FF007216EB /* MainCanvasView+UndoManaging.m */; };
+		176E66C0188BB7A9007216EB /* MainCanvasView+Printing.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E66BF188BB7A9007216EB /* MainCanvasView+Printing.m */; };
+		176E66C3188BB86A007216EB /* MainCanvasView+Sorting.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E66C2188BB86A007216EB /* MainCanvasView+Sorting.m */; };
+		176E66C6188BB9B0007216EB /* MainCanvasView+UserInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E66C5188BB9AF007216EB /* MainCanvasView+UserInteraction.m */; };
 		176EEFE01707C16800F56FF4 /* ToolboxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 176EEFDF1707C16800F56FF4 /* ToolboxController.m */; };
 		177F33F8172E63D9004D6778 /* CanvasObjectHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */; };
 		1796862E181BC15E00BA65E4 /* NSString+PixelConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1796862D181BC15E00BA65E4 /* NSString+PixelConversion.m */; };
@@ -82,6 +88,14 @@
 		176E66A7188AB2ED007216EB /* icon_256x256.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = icon_256x256.png; sourceTree = "<group>"; };
 		176E66A9188AC4BF007216EB /* SubCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SubCanvasView.h; sourceTree = "<group>"; };
 		176E66AA188AC4BF007216EB /* SubCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SubCanvasView.m; sourceTree = "<group>"; };
+		176E66AC188B8E53007216EB /* CanvasObjectHandling.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CanvasObjectHandling.h; sourceTree = "<group>"; };
+		176E66B4188BA3C0007216EB /* NSString+UUIDGeneration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+UUIDGeneration.h"; sourceTree = "<group>"; };
+		176E66B5188BA3C0007216EB /* NSString+UUIDGeneration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+UUIDGeneration.m"; sourceTree = "<group>"; };
+		176E66B9188BB543007216EB /* MainCanvasView+CanvasObjectSelection.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MainCanvasView+CanvasObjectSelection.m"; sourceTree = "<group>"; };
+		176E66BC188BB6FF007216EB /* MainCanvasView+UndoManaging.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MainCanvasView+UndoManaging.m"; sourceTree = "<group>"; };
+		176E66BF188BB7A9007216EB /* MainCanvasView+Printing.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MainCanvasView+Printing.m"; sourceTree = "<group>"; };
+		176E66C2188BB86A007216EB /* MainCanvasView+Sorting.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MainCanvasView+Sorting.m"; sourceTree = "<group>"; };
+		176E66C5188BB9AF007216EB /* MainCanvasView+UserInteraction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MainCanvasView+UserInteraction.m"; sourceTree = "<group>"; };
 		176EEFDE1707C16200F56FF4 /* ToolboxController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ToolboxController.h; sourceTree = "<group>"; };
 		176EEFDF1707C16800F56FF4 /* ToolboxController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolboxController.m; sourceTree = "<group>"; };
 		177F33F6172E63D9004D6778 /* CanvasObjectHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectHandle.h; sourceTree = "<group>"; };
@@ -169,8 +183,7 @@
 				17FFED6D180A66BF0029F6F4 /* CanvasObjectListWindowController.h */,
 				17FFED6E180A66BF0029F6F4 /* CanvasObjectListWindowController.m */,
 				17FFED6F180A66BF0029F6F4 /* CanvasObjectListWindowController.xib */,
-				17BCF81416F4400300E7E472 /* MainCanvasView.h */,
-				17BCF81516F4400300E7E472 /* MainCanvasView.m */,
+				176E66B7188BB4D3007216EB /* MainCanvasView */,
 				176E66A9188AC4BF007216EB /* SubCanvasView.h */,
 				176E66AA188AC4BF007216EB /* SubCanvasView.m */,
 				173E70201840FCEA0046C002 /* OverlayCanvasView.h */,
@@ -201,6 +214,8 @@
 		176E66A4188AAEE9007216EB /* Categories */ = {
 			isa = PBXGroup;
 			children = (
+				176E66B4188BA3C0007216EB /* NSString+UUIDGeneration.h */,
+				176E66B5188BA3C0007216EB /* NSString+UUIDGeneration.m */,
 				17677F7217678B1900F12210 /* NSData+HexadecimalConversion.h */,
 				17677F7317678B1900F12210 /* NSData+HexadecimalConversion.m */,
 				1796862C181BC15E00BA65E4 /* NSString+PixelConversion.h */,
@@ -209,6 +224,28 @@
 				17968630181C9D3300BA65E4 /* NSColor+StringConversion.m */,
 			);
 			name = Categories;
+			sourceTree = "<group>";
+		};
+		176E66AD188B8E69007216EB /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				176E66AC188B8E53007216EB /* CanvasObjectHandling.h */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
+		176E66B7188BB4D3007216EB /* MainCanvasView */ = {
+			isa = PBXGroup;
+			children = (
+				17BCF81416F4400300E7E472 /* MainCanvasView.h */,
+				17BCF81516F4400300E7E472 /* MainCanvasView.m */,
+				176E66B9188BB543007216EB /* MainCanvasView+CanvasObjectSelection.m */,
+				176E66BC188BB6FF007216EB /* MainCanvasView+UndoManaging.m */,
+				176E66BF188BB7A9007216EB /* MainCanvasView+Printing.m */,
+				176E66C2188BB86A007216EB /* MainCanvasView+Sorting.m */,
+				176E66C5188BB9AF007216EB /* MainCanvasView+UserInteraction.m */,
+			);
+			name = MainCanvasView;
 			sourceTree = "<group>";
 		};
 		17BCF7E616F42BDC00E7E472 = {
@@ -250,6 +287,7 @@
 		17BCF7F816F42BDD00E7E472 /* FukoWorks */ = {
 			isa = PBXGroup;
 			children = (
+				176E66AD188B8E69007216EB /* Protocols */,
 				176E66A4188AAEE9007216EB /* Categories */,
 				1728940D173E402F00071834 /* FukoWorks.h */,
 				17BCF80416F42BDD00E7E472 /* AppDelegate.h */,
@@ -380,20 +418,26 @@
 				17BCF81616F4400300E7E472 /* MainCanvasView.m in Sources */,
 				1723966916F5A8200089DF1E /* CanvasObjectRectangle.m in Sources */,
 				17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */,
+				176E66C6188BB9B0007216EB /* MainCanvasView+UserInteraction.m in Sources */,
 				1796863A181D0BED00BA65E4 /* CanvasObjectRectFrameBase.m in Sources */,
 				170C3AFE170194DE0030CA0C /* PreferenceWindowController.m in Sources */,
 				176E66AB188AC4C0007216EB /* SubCanvasView.m in Sources */,
+				176E66C3188BB86A007216EB /* MainCanvasView+Sorting.m in Sources */,
 				174A840A170433B500A53520 /* CanvasObject.m in Sources */,
 				174A840D1704397100A53520 /* CanvasObjectEllipse.m in Sources */,
 				176EEFE01707C16800F56FF4 /* ToolboxController.m in Sources */,
 				177F33F8172E63D9004D6778 /* CanvasObjectHandle.m in Sources */,
+				176E66BA188BB543007216EB /* MainCanvasView+CanvasObjectSelection.m in Sources */,
 				17677F4117647BC600F12210 /* CanvasObjectPaintFrame.m in Sources */,
 				17677F4517648AEA00F12210 /* InspectorWindowController.m in Sources */,
+				176E66B6188BA3C0007216EB /* NSString+UUIDGeneration.m in Sources */,
 				17677F7417678B1900F12210 /* NSData+HexadecimalConversion.m in Sources */,
 				17968631181C9D3300BA65E4 /* NSColor+StringConversion.m in Sources */,
 				173E70221840FCEA0046C002 /* OverlayCanvasView.m in Sources */,
+				176E66BD188BB6FF007216EB /* MainCanvasView+UndoManaging.m in Sources */,
 				1796862E181BC15E00BA65E4 /* NSString+PixelConversion.m in Sources */,
 				17FFED70180A66BF0029F6F4 /* CanvasObjectListWindowController.m in Sources */,
+				176E66C0188BB7A9007216EB /* MainCanvasView+Printing.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

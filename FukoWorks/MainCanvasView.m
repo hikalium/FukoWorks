@@ -9,7 +9,6 @@
 #import "MainCanvasView.h"
 #import "CanvasObjectListWindowController.h"
 
-
 @implementation MainCanvasView
 
 //
@@ -24,10 +23,11 @@
     [self scaleUnitSquareToSize:NSMakeSize(1/_canvasScale, 1/_canvasScale)];
     _canvasScale = canvasScale;
     [self scaleUnitSquareToSize:NSMakeSize(canvasScale, canvasScale)];
-    [self setFrameSize:NSMakeSize(baseFrame.size.width * canvasScale, baseFrame.size.height * canvasScale)];
+    [self setFrameSize:NSMakeSize(rootSubCanvas.frame.size.width * canvasScale, rootSubCanvas.frame.size.height * canvasScale)];
     [self.superview setNeedsDisplay:YES];
     [self setNeedsDisplay:YES];
 }
+/*
 @synthesize focusedObject = _focusedObject;
 - (void)setFocusedObject:(CanvasObject *)focusedObject
 {
@@ -47,17 +47,19 @@
     
     [overlayView setNeedsDisplay:YES];
 }
+ */
 - (NSSize)canvasSize{
-    return baseFrame.size;
+    return rootSubCanvas.frame.size;
 }
 - (void)setCanvasSize:(NSSize)canvasSize
 {
-    baseFrame.size = canvasSize;
-    [overlayView setFrameSize:baseFrame.size];
+    //[overlayView setFrameSize:baseFrame.size];
+    [rootSubCanvas setFrameSize:canvasSize];
     [self setCanvasScale:self.canvasScale];
 }
 
 @synthesize canvasObjects = _canvasObjects;
+@synthesize realSizeCanvas = rootSubCanvas;
 
 //
 // Function
@@ -69,7 +71,6 @@
     if (self) {
         undoManager = [[NSUndoManager alloc] init];
         
-        baseFrame = NSMakeRect(frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
         drawingStartPoint.x = 0;
         drawingStartPoint.y = 0;
         
@@ -77,7 +78,6 @@
         _canvasScale = 1;
         
         editingObject = nil;
-        _focusedObject = nil;
         movingObject = nil;
         
         inspectorWindows = [NSMutableArray array];
@@ -89,6 +89,8 @@
         
         rootSubCanvas = [[SubCanvasView alloc] initWithFrame:frame];
         [self addSubview:rootSubCanvas];
+        
+        objectHandles = [[NSMutableDictionary alloc] init];
         
         NSLog(@"Init %@ \n%@\n", self.className, self.subviews.description);
     }
@@ -113,167 +115,6 @@
     CGContextRestoreGState(mainContext);
 }
 
-// User interaction
-
-- (void)mouseDown:(NSEvent*)event
-{
-    NSPoint currentPoint;
-    
-    //key取得のためにFirstResponderに設定
-    [self.superview.window makeFirstResponder:self];
-    
-    currentPoint = [self getPointerLocationRelativeToSelfView:event];
-    [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDw:%@", NSStringFromPoint(currentPoint)]];
-
-    if(editingObject == nil){
-        //作成中の図形はない
-        //図形の新規作成or移動
-        switch(self.toolboxController.drawingObjectType){
-            case Undefined:
-                //カーソルモード
-                //図形移動を初期化
-                movingObject = [self getCanvasObjectAtCursorLocation:event];
-                if(movingObject){
-                    moveHandleOffset = NSMakePoint(currentPoint.x - movingObject.frame.origin.x, currentPoint.y - movingObject.frame.origin.y);
-                }
-                //移動中はフォーカスを消す
-                [_focusedObject setFocused:NO];
-                break;
-            case Rectangle:
-                editingObject = [[CanvasObjectRectangle alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
-                break;
-            case Ellipse:
-                editingObject = [[CanvasObjectEllipse alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
-                break;
-            case PaintFrame:
-                editingObject = [[CanvasObjectPaintFrame alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
-                break;
-            case PaintRectangle:
-            case PaintEllipse:
-            case PaintPen:
-                NSLog(@"Draw in paint frame.\n");
-                break;
-            default:
-                NSLog(@"Not implemented operation to make a new object.\n");
-                break;
-        }
-        if(editingObject != nil){
-            editingObject.FillColor = self.toolboxController.drawingFillColor;
-            editingObject.StrokeColor = self.toolboxController.drawingStrokeColor;
-            editingObject.StrokeWidth = self.toolboxController.drawingStrokeWidth;
-            editingObject.undoManager = undoManager;
-            [self addCanvasObject:editingObject];
-            
-            editingObject = [editingObject drawMouseDown:currentPoint];
-        }
-    } else{
-        //図形描画の途中
-        editingObject = [editingObject drawMouseDown:currentPoint];
-    }
-    //ペイント枠に描くなら描く
-    if(drawingPaintFrame){
-        drawingPaintFrame.FillColor = self.toolboxController.drawingFillColor;
-        drawingPaintFrame.StrokeColor = self.toolboxController.drawingStrokeColor;
-        drawingPaintFrame.StrokeWidth = self.toolboxController.drawingStrokeWidth;
-        [drawingPaintFrame drawPaintFrameMouseDown:currentPoint mode:self.toolboxController.drawingObjectType];
-    }
-}
-
-- (void)mouseDragged:(NSEvent*)event
-{
-    NSPoint currentPoint;
-        
-    currentPoint = [self getPointerLocationRelativeToSelfView:event];
-    [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDr:%@", NSStringFromPoint(currentPoint)]];
-    
-    //作成中の図形があるなら座標を送る
-    editingObject = [editingObject drawMouseDragged:currentPoint];
-    
-    //図形移動するならする
-    [movingObject setFrameOrigin:NSMakePoint(currentPoint.x - moveHandleOffset.x, currentPoint.y - moveHandleOffset.y)];
-
-    //ペイント枠に描くなら描く
-    [drawingPaintFrame drawPaintFrameMouseDragged:currentPoint mode:self.toolboxController.drawingObjectType];
-}
-
-- (void)mouseUp:(NSEvent*)event
-{
-    NSPoint currentPoint;
-
-    currentPoint = [self getPointerLocationRelativeToSelfView:event];
-    [self.label_indicator setStringValue:[NSString stringWithFormat:@"mUp:%@", NSStringFromPoint(currentPoint)]];
- 
-    editingObject = [editingObject drawMouseUp:currentPoint];
-    
-    //図形移動終了
-    movingObject = nil;
-    //フォーカスを戻す
-    [_focusedObject setFocused:YES];
-    
-    //ペイント枠に描くなら描く
-    [drawingPaintFrame drawPaintFrameMouseUp:currentPoint mode:self.toolboxController.drawingObjectType];
-    
-    if([event clickCount] == 1){
-        //クリック。
-        //フォーカスを与える。
-        self.focusedObject = [self getCanvasObjectAtCursorLocation:event];
-    }
-    
-    
-}
-
-- (void)rightMouseDown:(NSEvent *)theEvent
-{
-    NSPoint currentPointInScreen;
-    currentPointInScreen = [self getPointerLocationInScreen:theEvent];
-    
-    //編集終了or詳細設定
-    CanvasObject *aCanvasObject;
-    InspectorWindowController *anInspectorWindowController;
-    
-    if(editingObject == nil){
-        //詳細設定を開く
-        aCanvasObject = [self getCanvasObjectAtCursorLocation:theEvent];
-        if(aCanvasObject == nil){
-            //キャンバスの詳細設定
-            anInspectorWindowController = [[InspectorWindowController alloc] initWithEditView:self];
-        } else{
-            //オブジェクトの詳細設定
-            anInspectorWindowController = [[InspectorWindowController alloc] initWithEditView:aCanvasObject];
-        }
-        [inspectorWindows addObject:anInspectorWindowController];
-        [anInspectorWindowController showWindow:self];
-        [[anInspectorWindowController window]setFrameOrigin:currentPointInScreen];
-    }
-}
-
-- (void)rightMouseUp:(NSEvent *)theEvent
-{
-    //self.focusedObject = [self getCanvasObjectAtCursorLocation:theEvent];
-}
-
-
-
-/*
-- (void)keyDown:(NSEvent *)theEvent
-{
-    NSInteger keyCode;
-    
-    keyCode = [theEvent keyCode];
-    NSLog(@"%ld", keyCode);
- 
-    switch(keyCode){
-        case 51:
-            //Backspace
-        case 117:
-            //Delete(Backspace+Fn)
-            [self removeCanvasObject:_focusedObject];
-            break;
-    }
- 
-}
-*/
-
 -(void)resetCursorRects
 {
     [self discardCursorRects];
@@ -284,7 +125,9 @@
     }
 }
 
+//
 // add / remove CanvasObject
+//
 
 - (void)addCanvasObject:(CanvasObject *)aCanvasObject
 {
@@ -297,9 +140,11 @@
 
 - (void)removeCanvasObject:(CanvasObject *)aCanvasObject
 {
+    /*
     if(_focusedObject == aCanvasObject){
         self.focusedObject = nil;
     }
+     */
     if(editingObject == aCanvasObject){
         editingObject = nil;
     }
@@ -314,68 +159,9 @@
     [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] reloadData];
 }
 
-- (void)moveCanvasObjects:(NSArray *)mcoList aboveOf:(CanvasObject *)coBelow
-{
-    //coBelow == nilの時は、一番下に追加することを示す。
-    NSUInteger i, coBelowIndex;
-    CanvasObject *co;
-    for(i = 0; i < mcoList.count; i++){
-        co = mcoList[i];
-        [co removeFromSuperview];
-        [_canvasObjects removeObject:co];
-    }
-    coBelowIndex = [_canvasObjects indexOfObject:coBelow];
-    if(coBelow && coBelowIndex == NSNotFound){
-        return;
-    }
-    for(i = 0; i < mcoList.count; i++){
-        co = mcoList[i];
-        if(coBelow){
-            [self addSubview:co positioned:NSWindowAbove relativeTo:coBelow];
-            [_canvasObjects insertObject:co atIndex:coBelowIndex + 1];
-        } else{
-            [self addSubview:co positioned:NSWindowBelow relativeTo:nil];
-            [_canvasObjects insertObject:co atIndex:0];
-        }
-        
-    }
-}
 
-- (BOOL)bringCanvasObjectToFront:(CanvasObject *)aCanvasObject
-{
-    //retv:isChanged
-    NSUInteger index = [self.canvasObjects indexOfObject:aCanvasObject];
-    if(index == self.canvasObjects.count - 1){
-        //すでに最前面なので何もしない
-        return NO;
-    }
-    if(index == NSNotFound){
-        return NO;
-    }
-    CanvasObject *coBelow = [self.canvasObjects objectAtIndex:index + 1];
-    [aCanvasObject removeFromSuperview];
-    [self addSubview:aCanvasObject positioned:NSWindowAbove relativeTo:coBelow];
-    [self.canvasObjects exchangeObjectAtIndex:index withObjectAtIndex:index + 1];
-    return YES;
-}
 
-- (BOOL)bringCanvasObjectToBack:(CanvasObject *)aCanvasObject
-{
-    //retv:isChanged
-    NSUInteger index = [self.canvasObjects indexOfObject:aCanvasObject];
-    if(index == 0){
-        //すでに最背面なので何もしない
-        return NO;
-    }
-    if(index == NSNotFound){
-        return NO;
-    }
-    CanvasObject *coAbove = [self.canvasObjects objectAtIndex:index - 1];
-    [aCanvasObject removeFromSuperview];
-    [self addSubview:aCanvasObject positioned:NSWindowBelow relativeTo:coAbove];
-    [self.canvasObjects exchangeObjectAtIndex:index withObjectAtIndex:index - 1];
-    return YES;
-}
+
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
 {
@@ -427,11 +213,12 @@
     NSBitmapImageRep *bitmapImage;
     NSPoint currentPointInObject;
     NSColor *pointColor;
+    NSArray *subviews = [[rootSubCanvas.subviews reverseObjectEnumerator] allObjects];
     
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     
     candidateCanvasObject = nil;
-    for(NSView *aSubview in [self.subviews reverseObjectEnumerator]){
+    for(NSView *aSubview in subviews){
         if([aSubview isKindOfClass:[CanvasObject class]]){
             //前面にあるオブジェクトから順番に、ポインタの指す座標が含まれているか調べる。
             aCanvasObject = (CanvasObject *)aSubview;
@@ -570,64 +357,6 @@
     dataString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
 
     [self appendCanvasObjectsFromString:dataString];
- }
-
-//
-// Printing
-//
-
-// https://developer.apple.com/library/mac/documentation/cocoa/conceptual/Printing/osxp_pagination/osxp_pagination.html
-- (NSSize)calculatePrintPaperSize
-{
-    //用紙の大きさを取得
-    NSPrintInfo *pinfo = [[NSPrintOperation currentOperation] printInfo];
-    
-    NSSize paperSize = [pinfo paperSize];
-    
-    float pageHeight = paperSize.height - [pinfo topMargin] - [pinfo bottomMargin];
-    float pageWidth = paperSize.width - [pinfo leftMargin] - [pinfo rightMargin];
-
-    float scale = [[[pinfo dictionary] objectForKey:NSPrintScalingFactor]
-                   floatValue];
-    
-    return NSMakeSize(pageWidth / scale, pageHeight / scale);
-
-}
-
-- (BOOL)knowsPageRange:(NSRangePointer)range
-{
-    //必要なページ数をrangeに設定
-    NSSize paperSize = [self calculatePrintPaperSize];
-    CGFloat pages;
-    pages = ceil(self.frame.size.width / paperSize.width) * ceil(self.frame.size.height / paperSize.height);
-    *range = NSMakeRange(1, pages);
-    NSLog(@"pages:%f", pages);
-    
-    return YES;
-}
-
-- (NSRect)rectForPage:(NSInteger)page
-{
-    //指定されたページ番号に該当するview上の範囲を返す。
-    NSInteger xpages, ypages, x, y;
-    NSSize paperSize = [self calculatePrintPaperSize];
-    NSRect rect;
-    xpages = ceil(self.frame.size.width / paperSize.width);
-    ypages = ceil(self.frame.size.height / paperSize.height);
-    if(page > xpages * ypages){
-        //範囲外のページ番号だった
-        NSLog(@"zerorect:");
-        return NSZeroRect;
-    }
-    page--;
-    y = (page / xpages);
-    x = (page % xpages);
-    
-    rect = NSMakeRect(paperSize.width * x, paperSize.height * y,
-                      paperSize.width, paperSize.height);
-    NSLog(@"rect:%@", NSStringFromRect(rect));
-    
-    return rect;
 }
 
 //
@@ -639,7 +368,7 @@
     if( [menuItem action] == @selector(cut:) ||
        [menuItem action] == @selector(copy:) ||
        [menuItem action] == @selector(delete:) ){
-        return (_focusedObject != nil);
+        return /*(_focusedObject != nil)*/ NO;
     } else if([menuItem action] == @selector(paste:)){
         return [self pasteboardHas:FWK_PASTEBOARD_TYPE];
     } else if([menuItem action] == @selector(undo:)){
@@ -664,11 +393,13 @@
 
 - (IBAction)copy:(id)sender
 {
+    /*
     if(_focusedObject){
         NSPasteboard *pasteboard = [NSPasteboard generalPasteboard];
         [pasteboard declareTypes:[NSArray arrayWithObject:FWK_PASTEBOARD_TYPE] owner:nil];
         [pasteboard setData:[[self convertCanvasObjectsToString:[NSArray arrayWithObject:_focusedObject]] dataUsingEncoding:NSUTF8StringEncoding] forType:FWK_PASTEBOARD_TYPE];
     }
+     */
 }
 - (IBAction)paste:(id)sender
 {
@@ -684,20 +415,9 @@
 }
 - (IBAction)delete:(id)sender
 {
-    [self removeCanvasObject:_focusedObject];
+    //[self removeCanvasObject:_focusedObject];
 }
 
-//
-// Undo / Redo
-//
 
-- (IBAction)undo:(id)sender
-{
-    [undoManager undo];
-}
-- (IBAction)redo:(id)sender
-{
-    [undoManager redo];
-}
 
 @end

@@ -40,4 +40,35 @@
     return nil;
 }
 
+//
+// EditHandle
+//
+- (NSUInteger)numberOfEditHandlesForCanvasObject
+{
+    return 4;
+}
+
+- (NSPoint)editHandlePointForHandleID:(NSUInteger)hid
+{
+    //hid:0-3(4)
+    //2----3
+    //|    |
+    //0----1
+    NSRect realRect = [self makeNSRectWithRealSizeViewFrame];
+    NSPoint p = realRect.origin;
+    switch (hid) {
+        case 1:
+            p.x += realRect.size.width;
+            break;
+        case 2:
+            p.y += realRect.size.height;
+            break;
+        case 3:
+            p.x += realRect.size.width;
+            p.y += realRect.size.height;
+            break;
+    }
+    return p;
+}
+
 @end

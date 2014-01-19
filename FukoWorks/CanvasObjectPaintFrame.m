@@ -54,11 +54,14 @@
     NSMutableString *encodedString;
     NSImage *contextImage;
     NSData *contextData;
+    CGImageRef imageRef;
     
     encodedString = [[NSMutableString alloc] init];
     
     //PNGデータを生成
-    contextImage = [[NSImage alloc] initWithCGImage:CGBitmapContextCreateImage(paintContext) size:self.frame.size];
+    imageRef = CGBitmapContextCreateImage(paintContext);
+    contextImage = [[NSImage alloc] initWithCGImage:imageRef size:self.frame.size];
+    CFRelease(imageRef);
     
     contextData = [contextImage TIFFRepresentation];
     
@@ -170,19 +173,19 @@
 
 - (void)editHandleDown:(NSPoint)currentHandlePointInCanvas :(NSInteger)tag
 {
-    [super editHandleDown:[self getNSPointIntegral:currentHandlePointInCanvas] :tag];
+    [super editHandleDown:[self getNSPointIntegral:currentHandlePointInCanvas] forHandleID:tag];
 }
 
 - (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas :(NSInteger)tag
 {
-    [super editHandleDragged:[self getNSPointIntegral:currentHandlePointInCanvas] :tag];
+    [super editHandleDragged:[self getNSPointIntegral:currentHandlePointInCanvas] forHandleID:tag];
 }
 
 - (void)editHandleUp:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
 {
     currentHandlePointInCanvas = [self getNSPointIntegral:currentHandlePointInCanvas];
 
-    [super editHandleUp:currentHandlePointInCanvas :tag];
+    [super editHandleUp:currentHandlePointInCanvas forHandleID:tag];
     [self resetPaintContext];
 }
 

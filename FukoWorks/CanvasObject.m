@@ -9,6 +9,7 @@
 #import "CanvasObject.h"
 #import "CanvasObjectHandle.h"
 #import "NSColor+StringConversion.h"
+#import "NSString+UUIDGeneration.h"
 
 @implementation CanvasObject
 //
@@ -43,13 +44,17 @@
     realRect = [self makeNSRectWithRealSizeViewFrame];
     _StrokeWidth = StrokeWidth;
     [self setFrame:[self makeNSRectWithFullSizeViewFrameFromRealSizeViewFrame:realRect]];
-    [self resetHandle];
+    //[self resetHandle];
     [self setNeedsDisplay:YES];
 }
 
 @synthesize ObjectType = _ObjectType;
 
-NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"ペイント枠"};
+NSString *objectTypeNameList[] = {
+    @"キャンバス",
+    @"矩形",
+    @"楕円",
+    @"ペイント枠"};
 
 - (NSString *)ObjectTypeName
 {
@@ -61,7 +66,7 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
 }
 
 @synthesize objectName = _objectName;
-
+/*
 @synthesize Focused = _Focused;
 - (void)setFocused:(BOOL)Focused
 {
@@ -113,13 +118,15 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
     }
     _Focused = Focused;
 }
+ */
 
 @synthesize undoManager = _undoManager;
+@synthesize uuid = _uuid;
 
 //
 // Function
 //
-
+/*
 - (void)resetHandle
 {
     NSRect realSizeFrame;
@@ -140,7 +147,7 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
     aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
     [((CanvasObjectHandle *)editHandle[3]) setHandlePoint:aPoint];
 }
-
+*/
 - (id)initWithFrame:(NSRect)frameRect
 {
     self = [super initWithFrame:frameRect];
@@ -152,11 +159,14 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
         _StrokeColor = nil;
         _StrokeWidth = 0;
         
-        _Focused = NO;
+        //_Focused = NO;
+        /*
         for(int i = 0; i < 4; i++){
             editHandle[i] = nil;
         }
+         */
         _objectName = @"NoName";
+        _uuid = [NSString UUID];
     }
 
     return self;
@@ -258,6 +268,16 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
     return nil;
 }
 
+//
+// EditHandle
+//
+
+- (NSUInteger)numberOfEditHandlesForCanvasObject
+{
+    return 0;
+}
+
+/*
 - (void)editHandleDown:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
 {
     editingHandleID = tag;
@@ -332,6 +352,7 @@ NSString *objectTypeNameList[] = {@"キャンバス", @"矩形", @"楕円", @"�
     [_undoManager enableUndoRegistration];
     //
 }
+ */
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
 {

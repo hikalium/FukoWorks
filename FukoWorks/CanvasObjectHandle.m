@@ -44,6 +44,7 @@ CGColorRef handleStrokeColor;
 
 - (void)setHandlePoint:(NSPoint)handlePoint
 {
+    handlePoint = [self.superview convertPoint:handlePoint fromView:_ownerCanvasObject.superview];
     [self setFrame:NSMakeRect(handlePoint.x - ((handleSize + handleStrokeWidth) / 2), handlePoint.y - ((handleSize + handleStrokeWidth) / 2), handleSize + handleStrokeWidth, handleSize + handleStrokeWidth)];
 }
 
@@ -105,7 +106,7 @@ CGColorRef handleStrokeColor;
 {
     moveHandleCursorOffset = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     
-    [[self ownerCanvasObject] editHandleDown:[self makeNSPointWithHandlePoint] :self.tag];
+    [[self ownerCanvasObject] editHandleDown:[self makeNSPointWithHandlePoint] forHandleID:self.tag];
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent
@@ -119,12 +120,12 @@ CGColorRef handleStrokeColor;
     
     [self setFrameOrigin:objectOrigin];
     
-    [[self ownerCanvasObject] editHandleDragged:[self makeNSPointWithHandlePoint] :self.tag];
+    [[self ownerCanvasObject] editHandleDragged:[self makeNSPointWithHandlePoint] forHandleID:self.tag];
 }
 
 - (void)mouseUp:(NSEvent *)theEvent
 {
-    [[self ownerCanvasObject] editHandleUp:[self makeNSPointWithHandlePoint] :self.tag];
+    [[self ownerCanvasObject] editHandleUp:[self makeNSPointWithHandlePoint] forHandleID:self.tag];
 }
 
 @end

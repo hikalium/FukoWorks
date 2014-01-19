@@ -94,7 +94,7 @@ NSString *objectTypeName[] = {@"キャンバス", @"矩形", @"楕円", @"ペイ
                 break;
             case 3:
                 //LocationX
-                tempValue = anTextField.floatValue;
+                //tempValue = anTextField.floatValue;
                 
                 break;
             case 4:

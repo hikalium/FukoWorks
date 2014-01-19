@@ -24,8 +24,14 @@
 
 - (void)awakeFromNib
 {
+    NSString *s;
     [splashWindow center];
     [splashWindow setLevel:NSFloatingWindowLevel];
+    s = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];
+    splashBuildLabel.stringValue = [[NSString alloc] initWithFormat:@"%@%@", splashBuildLabel.stringValue, s];
+    s = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
+    splashVersionLabel.stringValue = [[NSString alloc] initWithFormat:@"%@%@", splashVersionLabel.stringValue, s];
+
 }
 
 - (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames

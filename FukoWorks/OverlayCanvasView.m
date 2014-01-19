@@ -25,6 +25,7 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
+    /*
     CanvasObject *co;
     CGContextRef mainContext;
     
@@ -39,6 +40,7 @@
             CGContextStrokeRectWithWidth(mainContext, co.frame, 4);
         }
     }
+     */
     // Drawing code here.
 }
 

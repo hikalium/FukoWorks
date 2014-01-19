@@ -9,5 +9,18 @@
 #import <Cocoa/Cocoa.h>
 
 @interface SubCanvasView : NSView
+{
+
+}
+
+- (id)initWithFrame:(NSRect)frame;
+- (void)drawRect:(NSRect)dirtyRect;
+
+//
+// Printing
+//
+- (NSSize)calculatePrintPaperSize;
+- (BOOL)knowsPageRange:(NSRangePointer)range;
+- (NSRect)rectForPage:(NSInteger)page;
 
 @end

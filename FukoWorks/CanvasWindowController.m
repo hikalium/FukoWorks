@@ -198,6 +198,7 @@
     allowedFileType = [NSArray arrayWithObjects:@"fwk", nil];
     
     openPanel = [NSOpenPanel openPanel];
+    openPanel.allowedFileTypes = allowedFileType;
     
     [openPanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result){
         NSURL *path;
@@ -227,7 +228,7 @@
     [op setShowsPrintPanel:YES];
     [op runOperation];
      */
-    [scrollView.documentView print:self];
+    [_mainCanvasView.realSizeCanvas print:self];
 }
 
 @end

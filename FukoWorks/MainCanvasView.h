@@ -15,6 +15,7 @@
 #import "CanvasObjectPaintFrame.h"
 #import "OverlayCanvasView.h"
 #import "SubCanvasView.h"
+#import "CanvasObjectHandle.h"
 
 @interface MainCanvasView : NSView
 {
@@ -31,39 +32,26 @@
     
     CanvasObjectPaintFrame *drawingPaintFrame;
     
-    NSRect baseFrame;
-    
     NSMutableArray *inspectorWindows;
-    OverlayCanvasView *overlayView;
+    //OverlayCanvasView *overlayView;
     SubCanvasView *rootSubCanvas;
+    NSMutableDictionary *objectHandles;
 }
 
 @property (strong, nonatomic) NSTextField *label_indicator;
 @property (nonatomic) ToolboxController *toolboxController;
 @property (nonatomic) CGFloat canvasScale;
-@property (nonatomic) CanvasObject *focusedObject;
 @property (nonatomic) NSSize canvasSize;
 @property (nonatomic, readonly) NSMutableArray *canvasObjects;
+@property (nonatomic, readonly) NSView *realSizeCanvas;
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)drawRect:(NSRect)dirtyRect;
-
-- (void)mouseDown:(NSEvent*)event;
-- (void)mouseUp:(NSEvent*)event;
-- (void)mouseDragged:(NSEvent*)event;
-
-- (void)rightMouseUp:(NSEvent *)theEvent;
 
 - (void)resetCursorRects;
 
 - (void)addCanvasObject:(CanvasObject *)aCanvasObject;
 - (void)removeCanvasObject:(CanvasObject *)aCanvasObject;
-
-- (void)moveCanvasObjects:(NSArray *)mcoList aboveOf:(CanvasObject *)coBelow;
-
-- (BOOL)bringCanvasObjectToFront:(CanvasObject *)aCanvasObject;
-- (BOOL)bringCanvasObjectToBack:(CanvasObject *)aCanvasObject;
-
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
@@ -80,7 +68,42 @@
 - (IBAction)cut:(id)sender;
 - (IBAction)delete:(id)sender;
 
+@end
+
+@interface MainCanvasView (CanvasObjectSelection)
+- (void)selectCanvasObject:(CanvasObject *)aCanvasObject;
+- (void)resetCanvasObjectHandleForCanvasObject:(CanvasObject *)aCanvasObject;
+- (void)resetAllCanvasObjectHandle;
+- (void)hideCanvasObjectHandleForCanvasObject:(CanvasObject *)aCanvasObject;
+- (void)showCanvasObjectHandleForCanvasObject:(CanvasObject *)aCanvasObject;
+- (void)deselectCanvasObject:(CanvasObject *)aCanvasObject;
+- (void)deselectAllCanvasObject;
+- (BOOL)isSelectedCanvasObject:(CanvasObject *)aCanvasObject;
+@end
+
+@interface MainCanvasView (UndoManaging)
 - (IBAction)undo:(id)sender;
 - (IBAction)redo:(id)sender;
-
 @end
+
+@interface MainCanvasView (Printing)
+- (NSSize)calculatePrintPaperSize;
+- (BOOL)knowsPageRange:(NSRangePointer)range;
+- (NSRect)rectForPage:(NSInteger)page;
+@end
+
+@interface MainCanvasView (UserInteraction)
+- (void)mouseDown:(NSEvent*)event;
+- (void)mouseUp:(NSEvent*)event;
+- (void)mouseDragged:(NSEvent*)event;
+- (void)rightMouseDown:(NSEvent *)theEvent;
+- (void)rightMouseUp:(NSEvent *)theEvent;
+@end
+
+@interface MainCanvasView (Sorting)
+- (void)moveCanvasObjects:(NSArray *)mcoList aboveOf:(CanvasObject *)coBelow;
+- (BOOL)bringCanvasObjectToFront:(CanvasObject *)aCanvasObject;
+- (BOOL)bringCanvasObjectToBack:(CanvasObject *)aCanvasObject;
+@end
+
+

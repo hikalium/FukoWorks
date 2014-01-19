@@ -10,11 +10,12 @@
 
 #import <Cocoa/Cocoa.h>
 #import "FukoWorks.h"
+#import "CanvasObjectHandling.h"
 
-@interface CanvasObject : NSView
+@interface CanvasObject : NSView<CanvasObjectHandling>
 {
-    NSView *editHandle[4];
-    NSInteger editingHandleID;
+    //NSView *editHandle[4];
+    //NSInteger editingHandleID;
 }
 
 
@@ -24,15 +25,16 @@
 @property (readonly, nonatomic) CanvasObjectType ObjectType;
 @property (readonly, nonatomic) NSString *ObjectTypeName;
 @property (nonatomic) NSString *objectName;
-@property (nonatomic) BOOL Focused;
+//@property (nonatomic) BOOL Focused;
+//- (void)setFocused:(BOOL)Focused;
 @property (nonatomic) NSUndoManager *undoManager;
+@property (nonatomic, readonly) NSString *uuid;
 
-- (void)setFocused:(BOOL)Focused;
+
 
 - (id)initWithFrame:(NSRect)frameRect;
 - (id)initWithEncodedString:(NSString *)sourceString;
 - (void)drawRect:(NSRect)dirtyRect;
-
 
 - (NSString *)encodedStringForCanvasObject;
 + (NSString *)encodedStringForCGColorRef:(CGColorRef)cref;
@@ -41,11 +43,13 @@
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;
-- (void)editHandleDown:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag;
-- (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag;
-- (void)editHandleUp:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag;
 
-//上記三関数は、次の描画指示をすべきオブジェクトを返す。
+//
+// EditHandle
+//
+- (NSUInteger)numberOfEditHandlesForCanvasObject;
+
+//上記関数は、次の描画指示をすべきオブジェクトを返す。
 //つまり、描画処理が完了するとnilを返す。それまではオブジェクト自身を返す。
 
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
