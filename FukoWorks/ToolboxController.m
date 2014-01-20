@@ -27,6 +27,10 @@
         [toolPaintRect setEnabled:NO];
         [toolPaintEllipse setEnabled:NO];
         [toolPaintPen setEnabled:NO];
+        if(_drawingObjectType > PaintToolsBase){
+            //ペイントツールを選択していたので、カーソルにモードを戻す。
+            [self drawingObjectTypeChanged:toolCursor];
+        }
     }
     if([_editingObject isKindOfClass:[CanvasObject class]]){
         if(editingObject.FillColor){

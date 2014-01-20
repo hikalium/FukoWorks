@@ -11,7 +11,7 @@
 @implementation CanvasObjectHandle
 
 @synthesize ownerCanvasObject = _ownerCanvasObject;
-@synthesize tag = _tag;
+@synthesize hid = _hid;
 
 const CGFloat handleSize = 10;
 const CGFloat handleStrokeWidth = 2;
@@ -106,7 +106,7 @@ CGColorRef handleStrokeColor;
 {
     moveHandleCursorOffset = [self convertPoint:[theEvent locationInWindow] fromView:nil];
     
-    [[self ownerCanvasObject] editHandleDown:[self makeNSPointWithHandlePoint] forHandleID:self.tag];
+    [[self ownerCanvasObject] editHandleDown:[self makeNSPointWithHandlePoint] forHandleID:self.hid];
 }
 
 - (void)mouseDragged:(NSEvent *)theEvent
@@ -120,12 +120,12 @@ CGColorRef handleStrokeColor;
     
     [self setFrameOrigin:objectOrigin];
     
-    [[self ownerCanvasObject] editHandleDragged:[self makeNSPointWithHandlePoint] forHandleID:self.tag];
+    [[self ownerCanvasObject] editHandleDragged:[self makeNSPointWithHandlePoint] forHandleID:self.hid];
 }
 
 - (void)mouseUp:(NSEvent *)theEvent
 {
-    [[self ownerCanvasObject] editHandleUp:[self makeNSPointWithHandlePoint] forHandleID:self.tag];
+    [[self ownerCanvasObject] editHandleUp:[self makeNSPointWithHandlePoint] forHandleID:self.hid];
 }
 
 @end

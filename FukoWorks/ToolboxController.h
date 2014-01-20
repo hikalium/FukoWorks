@@ -18,6 +18,11 @@
     IBOutlet NSSlider *sliderStrokeWidth;
     IBOutlet NSTextField *textFieldStrokeWidth;
     
+    IBOutlet NSButton *toolCursor;
+    IBOutlet NSButton *toolRect;
+    IBOutlet NSButton *toolEllipse;
+    IBOutlet NSButton *toolPaintFrame;
+    //
     IBOutlet NSButton *toolPaintRect;
     IBOutlet NSButton *toolPaintEllipse;
     IBOutlet NSButton *toolPaintPen;

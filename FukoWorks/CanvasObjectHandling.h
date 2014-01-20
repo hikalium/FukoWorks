@@ -11,6 +11,7 @@
 @protocol CanvasObjectHandling <NSObject>
 
 @required
+@property (nonatomic) NSArray *editHandleList;
 - (NSUInteger)numberOfEditHandlesForCanvasObject;
 
 @optional

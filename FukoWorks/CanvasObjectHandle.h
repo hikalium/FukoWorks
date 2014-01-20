@@ -16,7 +16,7 @@
 }
 
 @property (nonatomic) CanvasObject *ownerCanvasObject;
-@property (nonatomic) NSInteger tag;
+@property (nonatomic) NSUInteger hid;
 
 - (id)initWithHandlePoint:(NSPoint)handlePoint;
 - (void)setHandlePoint:(NSPoint)handlePoint;

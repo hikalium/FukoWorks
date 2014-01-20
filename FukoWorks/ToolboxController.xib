@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13A603" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="4514" systemVersion="13B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none">
     <dependencies>
         <deployment version="1060" defaultVersion="1060" identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="4514"/>
@@ -11,9 +11,13 @@
                 <outlet property="cWellStrokeColor" destination="11" id="55"/>
                 <outlet property="sliderStrokeWidth" destination="13" id="57"/>
                 <outlet property="textFieldStrokeWidth" destination="12" id="58"/>
+                <outlet property="toolCursor" destination="8" id="Z8g-Gb-I9d"/>
+                <outlet property="toolEllipse" destination="9" id="5h9-kL-vM0"/>
                 <outlet property="toolPaintEllipse" destination="71" id="77"/>
+                <outlet property="toolPaintFrame" destination="67" id="xMB-zF-Afm"/>
                 <outlet property="toolPaintPen" destination="01A-af-Tpb" id="ju9-LU-wE8"/>
                 <outlet property="toolPaintRect" destination="70" id="76"/>
+                <outlet property="toolRect" destination="7" id="Un6-dn-Zl7"/>
                 <outlet property="toolbox" destination="5" id="54"/>
                 <outlet property="window" destination="5" id="66"/>
             </connections>

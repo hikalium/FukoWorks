@@ -26,28 +26,8 @@
     [self setFrameSize:NSMakeSize(rootSubCanvas.frame.size.width * canvasScale, rootSubCanvas.frame.size.height * canvasScale)];
     [self.superview setNeedsDisplay:YES];
     [self setNeedsDisplay:YES];
+    [self resetAllCanvasObjectHandle];
 }
-/*
-@synthesize focusedObject = _focusedObject;
-- (void)setFocusedObject:(CanvasObject *)focusedObject
-{
-    if(focusedObject != _focusedObject){
-        [_focusedObject setFocused:NO];
-        [focusedObject setFocused:YES];
-    }
-    _focusedObject = focusedObject;
-    _toolboxController.editingObject = focusedObject;
-    //ペイント枠だったら記憶しておく
-    if([_focusedObject isKindOfClass:[CanvasObjectPaintFrame class]]){
-        drawingPaintFrame = (CanvasObjectPaintFrame *)_focusedObject;
-        NSLog(@"paintFrame!");
-    } else{
-        drawingPaintFrame = nil;
-    }
-    
-    [overlayView setNeedsDisplay:YES];
-}
- */
 - (NSSize)canvasSize{
     return rootSubCanvas.frame.size;
 }
@@ -77,7 +57,7 @@
         backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
         _canvasScale = 1;
         
-        editingObject = nil;
+        creatingObject = nil;
         movingObject = nil;
         
         inspectorWindows = [NSMutableArray array];
@@ -91,6 +71,7 @@
         [self addSubview:rootSubCanvas];
         
         objectHandles = [[NSMutableDictionary alloc] init];
+        selectedObjects = [[NSMutableArray alloc] init];
         
         NSLog(@"Init %@ \n%@\n", self.className, self.subviews.description);
     }
@@ -132,6 +113,7 @@
 - (void)addCanvasObject:(CanvasObject *)aCanvasObject
 {
     //最上面に追加
+    aCanvasObject.ownerMainCanvasView = self;
     [rootSubCanvas addSubview:aCanvasObject positioned:NSWindowAbove relativeTo:nil];
     [_canvasObjects addObject:aCanvasObject];
     NSLog(@"Added CanvasObject to %@ \n%@\n", rootSubCanvas.className, rootSubCanvas.subviews.description);
@@ -140,13 +122,9 @@
 
 - (void)removeCanvasObject:(CanvasObject *)aCanvasObject
 {
-    /*
-    if(_focusedObject == aCanvasObject){
-        self.focusedObject = nil;
-    }
-     */
-    if(editingObject == aCanvasObject){
-        editingObject = nil;
+    aCanvasObject.ownerMainCanvasView = self;
+    if(creatingObject == aCanvasObject){
+        creatingObject = nil;
     }
     if(movingObject == aCanvasObject){
         movingObject = nil;

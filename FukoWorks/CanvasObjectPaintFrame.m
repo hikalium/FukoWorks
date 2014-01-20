@@ -13,6 +13,7 @@
 
 @synthesize ObjectType = _ObjectType;
 
+
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
@@ -287,5 +288,53 @@
     basePoint.y = floor(basePoint.y) + 0.5;
     return basePoint;
 }
+
+//
+// ViewComputing
+//
+// Without StrokeWidth version
+- (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
+{
+    //全体を含むframeRectを返す。
+    NSPoint p;
+    NSSize q;
+    
+    if(endPoint.x < startPoint.x){
+        p.x = endPoint.x;
+        q.width = startPoint.x - endPoint.x;
+    } else{
+        p.x = startPoint.x;
+        q.width = endPoint.x - startPoint.x;
+    }
+    
+    if(endPoint.y < startPoint.y){
+        p.y = endPoint.y;
+        q.height = startPoint.y - endPoint.y;
+    } else{
+        p.y = startPoint.y;
+        q.height = endPoint.y - startPoint.y;
+    }
+    
+    return NSMakeRect(p.x, p.y, q.width, q.height);
+}
+
+- (NSRect)makeNSRectWithRealSizeViewFrame
+{
+    //親FrameにおけるRealSizeRect(Fill部分のみのRect)を返す。
+    return self.frame;
+}
+
+- (NSRect)makeNSRectWithRealSizeViewFrameInLocal
+{
+    //このViewに対する、ローカル座標のRealSizeRect(Fill部分のみのRect)を返す。
+    return self.frame;
+}
+
+- (NSRect)makeNSRectWithFullSizeViewFrameFromRealSizeViewFrame:(NSRect)RealSizeViewFrame
+{
+    return self.frame;
+}
+
+
 
 @end

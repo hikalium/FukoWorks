@@ -7,7 +7,6 @@
 //
 
 #import "CanvasObject.h"
-#import "CanvasObjectHandle.h"
 #import "NSColor+StringConversion.h"
 #import "NSString+UUIDGeneration.h"
 
@@ -66,88 +65,14 @@ NSString *objectTypeNameList[] = {
 }
 
 @synthesize objectName = _objectName;
-/*
-@synthesize Focused = _Focused;
-- (void)setFocused:(BOOL)Focused
-{
-    NSRect realSizeFrame;
-    CanvasObjectHandle *aHandle;
-    NSPoint aPoint;
-    
-    realSizeFrame = [self makeNSRectWithRealSizeViewFrame];
-    
-    if(Focused != _Focused){
-        if(Focused){
-            //ハンドルを表示
-            //LD
-            aPoint = realSizeFrame.origin;
-            aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
-            aHandle.ownerCanvasObject = self;
-            aHandle.tag = 0;
-            editHandle[aHandle.tag] = aHandle;
-            //LU
-            aPoint = NSMakePoint(realSizeFrame.origin.x, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
-            aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
-            aHandle.ownerCanvasObject = self;
-            aHandle.tag = 1;
-            editHandle[aHandle.tag] = aHandle;
-            //RD
-            aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y);
-            aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
-            aHandle.ownerCanvasObject = self;
-            aHandle.tag = 2;
-            editHandle[aHandle.tag] = aHandle;
-            //RU
-            aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
-            aHandle = [[CanvasObjectHandle alloc] initWithHandlePoint:aPoint];
-            aHandle.ownerCanvasObject = self;
-            aHandle.tag = 3;
-            editHandle[aHandle.tag] = aHandle;
-            
-            for(int i = 0; i < 4; i++){
-                [self.superview addSubview:editHandle[i]];
-            }
-            
-        } else{
-            //ハンドルを消去
-            for(int i = 0; i < 4; i++){
-                [editHandle[i] removeFromSuperview];
-                editHandle[i] = nil;
-            }
-        }
-    }
-    _Focused = Focused;
-}
- */
-
 @synthesize undoManager = _undoManager;
 @synthesize uuid = _uuid;
+@synthesize editHandleList = _editHandleList;
+@synthesize ownerMainCanvasView = _ownerMainCanvasView;
 
 //
 // Function
 //
-/*
-- (void)resetHandle
-{
-    NSRect realSizeFrame;
-    NSPoint aPoint;
-    
-    realSizeFrame = [self makeNSRectWithRealSizeViewFrame];
-    
-    //LD
-    aPoint = realSizeFrame.origin;
-    [((CanvasObjectHandle *)editHandle[0]) setHandlePoint:aPoint];
-    //LU
-    aPoint = NSMakePoint(realSizeFrame.origin.x, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
-    [((CanvasObjectHandle *)editHandle[1]) setHandlePoint:aPoint];
-    //RD
-    aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y);
-    [((CanvasObjectHandle *)editHandle[2]) setHandlePoint:aPoint];
-    //RU
-    aPoint = NSMakePoint(realSizeFrame.origin.x + realSizeFrame.size.width - 1, realSizeFrame.origin.y + realSizeFrame.size.height - 1);
-    [((CanvasObjectHandle *)editHandle[3]) setHandlePoint:aPoint];
-}
-*/
 - (id)initWithFrame:(NSRect)frameRect
 {
     self = [super initWithFrame:frameRect];
@@ -271,89 +196,14 @@ NSString *objectTypeNameList[] = {
 //
 // EditHandle
 //
-
 - (NSUInteger)numberOfEditHandlesForCanvasObject
 {
     return 0;
 }
 
-/*
-- (void)editHandleDown:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
-{
-    editingHandleID = tag;
-    //
-    [[_undoManager prepareWithInvocationTarget:self] setFrame:self.frame];
-    //https://github.com/Pixen/Pixen/issues/228
-    [_undoManager endUndoGrouping];
-    [_undoManager disableUndoRegistration];
-    //
-    switch (tag) {
-        case 0:
-            //LD
-        case 3:
-            //RU
-            [((CanvasObjectHandle *)editHandle[1]) setHidden:YES];
-            [((CanvasObjectHandle *)editHandle[2]) setHidden:YES];
-            break;
-        case 1:
-            //LU
-        case 2:
-            //RD
-            [((CanvasObjectHandle *)editHandle[0]) setHidden:YES];
-            [((CanvasObjectHandle *)editHandle[3]) setHidden:YES];
-            break;
-    }
-}
-
-- (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
-{
-    switch (tag) {
-        case 0:
-            //LD
-            [self setFrame:[self makeNSRectFromMouseMoving:[((CanvasObjectHandle *)editHandle[3]) makeNSPointWithHandlePoint] :currentHandlePointInCanvas]];
-            break;
-        case 1:
-            //LU
-            [self setFrame:[self makeNSRectFromMouseMoving:[((CanvasObjectHandle *)editHandle[2]) makeNSPointWithHandlePoint] :currentHandlePointInCanvas]];
-            break;
-        case 2:
-            //RD
-            [self setFrame:[self makeNSRectFromMouseMoving:[((CanvasObjectHandle *)editHandle[1]) makeNSPointWithHandlePoint] :currentHandlePointInCanvas]];
-            break;
-        case 3:
-            //RU
-            [self setFrame:[self makeNSRectFromMouseMoving:[((CanvasObjectHandle *)editHandle[0]) makeNSPointWithHandlePoint] :currentHandlePointInCanvas]];
-            break;
-    }
-    [self setNeedsDisplay:YES];
-}
-
-- (void)editHandleUp:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
-{
-    switch (tag) {
-        case 0:
-            //LD
-        case 3:
-            //RU
-            [((CanvasObjectHandle *)editHandle[1]) setHidden:NO];
-            [((CanvasObjectHandle *)editHandle[2]) setHidden:NO];
-            break;
-        case 1:
-            //LU
-        case 2:
-            //RD
-            [((CanvasObjectHandle *)editHandle[0]) setHidden:NO];
-            [((CanvasObjectHandle *)editHandle[3]) setHidden:NO];
-            break;
-
-    }
-    [self resetHandle];
-    //
-    [_undoManager enableUndoRegistration];
-    //
-}
- */
-
+//
+// ViewComputing
+//
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
 {
     //全体を含むframeRectを返す。
@@ -362,18 +212,18 @@ NSString *objectTypeNameList[] = {
     
     if(endPoint.x < startPoint.x){
         p.x = endPoint.x;
-        q.width = startPoint.x - endPoint.x + 1;
+        q.width = startPoint.x - endPoint.x;
     } else{
         p.x = startPoint.x;
-        q.width = endPoint.x - startPoint.x + 1;
+        q.width = endPoint.x - startPoint.x;
     }
     
     if(endPoint.y < startPoint.y){
         p.y = endPoint.y;
-        q.height = startPoint.y - endPoint.y + 1;
+        q.height = startPoint.y - endPoint.y;
     } else{
         p.y = startPoint.y;
-        q.height = endPoint.y - startPoint.y + 1;
+        q.height = endPoint.y - startPoint.y;
     }
     
     return NSMakeRect(p.x - (self.StrokeWidth / 2), p.y - (self.StrokeWidth / 2), q.width + self.StrokeWidth, q.height + self.StrokeWidth);

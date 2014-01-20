@@ -16,8 +16,8 @@
 - (void)selectCanvasObject:(CanvasObject *)aCanvasObject
 {
     if(!([[NSApp currentEvent] modifierFlags] & NSShiftKeyMask)){
-        //Shiftキーを押していないので、現在の選択を全て解除
-        [self deselectAllCanvasObject];
+        //Shiftキーを押していないので、現在の選択を、選択しようとしているものを除いて全て解除
+        [self deselectAllCanvasObjectExceptFor:aCanvasObject];
     }
     if(!aCanvasObject || [objectHandles objectForKey:aCanvasObject.uuid]){
         //すでに選択されている
@@ -27,10 +27,14 @@
         }
         return;
     }
+    //OFF -> ON
     NSUInteger handles = [aCanvasObject numberOfEditHandlesForCanvasObject];
     if(handles != 0){
+        //この空配列はダミー
         [objectHandles setValue:[NSMutableArray array] forKey:aCanvasObject.uuid];
+        [selectedObjects addObject:aCanvasObject];
         [self resetCanvasObjectHandleForCanvasObject:aCanvasObject];
+        [self checkEditingObject];
     }
 }
 
@@ -59,9 +63,11 @@
             [handleList addObject:anEditHandle];
             //ハンドルはMainCanvasと同じレイヤに置く。
             anEditHandle.ownerCanvasObject = aCanvasObject;
+            anEditHandle.hid = i;
             [self.superview addSubview:anEditHandle];
         }
         [objectHandles setValue:handleList forKey:aCanvasObject.uuid];
+        aCanvasObject.editHandleList = handleList;
     }
     //ハンドル位置の更新
     for(i = 0; i < handles; i++){
@@ -120,10 +126,14 @@
         //選択されていないのでなにもしない
         return;
     }
+    //ON -> OFF
     for(i = 0; i < handleList.count; i++){
         [((NSView *)[handleList objectAtIndex:i])removeFromSuperview];
     }
     [objectHandles removeObjectForKey:aCanvasObject.uuid];
+    aCanvasObject.editHandleList = nil;
+    [selectedObjects removeObject:aCanvasObject];
+    [self checkEditingObject];
 }
 
 - (void)deselectAllCanvasObject
@@ -138,10 +148,62 @@
         }
     }
     [objectHandles removeAllObjects];
+    for(CanvasObject *aCanvasObject in selectedObjects){
+        aCanvasObject.editHandleList = nil;
+    }
+    [selectedObjects removeAllObjects];
+    [self checkEditingObject];
+}
+
+- (void)deselectAllCanvasObjectExceptFor:(CanvasObject *)obj
+{
+    //面倒なので全部消してから再追加
+    NSMutableArray *handleList, *handleListSaved;
+    NSUInteger i;
+    //保存
+    handleListSaved = [objectHandles objectForKey:obj.uuid];
+    //削除
+    for(id key in [objectHandles keyEnumerator]){
+        handleList = [objectHandles objectForKey:key];
+        if(handleList != handleListSaved){
+            for(i = 0; i < handleList.count; i++){
+                [((NSView *)[handleList objectAtIndex:i])removeFromSuperview];
+            }
+        }
+    }
+    [objectHandles removeAllObjects];
+    for(CanvasObject *aCanvasObject in selectedObjects){
+        aCanvasObject.editHandleList = nil;
+    }
+    [selectedObjects removeAllObjects];
+    //再追加
+    if(handleListSaved){
+        [objectHandles setValue:handleListSaved forKey:obj.uuid];
+        [selectedObjects addObject:obj];
+    }
+    
+    [self checkEditingObject];
 }
 
 - (BOOL)isSelectedCanvasObject:(CanvasObject *)aCanvasObject
 {
-    return ([objectHandles objectForKey:aCanvasObject.uuid] != nil);
+    return [selectedObjects containsObject:aCanvasObject];
+}
+
+- (void)checkEditingObject
+{
+    //ひとつのオブジェクトだけが選択状態のとき、そのオブジェクトは編集対象となる。
+    if(selectedObjects.count == 1){
+        editingObject = [selectedObjects objectAtIndex:0];
+        self.toolboxController.editingObject = editingObject;
+        if([editingObject isKindOfClass:[CanvasObjectPaintFrame class]]){
+            //ペイントフレームなので記録
+            editingPaintFrame = (CanvasObjectPaintFrame *)editingObject;
+        }
+    } else{
+        editingObject = nil;
+        editingPaintFrame = nil;
+        self.toolboxController.editingObject = nil;
+    }
 }
 @end

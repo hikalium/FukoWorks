@@ -14,8 +14,7 @@
 
 @interface CanvasObject : NSView<CanvasObjectHandling>
 {
-    //NSView *editHandle[4];
-    //NSInteger editingHandleID;
+    
 }
 
 
@@ -25,12 +24,10 @@
 @property (readonly, nonatomic) CanvasObjectType ObjectType;
 @property (readonly, nonatomic) NSString *ObjectTypeName;
 @property (nonatomic) NSString *objectName;
-//@property (nonatomic) BOOL Focused;
-//- (void)setFocused:(BOOL)Focused;
-@property (nonatomic) NSUndoManager *undoManager;
+@property (nonatomic) NSUndoManager *undoManager;   //MainCanvasViewが設定する。
 @property (nonatomic, readonly) NSString *uuid;
-
-
+@property (nonatomic) NSArray *editHandleList;  //MainCanvasViewが設定する。
+@property (nonatomic) NSView *ownerMainCanvasView;  //MainCanvasViewが設定する。
 
 - (id)initWithFrame:(NSRect)frameRect;
 - (id)initWithEncodedString:(NSString *)sourceString;
@@ -43,15 +40,17 @@
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;
+//上記関数は、次の描画指示をすべきオブジェクトを返す。
+//つまり、描画処理が完了するとnilを返す。それまではオブジェクト自身を返す。
 
 //
 // EditHandle
 //
 - (NSUInteger)numberOfEditHandlesForCanvasObject;
 
-//上記関数は、次の描画指示をすべきオブジェクトを返す。
-//つまり、描画処理が完了するとnilを返す。それまではオブジェクト自身を返す。
-
+//
+// ViewComputing
+//
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSRect)makeNSRectWithRealSizeViewFrame;
 - (NSRect)makeNSRectWithRealSizeViewFrameInLocal;

@@ -23,7 +23,7 @@
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDw:%@", NSStringFromPoint(currentPoint)]];
     
-    if(editingObject == nil){
+    if(creatingObject == nil){
         //作成中の図形はない
         //図形の新規作成or移動
         switch(self.toolboxController.drawingObjectType){
@@ -38,13 +38,13 @@
                 [self hideCanvasObjectHandleForCanvasObject:movingObject];
                 break;
             case Rectangle:
-                editingObject = [[CanvasObjectRectangle alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
+                creatingObject = [[CanvasObjectRectangle alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
                 break;
             case Ellipse:
-                editingObject = [[CanvasObjectEllipse alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
+                creatingObject = [[CanvasObjectEllipse alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
                 break;
             case PaintFrame:
-                editingObject = [[CanvasObjectPaintFrame alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
+                creatingObject = [[CanvasObjectPaintFrame alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
                 break;
             case PaintRectangle:
             case PaintEllipse:
@@ -55,25 +55,25 @@
                 NSLog(@"Not implemented operation to make a new object.\n");
                 break;
         }
-        if(editingObject != nil){
-            editingObject.FillColor = self.toolboxController.drawingFillColor;
-            editingObject.StrokeColor = self.toolboxController.drawingStrokeColor;
-            editingObject.StrokeWidth = self.toolboxController.drawingStrokeWidth;
-            editingObject.undoManager = undoManager;
-            [self addCanvasObject:editingObject];
+        if(creatingObject != nil){
+            creatingObject.FillColor = self.toolboxController.drawingFillColor;
+            creatingObject.StrokeColor = self.toolboxController.drawingStrokeColor;
+            creatingObject.StrokeWidth = self.toolboxController.drawingStrokeWidth;
+            creatingObject.undoManager = undoManager;
+            [self addCanvasObject:creatingObject];
             
-            editingObject = [editingObject drawMouseDown:currentPoint];
+            creatingObject = [creatingObject drawMouseDown:currentPoint];
         }
     } else{
-        //図形描画の途中
-        editingObject = [editingObject drawMouseDown:currentPoint];
+        //図形作成の途中
+        creatingObject = [creatingObject drawMouseDown:currentPoint];
     }
     //ペイント枠に描くなら描く
-    if(drawingPaintFrame){
-        drawingPaintFrame.FillColor = self.toolboxController.drawingFillColor;
-        drawingPaintFrame.StrokeColor = self.toolboxController.drawingStrokeColor;
-        drawingPaintFrame.StrokeWidth = self.toolboxController.drawingStrokeWidth;
-        [drawingPaintFrame drawPaintFrameMouseDown:currentPoint mode:self.toolboxController.drawingObjectType];
+    if(editingPaintFrame){
+        editingPaintFrame.FillColor = self.toolboxController.drawingFillColor;
+        editingPaintFrame.StrokeColor = self.toolboxController.drawingStrokeColor;
+        editingPaintFrame.StrokeWidth = self.toolboxController.drawingStrokeWidth;
+        [editingPaintFrame drawPaintFrameMouseDown:currentPoint mode:self.toolboxController.drawingObjectType];
     }
 }
 
@@ -85,13 +85,13 @@
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDr:%@", NSStringFromPoint(currentPoint)]];
     
     //作成中の図形があるなら座標を送る
-    editingObject = [editingObject drawMouseDragged:currentPoint];
+    creatingObject = [creatingObject drawMouseDragged:currentPoint];
     
     //図形移動するならする
     [movingObject setFrameOrigin:NSMakePoint(currentPoint.x - moveHandleOffset.x, currentPoint.y - moveHandleOffset.y)];
     
     //ペイント枠に描くなら描く
-    [drawingPaintFrame drawPaintFrameMouseDragged:currentPoint mode:self.toolboxController.drawingObjectType];
+    [editingPaintFrame drawPaintFrameMouseDragged:currentPoint mode:self.toolboxController.drawingObjectType];
 }
 
 - (void)mouseUp:(NSEvent*)event
@@ -101,7 +101,7 @@
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mUp:%@", NSStringFromPoint(currentPoint)]];
     
-    editingObject = [editingObject drawMouseUp:currentPoint];
+    creatingObject = [creatingObject drawMouseUp:currentPoint];
     
     //フォーカスを戻す
     [self resetCanvasObjectHandleForCanvasObject:movingObject];
@@ -112,7 +112,7 @@
     
     
     //ペイント枠に描くなら描く
-    [drawingPaintFrame drawPaintFrameMouseUp:currentPoint mode:self.toolboxController.drawingObjectType];
+    [editingPaintFrame drawPaintFrameMouseUp:currentPoint mode:self.toolboxController.drawingObjectType];
     
     if([event clickCount] == 1){
         //クリック。
@@ -132,7 +132,7 @@
     CanvasObject *aCanvasObject;
     InspectorWindowController *anInspectorWindowController;
     
-    if(editingObject == nil){
+    if(creatingObject == nil){
         //詳細設定を開く
         aCanvasObject = [self getCanvasObjectAtCursorLocation:theEvent];
         if(aCanvasObject == nil){

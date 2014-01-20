@@ -20,22 +20,25 @@
 @interface MainCanvasView : NSView
 {
     NSUndoManager *undoManager;
+    
     NSPoint drawingStartPoint;
     NSPoint drawingDragPoint;
     
     CGColorRef backgroundColor;
     
-    CanvasObject *editingObject;
+    CanvasObject *creatingObject;
     
     CanvasObject *movingObject;
     NSPoint moveHandleOffset;
     
-    CanvasObjectPaintFrame *drawingPaintFrame;
+    CanvasObject *editingObject;
+    CanvasObjectPaintFrame *editingPaintFrame;
     
     NSMutableArray *inspectorWindows;
     //OverlayCanvasView *overlayView;
     SubCanvasView *rootSubCanvas;
     NSMutableDictionary *objectHandles;
+    NSMutableArray *selectedObjects;
 }
 
 @property (strong, nonatomic) NSTextField *label_indicator;
@@ -78,7 +81,9 @@
 - (void)showCanvasObjectHandleForCanvasObject:(CanvasObject *)aCanvasObject;
 - (void)deselectCanvasObject:(CanvasObject *)aCanvasObject;
 - (void)deselectAllCanvasObject;
+- (void)deselectAllCanvasObjectExceptFor:(CanvasObject *)obj;
 - (BOOL)isSelectedCanvasObject:(CanvasObject *)aCanvasObject;
+- (void)checkEditingObject;
 @end
 
 @interface MainCanvasView (UndoManaging)

@@ -7,6 +7,8 @@
 //
 
 #import "CanvasObjectRectFrameBase.h"
+#import "CanvasObjectHandle.h"
+#import "MainCanvasView.h"
 
 @implementation CanvasObjectRectFrameBase
 
@@ -70,5 +72,65 @@
     }
     return p;
 }
+
+- (void)editHandleDown:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
+{
+    [[self.undoManager prepareWithInvocationTarget:self] setFrame:self.frame];
+    //https://github.com/Pixen/Pixen/issues/228
+    [self.undoManager endUndoGrouping];
+    [self.undoManager disableUndoRegistration];
+    //
+    switch (hid) {
+        case 0:
+            //LD
+        case 3:
+            //RU
+            [[self.editHandleList objectAtIndex:1] setHidden:YES];
+            [[self.editHandleList objectAtIndex:2] setHidden:YES];
+            break;
+        case 2:
+            //LU
+        case 1:
+            //RD
+            [[self.editHandleList objectAtIndex:0] setHidden:YES];
+            [[self.editHandleList objectAtIndex:3] setHidden:YES];
+            break;
+    }
+}
+
+- (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
+{
+    NSPoint p;
+    
+    p = [((CanvasObjectHandle *)[self.editHandleList objectAtIndex:(3 - hid)])makeNSPointWithHandlePoint];
+    [self setFrame:[self makeNSRectFromMouseMoving:p :currentHandlePointInCanvas]];
+
+    [self setNeedsDisplay:YES];
+    [((MainCanvasView *)self.ownerMainCanvasView) resetCanvasObjectHandleForCanvasObject:self];
+}
+
+- (void)editHandleUp:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
+{
+    switch (hid) {
+        case 0:
+            //LD
+        case 3:
+            //RU
+            [[self.editHandleList objectAtIndex:1] setHidden:NO];
+            [[self.editHandleList objectAtIndex:2] setHidden:NO];
+            break;
+        case 2:
+            //LU
+        case 1:
+            //RD
+            [[self.editHandleList objectAtIndex:0] setHidden:NO];
+            [[self.editHandleList objectAtIndex:3] setHidden:NO];
+            break;
+    }
+    //
+    [self.undoManager enableUndoRegistration];
+    //
+}
+
 
 @end
