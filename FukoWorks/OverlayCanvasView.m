@@ -47,10 +47,8 @@
     CGContextSetFillColorWithColor(mainContext, highlightColor);
     for(NSInteger i = 0; i < sol.count; i++){
         co = sol[i];
-        r = co.frame;
-        //NSLog(@"%@", NSStringFromRect([ownerCanvasView getVisibleRectOnObjectLayer]));
         r = NSIntersectionRect(co.frame, [ownerCanvasView getVisibleRectOnObjectLayer]);
-        CGContextFillRect(mainContext, co.frame);
+        CGContextFillRect(mainContext, r);
     }
 }
 
