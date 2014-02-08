@@ -19,7 +19,6 @@
 {
     self = [super initWithFrame:frameRect];
     if (self) {
-        // Initialization code here.
         _ObjectType = Rectangle;
     }
     

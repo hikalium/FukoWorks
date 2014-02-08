@@ -22,7 +22,6 @@ CGColorRef handleStrokeColor;
 {
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code here.
         _ownerCanvasObject = nil;
         handleFillColor = CGColorCreateGenericRGB(1, 1, 1, 0.5);
         handleStrokeColor = CGColorCreateGenericRGB(0.5, 0.5, 0.5, 0.5);

@@ -8,6 +8,6 @@
 
 #import "CanvasObject.h"
 
-@interface CanvasObjectTextBox : CanvasObject
-
+@interface CanvasObjectTextBox : CanvasObject <NSTextFieldDelegate>
+- (void)controlTextDidChange:(NSNotification *)obj;
 @end

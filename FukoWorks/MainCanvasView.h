@@ -13,6 +13,7 @@
 #import "CanvasObjectRectangle.h"
 #import "CanvasObjectEllipse.h"
 #import "CanvasObjectPaintFrame.h"
+#import "CanvasObjectTextBox.h"
 #import "SubCanvasView.h"
 #import "CanvasObjectHandle.h"
 #import "OverlayCanvasView.h"

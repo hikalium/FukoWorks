@@ -47,7 +47,7 @@
                 creatingObject = [[CanvasObjectPaintFrame alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
                 break;
             case TextBox:
-                
+                creatingObject = [[CanvasObjectTextBox alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
                 break;
             //
             case PaintRectangle:
@@ -122,6 +122,9 @@
         //クリック。
         //フォーカスを与える。
         [self selectCanvasObject:[self getCanvasObjectAtCursorLocation:event]];
+    } else if([event clickCount] == 2){
+        //Double clicked.
+        [[self getCanvasObjectAtCursorLocation:event] doubleClicked];
     }
     
     

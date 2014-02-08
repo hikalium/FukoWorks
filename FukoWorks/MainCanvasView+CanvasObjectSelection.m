@@ -28,15 +28,16 @@
         return;
     }
     //OFF -> ON
-    NSUInteger handles = [aCanvasObject numberOfEditHandlesForCanvasObject];
-    if(handles != 0){
+    //NSUInteger handles = [aCanvasObject numberOfEditHandlesForCanvasObject];
+    //if(handles != 0){
         //この空配列はダミー
         //実際はresetCanvasObjectHandleForCanvasObjectで設定される。
         [objectHandles setValue:[NSMutableArray array] forKey:aCanvasObject.uuid];
         [selectedObjects addObject:aCanvasObject];
         [self resetCanvasObjectHandleForCanvasObject:aCanvasObject];
         [self checkEditingObject];
-    }
+    //}
+    [aCanvasObject selected];
 }
 
 - (void)resetCanvasObjectHandleForCanvasObject:(CanvasObject *)aCanvasObject
@@ -135,6 +136,7 @@
     aCanvasObject.editHandleList = nil;
     [selectedObjects removeObject:aCanvasObject];
     [self checkEditingObject];
+    [aCanvasObject deselected];
 }
 
 - (void)deselectAllCanvasObject
@@ -151,6 +153,7 @@
     [objectHandles removeAllObjects];
     for(CanvasObject *aCanvasObject in selectedObjects){
         aCanvasObject.editHandleList = nil;
+        [aCanvasObject deselected];
     }
     [selectedObjects removeAllObjects];
     [self checkEditingObject];
@@ -175,6 +178,7 @@
     [objectHandles removeAllObjects];
     for(CanvasObject *aCanvasObject in selectedObjects){
         aCanvasObject.editHandleList = nil;
+        [aCanvasObject deselected];
     }
     [selectedObjects removeAllObjects];
     //再追加

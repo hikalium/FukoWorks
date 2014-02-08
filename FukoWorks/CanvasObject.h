@@ -43,6 +43,10 @@
 //上記関数は、次の描画指示をすべきオブジェクトを返す。
 //つまり、描画処理が完了するとnilを返す。それまではオブジェクト自身を返す。
 
+- (void)doubleClicked;
+- (void)selected;
+- (void)deselected;
+
 //
 // EditHandle
 //

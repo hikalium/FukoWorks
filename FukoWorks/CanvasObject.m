@@ -43,7 +43,6 @@
     realRect = [self makeNSRectWithRealSizeViewFrame];
     _StrokeWidth = StrokeWidth;
     [self setFrame:[self makeNSRectWithFullSizeViewFrameFromRealSizeViewFrame:realRect]];
-    //[self resetHandle];
     [self setNeedsDisplay:YES];
 }
 
@@ -77,19 +76,12 @@ NSString *objectTypeNameList[] = {
 {
     self = [super initWithFrame:frameRect];
     if (self) {
-        // Initialization code here.
         _ObjectType = Undefined;
         
         _FillColor = nil;
         _StrokeColor = nil;
         _StrokeWidth = 0;
         
-        //_Focused = NO;
-        /*
-        for(int i = 0; i < 4; i++){
-            editHandle[i] = nil;
-        }
-         */
         _objectName = @"NoName";
         _uuid = [NSString UUID];
     }
@@ -116,7 +108,7 @@ NSString *objectTypeNameList[] = {
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    // Drawing code here.
+    
 }
 
 - (void)setFrame:(NSRect)frameRect
@@ -199,6 +191,21 @@ NSString *objectTypeNameList[] = {
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
 {
     return nil;
+}
+
+- (void)doubleClicked
+{
+
+}
+
+- (void)selected
+{
+    
+}
+
+- (void)deselected
+{
+    
 }
 
 //
