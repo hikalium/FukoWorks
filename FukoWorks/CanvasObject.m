@@ -123,6 +123,14 @@ NSString *objectTypeNameList[] = {
 {
     [[_undoManager prepareWithInvocationTarget:self] setFrame:self.frame];
     //
+    if(frameRect.size.width > FWK_MAX_SIZE_PIXEL){
+        frameRect.size.width = FWK_MAX_SIZE_PIXEL;
+        NSLog(@"Too large frame width!");
+    }
+    if(frameRect.size.height > FWK_MAX_SIZE_PIXEL){
+        frameRect.size.height = FWK_MAX_SIZE_PIXEL;
+        NSLog(@"Too large frame height!");
+    }
     [super setFrame:frameRect];
 }
 

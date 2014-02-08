@@ -116,7 +116,7 @@
     [scrollView.documentView scrollPoint:scrollPoint];
     
     [label_indicator setStringValue:[NSString stringWithFormat:@"scaleSet:%f", scale]];
-    NSLog(@"scaleSet:%@ %f", NSStringFromPoint(scrollPoint), changeScale);
+    //NSLog(@"scaleSet:%@ %f", NSStringFromPoint(scrollPoint), changeScale);
     comboBoxCanvasScale.integerValue = scale * 100;
 }
 
@@ -219,7 +219,7 @@
 
 - (void)printCanvas:(id)sender
 {
-    NSLog(@"print");
+    //NSLog(@"print");
     /*
     NSPrintInfo *pinfo = [NSPrintInfo sharedPrintInfo];
     NSPrintOperation *op = [NSPrintOperation

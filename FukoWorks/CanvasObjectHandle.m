@@ -98,8 +98,13 @@ CGColorRef handleStrokeColor;
 
 - (NSPoint)makeNSPointWithHandlePoint
 {
-    //ハンドルが制御すべき一点の、superview内での座標を返す。
-    return NSMakePoint(self.frame.origin.x + (self.frame.size.width / 2), self.frame.origin.y + (self.frame.size.height / 2));
+    //ハンドルが制御すべき一点の、オブジェクト座標系での座標を返す。
+    NSPoint p;
+    p = NSMakePoint(
+                    self.frame.origin.x + (self.frame.size.width / 2),
+                    self.frame.origin.y + (self.frame.size.height / 2)
+                    );
+    return [self.superview convertPoint:p toView:self.ownerCanvasObject.superview];
 }
 
 - (void)mouseDown:(NSEvent *)theEvent

@@ -41,7 +41,7 @@
     
     if(self){
         bitmap = [NSBitmapImageRep imageRepWithData:[[NSData alloc] initWithHexadecimalString:[dataValues objectAtIndex:1]]];
-        NSLog(@"%@", bitmap);
+        //NSLog(@"%@", bitmap);
         CGContextDrawImage(paintContext, CGRectMake(0, 0, bitmap.size.width, bitmap.size.height), [bitmap CGImage]);
         [self setNeedsDisplay:YES];
     }
@@ -209,7 +209,7 @@
         CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
         CGContextSetLineWidth(editingContext, floor(self.StrokeWidth + 0.5));
         CGContextStrokePath(editingContext);
-        NSLog(@"drawPoint!%f",self.StrokeWidth);
+        //NSLog(@"drawPoint!%f",self.StrokeWidth);
         [self setNeedsDisplay:YES];
     }
 }

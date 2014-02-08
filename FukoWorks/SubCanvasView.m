@@ -55,7 +55,7 @@
     CGFloat pages;
     pages = ceil(self.frame.size.width / paperSize.width) * ceil(self.frame.size.height / paperSize.height);
     *range = NSMakeRange(1, pages);
-    NSLog(@"pages:%f", pages);
+    //NSLog(@"pages:%f", pages);
     
     return YES;
 }
@@ -70,7 +70,7 @@
     ypages = ceil(self.frame.size.height / paperSize.height);
     if(page > xpages * ypages){
         //範囲外のページ番号だった
-        NSLog(@"zerorect:");
+        //NSLog(@"zerorect:");
         return NSZeroRect;
     }
     page--;
@@ -79,7 +79,7 @@
     
     rect = NSMakeRect(paperSize.width * x, paperSize.height * y,
                       paperSize.width, paperSize.height);
-    NSLog(@"rect:%@", NSStringFromRect(rect));
+    //NSLog(@"rect:%@", NSStringFromRect(rect));
     
     return rect;
 }

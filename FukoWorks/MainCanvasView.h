@@ -13,13 +13,16 @@
 #import "CanvasObjectRectangle.h"
 #import "CanvasObjectEllipse.h"
 #import "CanvasObjectPaintFrame.h"
-#import "OverlayCanvasView.h"
 #import "SubCanvasView.h"
 #import "CanvasObjectHandle.h"
+#import "OverlayCanvasView.h"
 
 @interface MainCanvasView : NSView
 {
     NSUndoManager *undoManager;
+    
+    SubCanvasView *rootSubCanvas;
+    OverlayCanvasView *overlayCanvas;
     
     NSPoint drawingStartPoint;
     NSPoint drawingDragPoint;
@@ -35,8 +38,7 @@
     CanvasObjectPaintFrame *editingPaintFrame;
     
     NSMutableArray *inspectorWindows;
-    //OverlayCanvasView *overlayView;
-    SubCanvasView *rootSubCanvas;
+    
     NSMutableDictionary *objectHandles;
     NSMutableArray *selectedObjects;
 }
@@ -47,6 +49,7 @@
 @property (nonatomic) NSSize canvasSize;
 @property (nonatomic, readonly) NSMutableArray *canvasObjects;
 @property (nonatomic, readonly) NSView *realSizeCanvas;
+@property (nonatomic, readonly) NSArray *selectedObjectList;
 
 - (id)initWithFrame:(NSRect)frame;
 - (void)drawRect:(NSRect)dirtyRect;
@@ -56,6 +59,7 @@
 - (void)addCanvasObject:(CanvasObject *)aCanvasObject;
 - (void)removeCanvasObject:(CanvasObject *)aCanvasObject;
 
+- (NSRect)getVisibleRectOnObjectLayer;
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
 - (NSPoint)getPointerLocationInScreen:(NSEvent *)event;

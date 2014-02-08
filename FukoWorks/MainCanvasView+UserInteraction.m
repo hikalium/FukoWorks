@@ -46,13 +46,17 @@
             case PaintFrame:
                 creatingObject = [[CanvasObjectPaintFrame alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
                 break;
+            case TextBox:
+                
+                break;
+            //
             case PaintRectangle:
             case PaintEllipse:
             case PaintPen:
-                NSLog(@"Draw in paint frame.\n");
+                //NSLog(@"Draw in paint frame.\n");
                 break;
             default:
-                NSLog(@"Not implemented operation to make a new object.\n");
+                //NSLog(@"Not implemented operation to make a new object.\n");
                 break;
         }
         if(creatingObject != nil){

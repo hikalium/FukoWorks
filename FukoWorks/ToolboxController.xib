@@ -63,7 +63,7 @@
                             <action selector="textFieldStrokeWidthChanged:" target="-2" id="62"/>
                         </connections>
                     </textField>
-                    <button tag="1" id="7">
+                    <button toolTip="矩形" tag="1" id="7">
                         <rect key="frame" x="20" y="387" width="32" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconRect" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="18">
@@ -74,6 +74,17 @@
                             <action selector="drawingObjectTypeChanged:" target="-2" id="64"/>
                         </connections>
                     </button>
+                    <button toolTip="文字列" tag="4" id="Nkl-cU-qc0">
+                        <rect key="frame" x="60" y="344" width="32" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconRect" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="Ozc-12-bOD">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="drawingObjectTypeChanged:" target="-2" id="asC-Sq-V0w"/>
+                        </connections>
+                    </button>
                     <slider verticalHuggingPriority="750" id="13">
                         <rect key="frame" x="18" y="16" width="76" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -82,7 +93,7 @@
                             <action selector="sliderStrokeWidthChanged:" target="-2" id="61"/>
                         </connections>
                     </slider>
-                    <button tag="2" id="9">
+                    <button toolTip="楕円" tag="2" id="9">
                         <rect key="frame" x="60" y="387" width="32" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconEllipse" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="16">
@@ -93,7 +104,7 @@
                             <action selector="drawingObjectTypeChanged:" target="-2" id="65"/>
                         </connections>
                     </button>
-                    <button id="8">
+                    <button toolTip="選択" id="8">
                         <rect key="frame" x="40" y="429" width="32" height="32"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="icon_cursor" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="17">
@@ -104,7 +115,7 @@
                             <action selector="drawingObjectTypeChanged:" target="-2" id="63"/>
                         </connections>
                     </button>
-                    <button tag="3" id="67">
+                    <button toolTip="ペイント枠" tag="3" id="67">
                         <rect key="frame" x="20" y="344" width="32" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconPaintFrame" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="68">
@@ -115,7 +126,7 @@
                             <action selector="drawingObjectTypeChanged:" target="-2" id="69"/>
                         </connections>
                     </button>
-                    <button tag="101" id="70">
+                    <button toolTip="ペイント矩形" tag="101" id="70">
                         <rect key="frame" x="20" y="223" width="32" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconRect" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="73">
@@ -126,7 +137,7 @@
                             <action selector="drawingObjectTypeChanged:" target="-2" id="74"/>
                         </connections>
                     </button>
-                    <button tag="102" id="71">
+                    <button toolTip="ペイント楕円" tag="102" id="71">
                         <rect key="frame" x="60" y="223" width="32" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconEllipse" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="72">
@@ -137,7 +148,7 @@
                             <action selector="drawingObjectTypeChanged:" target="-2" id="75"/>
                         </connections>
                     </button>
-                    <button tag="103" id="01A-af-Tpb">
+                    <button toolTip="ペイントペン" tag="103" id="01A-af-Tpb">
                         <rect key="frame" x="20" y="180" width="32" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconRect" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="Lyb-P0-SCP">

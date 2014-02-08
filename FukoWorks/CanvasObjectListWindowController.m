@@ -168,7 +168,7 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
 - (id <NSPasteboardWriting>)outlineView:(NSOutlineView *)outlineView pasteboardWriterForItem:(id)item
 {
     //1
-    NSLog(@"writer");
+    //NSLog(@"writer");
     // With all the blocking conditions out of the way,
     // return a pasteboard writer.
     
@@ -183,7 +183,7 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
 
 - (void)outlineView:(NSOutlineView *)outlineView draggingSession:(NSDraggingSession *)session willBeginAtPoint:(NSPoint)screenPoint forItems:(NSArray *)draggedItems {
     //2
-    NSLog(@"sessionstart");
+    //NSLog(@"sessionstart");
     draggingItemList = draggedItems;
     [session.draggingPasteboard setData:[NSData data] forType:FWK_PASTEBOARD_TYPE];
 }
@@ -194,13 +194,13 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
     //NSDragOperationNone:なにもしない
     //NSDragOperationMove:間に入れることも、重ねていれることもできる
     //あるアイテムがドラッグを受け付けるかどうかを教えてあげる
-    NSLog(@"validate");
+    //NSLog(@"validate");
     return (item == nil) ? NSDragOperationMove : NSDragOperationNone;
 }
 
 - (BOOL)outlineView:(NSOutlineView *)outlineView acceptDrop:(id < NSDraggingInfo >)info item:(id)item childIndex:(NSInteger)index
 {
-    NSLog(@"accept %@ %ld", item, index);
+    //NSLog(@"accept %@ %ld", item, index);
     // Move the dragged item(s) to their new position in the data model
     // and reload the view or move the rows in the view.
     // This is of course quite dependent on your implementation
@@ -216,7 +216,7 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
 }
 
 - (void)outlineView:(NSOutlineView *)outlineView draggingSession:(NSDraggingSession *)session endedAtPoint:(NSPoint)screenPoint operation:(NSDragOperation)operation {
-    NSLog(@"sessionend");
+    //NSLog(@"sessionend");
     // If the session ended in the trash, then delete all the items
     /*
     if (operation == NSDragOperationDelete) {

@@ -9,10 +9,7 @@
 #import <Cocoa/Cocoa.h>
 
 @interface OverlayCanvasView : NSView
-{
-    CGColorRef highlightColor;
-}
 
-@property (nonatomic) NSArray *canvasObjectList;
+@property (nonatomic) NSView *ownerCanvasView;
 
 @end

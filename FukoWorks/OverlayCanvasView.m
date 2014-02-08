@@ -8,10 +8,15 @@
 
 #import "OverlayCanvasView.h"
 #import "CanvasObject.h"
+#import "MainCanvasView.h"
 
 @implementation OverlayCanvasView
+{
+    CGColorRef highlightColor;
+    MainCanvasView *ownerCanvasView;
+}
 
-@synthesize canvasObjectList = _canvasObjectList;
+@synthesize ownerCanvasView = ownerCanvasView;
 
 - (id)initWithFrame:(NSRect)frame
 {
@@ -25,23 +30,28 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    /*
+    
     CanvasObject *co;
     CGContextRef mainContext;
+    NSArray *sol = ownerCanvasView.selectedObjectList;
+    NSRect r;
     
     [super drawRect:dirtyRect];
     
     mainContext = [[NSGraphicsContext currentContext] graphicsPort];
     
-    for(NSInteger i = 0; i < _canvasObjectList.count; i++){
-        co = _canvasObjectList[i];
-        if(co.Focused){
-            CGContextSetStrokeColorWithColor(mainContext, highlightColor);
-            CGContextStrokeRectWithWidth(mainContext, co.frame, 4);
-        }
+    [[NSColor colorWithDeviceWhite:0.0 alpha:0.0] set];
+    NSRectFillUsingOperation(dirtyRect, NSCompositeSourceOver);
+    
+    CGContextSetStrokeColorWithColor(mainContext, highlightColor);
+    CGContextSetFillColorWithColor(mainContext, highlightColor);
+    for(NSInteger i = 0; i < sol.count; i++){
+        co = sol[i];
+        r = co.frame;
+        //NSLog(@"%@", NSStringFromRect([ownerCanvasView getVisibleRectOnObjectLayer]));
+        r = NSIntersectionRect(co.frame, [ownerCanvasView getVisibleRectOnObjectLayer]);
+        CGContextFillRect(mainContext, co.frame);
     }
-     */
-    // Drawing code here.
 }
 
 @end

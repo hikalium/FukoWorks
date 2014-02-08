@@ -16,6 +16,7 @@ typedef enum : NSInteger {
     Rectangle,
     Ellipse,
     PaintFrame,
+    TextBox,
     PaintToolsBase = 100,
     PaintRectangle,
     PaintEllipse,
@@ -23,5 +24,8 @@ typedef enum : NSInteger {
 } CanvasObjectType;
 
 #define FWK_PASTEBOARD_TYPE @"com.pcd.fwk.data.pasteboard"
+
+// 100m (72ppi)
+#define FWK_MAX_SIZE_PIXEL  283465
 
 #endif
