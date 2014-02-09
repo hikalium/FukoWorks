@@ -19,6 +19,7 @@
 - (void)setEditingObject:(CanvasObject *)editingObject
 {
     _editingObject = editingObject;
+    //ペイントメニューの切り替え
     if([_editingObject isKindOfClass:[CanvasObjectPaintFrame class]]){
         [toolPaintRect setEnabled:YES];
         [toolPaintEllipse setEnabled:YES];
@@ -32,7 +33,7 @@
             [self drawingObjectTypeChanged:toolCursor];
         }
     }
-    if([_editingObject isKindOfClass:[CanvasObject class]]){
+    if([_editingObject isKindOfClass:[CanvasObject class]] && editingObject.ObjectType != TextBox){
         if(editingObject.FillColor){
             [cWellFillColor setColor:editingObject.FillColor];
             _drawingFillColor = editingObject.FillColor;

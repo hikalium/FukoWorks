@@ -25,6 +25,10 @@
 - (void)awakeFromNib
 {
     NSString *s;
+    
+    [[NSColorPanel sharedColorPanel] close];
+    [[NSFontPanel sharedFontPanel] close];
+    
     [splashWindow center];
     [splashWindow setLevel:NSFloatingWindowLevel];
     s = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"];

@@ -59,17 +59,13 @@
 
 - (void)addCanvasObject:(CanvasObject *)aCanvasObject;
 - (void)removeCanvasObject:(CanvasObject *)aCanvasObject;
+- (void)removeCanvasObjects:(NSArray *)canvasObjectList;
 
 - (NSRect)getVisibleRectOnObjectLayer;
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
 - (NSPoint)getPointerLocationInScreen:(NSEvent *)event;
 - (CanvasObject *)getCanvasObjectAtCursorLocation:(NSEvent *)event;
-
-- (void)writeCanvasToURL:(NSURL *)url atomically:(BOOL)isAtomically;
-- (NSString *)convertCanvasObjectsToString:(NSArray *)canvasObjects;
-- (void)appendCanvasObjectsFromString:(NSString *)stringRep;
-- (void)loadCanvasFromURL:(NSURL *)url;
 
 - (IBAction)copy:(id)sender;
 - (IBAction)paste:(id)sender;
@@ -114,6 +110,13 @@
 - (void)moveCanvasObjects:(NSArray *)mcoList aboveOf:(CanvasObject *)coBelow;
 - (BOOL)bringCanvasObjectToFront:(CanvasObject *)aCanvasObject;
 - (BOOL)bringCanvasObjectToBack:(CanvasObject *)aCanvasObject;
+@end
+
+@interface MainCanvasView (FWKFile)
+- (void)writeCanvasToURL:(NSURL *)url atomically:(BOOL)isAtomically;
+- (NSString *)convertCanvasObjectsToString:(NSArray *)canvasObjects;
+- (void)appendCanvasObjectsFromString:(NSString *)stringRep;
+- (void)loadCanvasFromURL:(NSURL *)url;
 @end
 
 

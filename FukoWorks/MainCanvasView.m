@@ -129,12 +129,21 @@
     if(movingObject == aCanvasObject){
         movingObject = nil;
     }
+    [self deselectCanvasObject:aCanvasObject];
     [aCanvasObject removeFromSuperview];
     [_canvasObjects removeObject:aCanvasObject];
     if(aCanvasObject != nil){
         //NSLog(@"Removed CanvasObject. \n%@\n", rootSubCanvas.subviews.description);
     }
     [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] reloadData];
+}
+
+- (void)removeCanvasObjects:(NSArray *)canvasObjectList
+{
+    NSArray *tmpList = [[NSArray alloc] initWithArray:canvasObjectList];
+    for(CanvasObject *co in tmpList){
+        [self removeCanvasObject:co];
+    }
 }
 
 
@@ -231,122 +240,6 @@
     return candidateCanvasObject;
 }
 
-
-//
-//TypeID:data1a,data1b,data1c|data2a,data2b,data2c\n
-//
-- (void)writeCanvasToURL:(NSURL *)url atomically:(BOOL)isAtomically
-{
-    NSString *saveData;
-    NSError *error;
-    
-    saveData = [self convertCanvasObjectsToString:self.subviews];
-
-    error = nil;
-    if(![saveData writeToURL:url atomically:isAtomically encoding:NSUTF8StringEncoding error:&error]){
-        NSRunAlertPanel(@"FukoWorks-Error-", [error localizedDescription], @"OK", nil, nil);
-    }
-}
-
-- (NSString *)convertCanvasObjectsToString:(NSArray *)canvasObjects
-{
-    //渡されたNSArray中のCanvasObjectを示す文字列を生成し返す。
-    CanvasObject *aCanvasObject;
-    NSMutableString *stringRep;
-    stringRep = [[NSMutableString alloc] initWithFormat:@"[FukoWorKs]:%ld\n", [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] integerValue]];
-    
-    for(NSView *aSubview in canvasObjects){
-        if([aSubview isKindOfClass:[CanvasObject class]]){
-            aCanvasObject = (CanvasObject *)aSubview;
-            
-            switch(aCanvasObject.ObjectType){
-                case Rectangle:
-                case Ellipse:
-                case PaintFrame:
-                    [stringRep appendFormat:@"%ld:", aCanvasObject.ObjectType];
-                    [stringRep appendFormat:@"%@\n",[aCanvasObject encodedStringForCanvasObject]];
-                    break;
-                default:
-                    //NSLog(@"Not implemented operation to save object type %ld.\n", aCanvasObject.ObjectType);
-                    break;
-            }
-        }
-    }
-
-    return [NSString stringWithString:stringRep];
-}
-
-- (void)appendCanvasObjectsFromString:(NSString *)stringRep
-{
-    //渡された文字列からCanvasObjectを生成し追加する。
-    NSArray *dataList;
-    NSArray *dataItem;
-    NSString *aDataString;
-    NSString *dataItemsString;
-    NSUInteger i, i_max;
-    CanvasObject *aCanvasObject;
-
-    dataList = [stringRep componentsSeparatedByString:@"\n"];
-    
-    //Validation data.
-    dataItemsString = [dataList objectAtIndex:0];
-    dataItem = [dataItemsString componentsSeparatedByString:@":"];
-    aDataString = [dataItem objectAtIndex:0];
-    if(![aDataString isEqualToString:@"[FukoWorKs]"]){
-        NSRunAlertPanel(@"FukoWorks-データ読み込みエラー-", @"ヘッダが見つかりません", @"OK", nil, nil);
-        return;
-    }
-    aDataString = [dataItem objectAtIndex:1];
-    if(aDataString.integerValue > [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] integerValue]){
-        //もし新たなバージョンで作成されたファイルであったら、警告を出す。
-        NSRunAlertPanel(@"FukoWorks-警告-", @"読み込もうとしているデータは、より新しいバージョンのFukoWorksで作成されたものであり、正常に読み込めない可能性があります。", @"OK", nil, nil);
-    }
-    
-    //データ読み込み
-    i_max = [dataList count];
-    for(i = 1; i < i_max; i++){
-        dataItemsString = [dataList objectAtIndex:i];
-        dataItem = [dataItemsString componentsSeparatedByString:@":"];
-        aDataString = [dataItem objectAtIndex:0];
-        aCanvasObject = nil;
-        switch ((CanvasObjectType)aDataString.integerValue) {
-            case Undefined:
-                //Do nothing.
-                break;
-            case Rectangle:
-                aCanvasObject = [[CanvasObjectRectangle alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
-                break;
-                
-            case Ellipse:
-                aCanvasObject = [[CanvasObjectEllipse alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
-                break;
-                
-            case PaintFrame:
-                aCanvasObject = [[CanvasObjectPaintFrame alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
-                break;
-                
-            default:
-                //NSLog(@"Not implemented operation to load object type %ld.\n", aDataString.integerValue);
-                break;
-        }
-        if(aCanvasObject != nil){
-            [self addCanvasObject:aCanvasObject];
-            //NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
-        }
-    }
-}
-
-- (void)loadCanvasFromURL:(NSURL *)url
-{
-    NSString *dataString;
-    NSError *error;
-    
-    error = nil;
-    dataString = [NSString stringWithContentsOfURL:url encoding:NSUTF8StringEncoding error:&error];
-
-    [self appendCanvasObjectsFromString:dataString];
-}
-
 //
 // MenuItem
 //
@@ -401,7 +294,7 @@
 }
 - (IBAction)delete:(id)sender
 {
-    //[self removeCanvasObject:_focusedObject];
+    [self removeCanvasObjects:selectedObjects];
 }
 
 

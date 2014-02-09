@@ -53,6 +53,7 @@
 		17BCF80916F42BDD00E7E472 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF80716F42BDD00E7E472 /* MainMenu.xib */; };
 		17BCF81316F43F9100E7E472 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF81216F43F9100E7E472 /* Credits.rtf */; };
 		17BCF81616F4400300E7E472 /* MainCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BCF81516F4400300E7E472 /* MainCanvasView.m */; };
+		17F662A818A7B0A10097C858 /* MainCanvasView+FWKFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F662A718A7B0A10097C858 /* MainCanvasView+FWKFile.m */; };
 		17FFED70180A66BF0029F6F4 /* CanvasObjectListWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17FFED6E180A66BF0029F6F4 /* CanvasObjectListWindowController.m */; };
 		17FFED71180A66BF0029F6F4 /* CanvasObjectListWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17FFED6F180A66BF0029F6F4 /* CanvasObjectListWindowController.xib */; };
 /* End PBXBuildFile section */
@@ -131,6 +132,7 @@
 		17BCF81216F43F9100E7E472 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		17BCF81416F4400300E7E472 /* MainCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MainCanvasView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		17BCF81516F4400300E7E472 /* MainCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MainCanvasView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		17F662A718A7B0A10097C858 /* MainCanvasView+FWKFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MainCanvasView+FWKFile.m"; sourceTree = "<group>"; };
 		17FFED6D180A66BF0029F6F4 /* CanvasObjectListWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectListWindowController.h; sourceTree = "<group>"; };
 		17FFED6E180A66BF0029F6F4 /* CanvasObjectListWindowController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectListWindowController.m; sourceTree = "<group>"; };
 		17FFED6F180A66BF0029F6F4 /* CanvasObjectListWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CanvasObjectListWindowController.xib; sourceTree = "<group>"; };
@@ -249,6 +251,7 @@
 				176E66BF188BB7A9007216EB /* MainCanvasView+Printing.m */,
 				176E66C2188BB86A007216EB /* MainCanvasView+Sorting.m */,
 				176E66C5188BB9AF007216EB /* MainCanvasView+UserInteraction.m */,
+				17F662A718A7B0A10097C858 /* MainCanvasView+FWKFile.m */,
 			);
 			name = MainCanvasView;
 			sourceTree = "<group>";
@@ -421,6 +424,7 @@
 				17BCF7FF16F42BDD00E7E472 /* main.m in Sources */,
 				17BCF80616F42BDD00E7E472 /* AppDelegate.m in Sources */,
 				17BCF81616F4400300E7E472 /* MainCanvasView.m in Sources */,
+				17F662A818A7B0A10097C858 /* MainCanvasView+FWKFile.m in Sources */,
 				1723966916F5A8200089DF1E /* CanvasObjectRectangle.m in Sources */,
 				17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */,
 				176E66C6188BB9B0007216EB /* MainCanvasView+UserInteraction.m in Sources */,

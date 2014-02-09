@@ -7,9 +7,11 @@
 //
 
 #import "CanvasObjectTextBox.h"
+#import "NSColor+StringConversion.h"
 
 @interface FWKCanvasTextField : NSTextField
-
+- (id)initWithDelegete: (id<NSTextFieldDelegate>)delegete;
+- (NSAttributedString *)attributedString;
 @end
 
 @implementation FWKCanvasTextField
@@ -18,15 +20,15 @@
 {
     self = [super initWithFrame:NSMakeRect(0, 0, 10, 10)];
     if(self){
-        //[self setEnabled:NO];
         [self setEditable:NO];
         [self setBezeled:NO];
         [self setBordered:NO];
-        [self setDrawsBackground:NO];
         [self setAllowsEditingTextAttributes:YES];
         [self setDelegate:delegete];
         [self setStringValue:@"テキストを入力"];
         [self setFocusRingType:NSFocusRingTypeNone];
+        [self setFont:[NSFont fontWithName:@"HiraMaruPro-W4" size:32]];
+        [self setBackgroundColor:[NSColor whiteColor]];
     }
     return self;
 }
@@ -41,6 +43,12 @@
     [self setEditable:NO];
     return [super resignFirstResponder];
 }
+
+-(NSAttributedString *)attributedString
+{
+    return [self.cell attributedStringValue];
+}
+
 @end
 
 @implementation CanvasObjectTextBox
@@ -49,7 +57,35 @@
 }
 
 @synthesize ObjectType = _ObjectType;
+- (void)setStrokeColor:(NSColor *)StrokeColor
+{
+    return;
+}
+-(NSColor *)StrokeColor
+{
+    return nil;
+}
+-(void)setStrokeWidth:(CGFloat)StrokeWidth
+{
+    return;
+}
+- (CGFloat)StrokeWidth
+{
+    return 1;
+}
+-(void)setFillColor:(NSColor *)FillColor
+{
+    [textField setBackgroundColor:FillColor];
+    return;
+}
+-(NSColor *)FillColor
+{
+    return textField.backgroundColor;
+}
 
+//
+// NSView
+//
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
@@ -57,7 +93,9 @@
         _ObjectType = TextBox;
         textField = [[FWKCanvasTextField alloc] initWithDelegete:self];
         [self addSubview:textField];
-        [self controlTextDidChange:nil];
+        [self controlTextDidEndEditing:nil];
+        self.StrokeColor = textField.textColor;
+        self.FillColor = textField.backgroundColor;
     }
     return self;
 }
@@ -78,6 +116,49 @@
 {
     //サイズは自動設定なので変更させない
     return;
+}
+
+//
+//CanvasObject
+//
+- (id)initWithEncodedString:(NSString *)sourceString
+{
+    NSArray *dataValues;
+    NSUInteger index;
+    NSData *atrstrdata;
+    NSAttributedString *atrstr;
+    
+    dataValues = [sourceString componentsSeparatedByString:@"|"];
+    
+    self = [self initWithFrame:NSRectFromString([dataValues objectAtIndex:0])];
+    
+    if(self){
+        self.FillColor = [NSColor colorFromString:[dataValues objectAtIndex:1] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        index = 0;
+        index += [[dataValues objectAtIndex:0] length] + 1;
+        index += [[dataValues objectAtIndex:1] length] + 1;
+        atrstrdata = [[sourceString substringFromIndex:index] dataUsingEncoding:NSUTF8StringEncoding];
+        atrstr = [[NSAttributedString alloc] initWithData:atrstrdata options:nil documentAttributes:nil error:nil];
+        [textField setAttributedStringValue:atrstr];
+        [self controlTextDidEndEditing:nil];
+    }
+    return self;
+}
+//Frame|FillColor|StrokeColor|StrokeWidth
+- (NSString *)encodedStringForCanvasObject
+{
+    NSMutableString *encodedString;
+    NSAttributedString *atrstr;
+    NSData *atrstrdata;
+    
+    encodedString = [[NSMutableString alloc] init];
+    
+    [encodedString appendFormat:@"%@|", NSStringFromRect(self.frame)];
+    [encodedString appendFormat:@"%@|", [self.FillColor stringRepresentation]];
+    atrstr = [textField attributedString];
+    atrstrdata = [atrstr RTFFromRange:NSMakeRange(0, atrstr.length) documentAttributes:nil];
+    [encodedString appendFormat:@"%@", [[[NSString alloc] initWithData:atrstrdata encoding:NSUTF8StringEncoding] stringByReplacingOccurrencesOfString:@"\n" withString:@""]];
+    return [NSString stringWithString:encodedString];
 }
 
 -(CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
@@ -101,6 +182,15 @@
 - (void)doubleClicked
 {
     [textField setEditable:YES];
+    [[NSColorPanel sharedColorPanel] close];
+    [[NSFontPanel sharedFontPanel] orderFront:self];
+    [[NSColorPanel sharedColorPanel] orderFront:self];
+}
+
+- (void)selected
+{
+    //[[NSColorPanel sharedColorPanel] setColor:textField.textColor];
+    [[NSColorPanel sharedColorPanel] setTarget:nil];
 }
 
 - (void)deselected
@@ -114,12 +204,13 @@
     [textField sizeToFit];
     [textField setFrameSize:NSMakeSize(textField.frame.size.width * 1.5 + 100, textField.frame.size.height)];
     [super setFrameSize:textField.frame.size];
+    NSLog(@"called!");
 }
 
 - (void)controlTextDidChange:(NSNotification *)obj
 {
     [textField sizeToFit];
-    [textField setFrameSize:NSMakeSize(textField.frame.size.width * 1.5 + 100, textField.frame.size.height)];
+    [textField setFrameSize:NSMakeSize(textField.frame.size.width * 1.5 + 200, textField.frame.size.height)];
     [super setFrameSize:textField.frame.size];
 }
 
@@ -127,6 +218,7 @@
 {
     [textField sizeToFit];
     [super setFrameSize:textField.frame.size];
+    [[NSFontPanel sharedFontPanel] close];
 }
 
 @end
