@@ -24,8 +24,6 @@
     return self;
 }
 
-NSString *objectTypeName[] = {@"キャンバス", @"矩形", @"楕円", @"ペイント枠"};
-
 - (id)initWithEditView:(NSView *)editView
 {
     self = [self init];
@@ -44,14 +42,14 @@ NSString *objectTypeName[] = {@"キャンバス", @"矩形", @"楕円", @"ペイ
     if([editingView isKindOfClass:[CanvasObject class]]){
         //オブジェクト設定
         editingCanvasObject = (CanvasObject *)editingView;
-        editTypeLabel.stringValue = objectTypeName[editingCanvasObject.ObjectType];
+        editTypeLabel.stringValue = editingCanvasObject.ObjectTypeName;
         [tboxSizeX setEnabled:YES];
         [tboxSizeY setEnabled:YES];
         tboxSizeX.floatValue = editingCanvasObject.frame.size.width;
         tboxSizeY.floatValue = editingCanvasObject.frame.size.height;
     } else if([editingView isKindOfClass:[MainCanvasView class]]){
         //キャンバス設定
-        editTypeLabel.stringValue = objectTypeName[0];
+        editTypeLabel.stringValue = @"キャンバス";
         [tboxSizeX setEnabled:YES];
         [tboxSizeY setEnabled:YES];
         tboxSizeX.floatValue = ((MainCanvasView *)editingView).canvasSize.width;

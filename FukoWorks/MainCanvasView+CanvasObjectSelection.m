@@ -178,7 +178,9 @@
     [objectHandles removeAllObjects];
     for(CanvasObject *aCanvasObject in selectedObjects){
         aCanvasObject.editHandleList = nil;
-        [aCanvasObject deselected];
+        if(aCanvasObject != obj){
+            [aCanvasObject deselected];
+        }
     }
     [selectedObjects removeAllObjects];
     //再追加
@@ -210,6 +212,6 @@
         editingPaintFrame = nil;
         self.toolboxController.editingObject = nil;
     }
-    [overlayCanvas setNeedsDisplay:YES];
+    [self setNeedsDisplay:YES];
 }
 @end

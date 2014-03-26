@@ -43,5 +43,7 @@
         CGContextStrokeRectWithWidth(mainContext, rect, self.StrokeWidth);
     }
     CGContextRestoreGState(mainContext);
+    
+    [self drawFocusRect];
 }
 @end

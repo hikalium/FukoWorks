@@ -47,13 +47,14 @@
 }
 
 @synthesize ObjectType = _ObjectType;
-
-NSString *objectTypeNameList[] = {
-    @"キャンバス",
+@synthesize isSelected = _isSelected;
+NSString * objectTypeNameList[5] = {
+    @"未定義",
     @"矩形",
     @"楕円",
-    @"ペイント枠"};
-
+    @"ペイント枠",
+    @"テキスト",
+};
 - (NSString *)ObjectTypeName
 {
     NSInteger t = self.ObjectType;
@@ -84,6 +85,7 @@ NSString *objectTypeNameList[] = {
         
         _objectName = @"NoName";
         _uuid = [NSString UUID];
+        _isSelected = false;
     }
 
     return self;
@@ -109,6 +111,28 @@ NSString *objectTypeNameList[] = {
 - (void)drawRect:(NSRect)dirtyRect
 {
     
+}
+
+- (void)drawFocusRect
+{
+    CGContextRef mainContext;
+    CGRect rect;
+    NSColor *c;
+    
+    if(_isSelected){
+        mainContext = [[NSGraphicsContext currentContext] graphicsPort];
+        
+        rect = [self makeNSRectWithRealSizeViewFrameInLocal];
+        c = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+        c = [NSColor colorWithCalibratedRed:c.redComponent green:c.greenComponent blue:c.blueComponent alpha:0.75];
+        
+        CGContextSaveGState(mainContext);
+        {
+            CGContextSetStrokeColorWithColor(mainContext, [c CGColor]);;
+            CGContextStrokeRectWithWidth(mainContext, rect, 8);
+        }
+        CGContextRestoreGState(mainContext);
+    }
 }
 
 - (void)setFrame:(NSRect)frameRect
@@ -200,12 +224,14 @@ NSString *objectTypeNameList[] = {
 
 - (void)selected
 {
-    
+    _isSelected = true;
+    NSLog(@"TRUE");
 }
 
 - (void)deselected
 {
-    
+    _isSelected = false;
+    NSLog(@"FALSE");
 }
 
 //

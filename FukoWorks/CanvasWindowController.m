@@ -9,6 +9,14 @@
 #import "CanvasWindowController.h"
 
 @implementation CanvasWindowController
+{
+    IBOutlet NSWindow *mainWindow;
+    IBOutlet NSScrollView *scrollView;
+    IBOutlet NSTextField *label_indicator;
+    IBOutlet NSComboBox *comboBoxCanvasScale;
+    ToolboxController *toolboxController;
+    NSURL *lastFilePath;
+}
 
 @synthesize mainCanvasView = _mainCanvasView;
 
@@ -17,7 +25,7 @@
     self = [super initWithWindowNibName:@"CanvasWindow"];
     
     if(self){
-        
+        lastFilePath = nil;
     }
     
     return self;
@@ -89,11 +97,11 @@
     
     //表示倍率をパーセントから実数へ変換
     scalePerCent = comboBoxCanvasScale.doubleValue;
-    if(scalePerCent <= 0){
-        scalePerCent = 100;
+    if(scalePerCent <= 100 / 64){
+        scalePerCent = 100 / 64;
     }
-    if(scalePerCent > (100 * 500)){
-        scalePerCent = 100;
+    if(scalePerCent > (100 * 64)){
+        scalePerCent = 100 * 64;
     }
     scale = scalePerCent / 100;
     //changeScale:倍率変更前の座標上の大きさを倍率変更後の大きさに直接変換する係数
@@ -121,7 +129,11 @@
 }
 
 - (IBAction)zoomIn:(id)sender {
-    comboBoxCanvasScale.integerValue *= sqrt(sqrt(2));
+    if(comboBoxCanvasScale.integerValue != 1){
+        comboBoxCanvasScale.integerValue *= sqrt(sqrt(2));
+    } else{
+        comboBoxCanvasScale.integerValue += 5;
+    }
     [self comboBoxCanvasScaleChanged:sender];
 }
 
@@ -165,29 +177,37 @@
 
 - (void)saveEncodedCanvasStructureForFile:(id)sender
 {
+    if(lastFilePath){
+        [self.mainCanvasView writeCanvasToURL:lastFilePath atomically:YES];
+    } else{
+        [self saveEncodedCanvasStructureForFileNamed:sender];
+    }
+}
+
+- (void)saveEncodedCanvasStructureForFileNamed:(id)sender
+{
     NSSavePanel *savePanel;
     NSArray *allowedFileType;
-    NSInteger pressedButton;
-    NSURL *path;
     
     savePanel = [NSSavePanel savePanel];
     allowedFileType = [NSArray arrayWithObjects:@"fwk", nil];
     [savePanel setAllowedFileTypes:allowedFileType];
+    savePanel.title = @"名前を付けて保存";
     
-    pressedButton = [savePanel runModal];
-    
-    switch(pressedButton){
-        case NSOKButton:
-            path = [savePanel URL];
-            
-            [self.mainCanvasView writeCanvasToURL:path atomically:YES];
-            
-            break;
-        case NSCancelButton:
-            
-            break;
-    };
-    
+    [savePanel beginSheetModalForWindow:self.window completionHandler:^(NSInteger result) {
+        switch(result){
+            case NSOKButton:
+                lastFilePath = [savePanel URL];
+                mainWindow.title = [NSString stringWithFormat:@"FukoWorks - %@", lastFilePath.lastPathComponent];
+                
+                [self.mainCanvasView writeCanvasToURL:lastFilePath atomically:YES];
+                
+                break;
+            case NSCancelButton:
+                
+                break;
+        };
+    }];
 }
 
 - (void)loadEncodedCanvasStructureFromFile:(id)sender
@@ -205,6 +225,9 @@
         
         switch(result){
             case NSOKButton:
+                if(lastFilePath){
+                
+                }
                 path = [[openPanel URLs] objectAtIndex:0];
                 [self.mainCanvasView loadCanvasFromURL:path];
                 

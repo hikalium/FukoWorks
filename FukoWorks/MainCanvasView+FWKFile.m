@@ -21,7 +21,7 @@
     
     error = nil;
     if(![saveData writeToURL:url atomically:isAtomically encoding:NSUTF8StringEncoding error:&error]){
-        NSRunAlertPanel(@"FukoWorks-Error-", [error localizedDescription], @"OK", nil, nil);
+        NSRunAlertPanel(@"FukoWorks-Error-", @"%@", @"OK", nil, nil, [error localizedDescription]);
     }
 }
 

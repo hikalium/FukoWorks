@@ -68,6 +68,12 @@
                                     <action selector="saveEncodedCanvasStructureForFile:" target="-1" id="936"/>
                                 </connections>
                             </menuItem>
+                            <menuItem title="別名で保存…" keyEquivalent="S" id="hbh-rg-YJb">
+                                <modifierMask key="keyEquivalentModifierMask" shift="YES" command="YES"/>
+                                <connections>
+                                    <action selector="saveEncodedCanvasStructureForFileNamed:" target="-1" id="Zg5-oT-pez"/>
+                                </connections>
+                            </menuItem>
                             <menuItem title="画像として保存..." id="910">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>

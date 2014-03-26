@@ -16,14 +16,12 @@
 #import "CanvasObjectTextBox.h"
 #import "SubCanvasView.h"
 #import "CanvasObjectHandle.h"
-#import "OverlayCanvasView.h"
 
 @interface MainCanvasView : NSView
 {
     NSUndoManager *undoManager;
     
     SubCanvasView *rootSubCanvas;
-    OverlayCanvasView *overlayCanvas;
     
     NSPoint drawingStartPoint;
     NSPoint drawingDragPoint;

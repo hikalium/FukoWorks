@@ -12,13 +12,6 @@
 #import "CanvasObjectListWindowController.h"
 
 @interface CanvasWindowController : NSWindowController <NSWindowDelegate>
-{
-    IBOutlet NSWindow *mainWindow;
-    IBOutlet NSScrollView *scrollView;
-    IBOutlet NSTextField *label_indicator;
-    IBOutlet NSComboBox *comboBoxCanvasScale;
-    ToolboxController *toolboxController;
-}
 
 @property (nonatomic) MainCanvasView *mainCanvasView;
 
@@ -33,6 +26,7 @@
 - (IBAction)zoomOut:(id)sender;
 
 - (IBAction)saveCanvasImageForFile:(id)sender;
+- (IBAction)saveEncodedCanvasStructureForFileNamed:(id)sender;
 - (IBAction)saveEncodedCanvasStructureForFile:(id)sender;
 - (IBAction)loadEncodedCanvasStructureFromFile:(id)sender;
 - (IBAction)printCanvas:(id)sender;

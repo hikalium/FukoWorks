@@ -28,10 +28,13 @@
 @property (nonatomic, readonly) NSString *uuid;
 @property (nonatomic) NSArray *editHandleList;  //MainCanvasViewが設定する。
 @property (nonatomic) NSView *ownerMainCanvasView;  //MainCanvasViewが設定する。
+@property (nonatomic, readonly) BOOL isSelected;
 
 - (id)initWithFrame:(NSRect)frameRect;
 - (id)initWithEncodedString:(NSString *)sourceString;
 - (void)drawRect:(NSRect)dirtyRect;
+
+- (void)drawFocusRect;
 
 - (NSString *)encodedStringForCanvasObject;
 + (NSString *)encodedStringForCGColorRef:(CGColorRef)cref;

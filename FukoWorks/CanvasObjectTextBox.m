@@ -103,6 +103,7 @@
 - (void)drawRect:(NSRect)dirtyRect
 {
 	[super drawRect:dirtyRect];
+    [self drawFocusRect];
 }
 
 - (void)setFrame:(NSRect)frameRect
@@ -181,10 +182,11 @@
 
 - (void)doubleClicked
 {
-    [textField setEditable:YES];
-    [[NSColorPanel sharedColorPanel] close];
     [[NSFontPanel sharedFontPanel] orderFront:self];
     [[NSColorPanel sharedColorPanel] orderFront:self];
+    [textField setEditable:YES];
+    [self focusInputField];
+    [textField setTarget:self];
 }
 
 - (void)selected
@@ -197,6 +199,11 @@
 {
     NSLog(@"adasg");
     [textField setEditable:NO];
+}
+
+- (void)focusInputField {
+    [textField selectText:self];
+    [[textField currentEditor] setSelectedRange:NSMakeRange([[textField stringValue] length], 0)];
 }
 
 - (void)controlTextDidBeginEditing:(NSNotification *)obj
@@ -218,7 +225,7 @@
 {
     [textField sizeToFit];
     [super setFrameSize:textField.frame.size];
-    [[NSFontPanel sharedFontPanel] close];
+    //[[NSFontPanel sharedFontPanel] close];
 }
 
 @end

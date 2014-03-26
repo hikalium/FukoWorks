@@ -45,5 +45,6 @@
     }
     CGContextRestoreGState(mainContext);
 
+     [self drawFocusRect];
 }
 @end

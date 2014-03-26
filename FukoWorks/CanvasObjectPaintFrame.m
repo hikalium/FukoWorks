@@ -121,9 +121,9 @@
 
 - (void)drawRect:(NSRect)dirtyRect
 {
-    
     CGContextRef mainContext;
     CGImageRef paintImage, editingImage;
+    
     mainContext = [[NSGraphicsContext currentContext] graphicsPort];
     if(paintContext && editingContext){
         CGContextSetShouldAntialias(mainContext, false);
@@ -134,6 +134,8 @@
         CGImageRelease(paintImage);
         CGImageRelease(editingImage);
     }
+    
+    [self drawFocusRect];
 }
 
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas

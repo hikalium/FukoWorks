@@ -66,10 +66,6 @@
         rootSubCanvas = [[SubCanvasView alloc] initWithFrame:frame];
         [self addSubview:rootSubCanvas];
         
-        overlayCanvas = [[OverlayCanvasView alloc] initWithFrame:frame];
-        overlayCanvas.ownerCanvasView = self;
-        [self addSubview:overlayCanvas];
-        
         objectHandles = [[NSMutableDictionary alloc] init];
         selectedObjects = [[NSMutableArray alloc] init];
         

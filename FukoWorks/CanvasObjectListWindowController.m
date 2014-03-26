@@ -84,7 +84,7 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
 - (IBAction)bringFront:(id)sender {
     if(_currentCanvas){
         NSInteger index = [listOutlineView selectedRow];
-        if(index == NSNotFound){
+        if(index == -1){
             return;
         }
         NSArray *list = [[_currentCanvas.canvasObjects reverseObjectEnumerator] allObjects];
@@ -99,7 +99,7 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
 - (IBAction)bringBack:(id)sender {
     if(_currentCanvas){
         NSInteger index = [listOutlineView selectedRow];
-        if(index == NSNotFound){
+        if(index == -1){
             return;
         }
         NSArray *list = [[_currentCanvas.canvasObjects reverseObjectEnumerator] allObjects];
@@ -235,6 +235,11 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
      */
     
     draggingItemList = nil;
+}
+
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldEditTableColumn:(NSTableColumn *)tableColumn item:(id)item
+{
+    return NO;
 }
 
 @end
