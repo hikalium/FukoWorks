@@ -39,14 +39,32 @@
 @synthesize StrokeWidth = _StrokeWidth;
 - (void)setStrokeWidth:(CGFloat)StrokeWidth
 {
-    NSRect realRect;
-    //
     [[_undoManager prepareWithInvocationTarget:self] setStrokeWidth:_StrokeWidth];
     //
-    realRect = [self makeNSRectWithRealSizeViewFrame];
     _StrokeWidth = StrokeWidth;
-    [self setFrame:[self makeNSRectWithFullSizeViewFrameFromRealSizeViewFrame:realRect]];
-    [self setNeedsDisplay:YES];
+    // 間接的にself.frameを更新
+    [self setBodyRect:self.bodyRect];
+}
+
+@synthesize bodyRect = _bodyRect;
+- (void)setBodyRect:(NSRect)bodyRect
+{
+    bodyRect.origin.x -= (self.StrokeWidth / 2);
+    bodyRect.origin.y -= (self.StrokeWidth / 2);
+    bodyRect.size.width += self.StrokeWidth;
+    bodyRect.size.height += self.StrokeWidth;
+    
+    [self setFrame:bodyRect];
+}
+
+- (NSRect)bodyRectBounds
+{
+    // このview上でのbodyRectの範囲を示す矩形を返す
+    NSRect b;
+    b = _bodyRect;
+    b.origin.x = (self.StrokeWidth / 2);
+    b.origin.y = (self.StrokeWidth / 2);
+    return b;
 }
 
 // objectInfo
@@ -75,7 +93,6 @@ NSString * objectTypeNameList[5] = {
 @synthesize editHandleList = _editHandleList;
 @synthesize ownerMainCanvasView = _ownerMainCanvasView;
 
-
 //
 // Function
 //
@@ -99,6 +116,79 @@ NSString * objectTypeNameList[5] = {
     return self;
 }
 
+- (void)drawRect:(NSRect)dirtyRect
+{
+    
+}
+
+- (void)setFrame:(NSRect)frameRect
+{
+    // setFrameOriginとsetFrameSizeが内部的に呼び出される。
+    [super setFrame:frameRect];
+}
+
+- (void)setFrameOrigin:(NSPoint)newOrigin
+{
+    [[_undoManager prepareWithInvocationTarget:self] setFrameOrigin:self.frame.origin];
+    //
+    [super setFrameOrigin:newOrigin];
+    // bodyRectを更新
+    _bodyRect.origin.x = newOrigin.x + (self.StrokeWidth / 2);
+    _bodyRect.origin.y = newOrigin.y + (self.StrokeWidth / 2);
+}
+
+- (void)setFrameSize:(NSSize)newSize
+{
+    [[_undoManager prepareWithInvocationTarget:self] setFrameSize:self.frame.size];
+    //
+    if(newSize.width > FWK_MAX_SIZE_PIXEL){
+        newSize.width = FWK_MAX_SIZE_PIXEL;
+        NSLog(@"Too large frame width!");
+    }
+    if(newSize.height > FWK_MAX_SIZE_PIXEL){
+        newSize.height = FWK_MAX_SIZE_PIXEL;
+        NSLog(@"Too large frame height!");
+    }
+    if(newSize.width < FWK_MIN_SIZE_PIXEL + self.StrokeWidth){
+        newSize.width = FWK_MIN_SIZE_PIXEL + self.StrokeWidth;
+        NSLog(@"Too small frame width!");
+    }
+    if(newSize.height < FWK_MIN_SIZE_PIXEL + self.StrokeWidth){
+        newSize.height = FWK_MIN_SIZE_PIXEL + self.StrokeWidth;
+        NSLog(@"Too small frame height!");
+    }
+    
+    [super setFrameSize:newSize];
+    // bodyRectを更新
+    _bodyRect.size.width = newSize.width - self.StrokeWidth;
+    _bodyRect.size.height = newSize.height - self.StrokeWidth;
+}
+
+//
+- (void)drawFocusRect
+{
+    CGContextRef mainContext;
+    CGRect rect;
+    NSColor *c;
+    
+    if(_isSelected){
+        mainContext = [[NSGraphicsContext currentContext] graphicsPort];
+        
+        rect = self.bodyRectBounds;
+        c = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+        c = [NSColor colorWithCalibratedRed:c.redComponent green:c.greenComponent blue:c.blueComponent alpha:0.75];
+        
+        CGContextSaveGState(mainContext);
+        {
+            CGContextSetStrokeColorWithColor(mainContext, [c CGColor]);
+            CGContextStrokeRectWithWidth(mainContext, rect, 8);
+        }
+        CGContextRestoreGState(mainContext);
+    }
+}
+
+// data encoding
+// Frame|FillColor|StrokeColor|StrokeWidth
 - (id)initWithEncodedString:(NSString *)sourceString
 {
     NSArray *dataValues;
@@ -115,51 +205,6 @@ NSString * objectTypeNameList[5] = {
     return self;
 }
 
-- (void)drawRect:(NSRect)dirtyRect
-{
-    
-}
-
-- (void)setFrame:(NSRect)frameRect
-{
-    [[_undoManager prepareWithInvocationTarget:self] setFrame:self.frame];
-    //
-    if(frameRect.size.width > FWK_MAX_SIZE_PIXEL){
-        frameRect.size.width = FWK_MAX_SIZE_PIXEL;
-        NSLog(@"Too large frame width!");
-    }
-    if(frameRect.size.height > FWK_MAX_SIZE_PIXEL){
-        frameRect.size.height = FWK_MAX_SIZE_PIXEL;
-        NSLog(@"Too large frame height!");
-    }
-    [super setFrame:frameRect];
-}
-
-//
-- (void)drawFocusRect
-{
-    CGContextRef mainContext;
-    CGRect rect;
-    NSColor *c;
-    
-    if(_isSelected){
-        mainContext = [[NSGraphicsContext currentContext] graphicsPort];
-        
-        rect = [self makeNSRectWithRealSizeViewFrameInLocal];
-        c = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace];
-        c = [NSColor colorWithCalibratedRed:c.redComponent green:c.greenComponent blue:c.blueComponent alpha:0.75];
-        
-        CGContextSaveGState(mainContext);
-        {
-            CGContextSetStrokeColorWithColor(mainContext, [c CGColor]);
-            CGContextStrokeRectWithWidth(mainContext, rect, 8);
-        }
-        CGContextRestoreGState(mainContext);
-    }
-}
-
-// data encoding
-// Frame|FillColor|StrokeColor|StrokeWidth
 - (NSString *)encodedStringForCanvasObject
 {
     NSMutableString *encodedString;
@@ -250,9 +295,8 @@ NSString * objectTypeNameList[5] = {
 }
 
 // ViewComputing
-- (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
++ (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
 {
-    //全体を含むframeRectを返す。
     NSPoint p;
     NSSize q;
     
@@ -271,46 +315,7 @@ NSString * objectTypeNameList[5] = {
         p.y = startPoint.y;
         q.height = endPoint.y - startPoint.y;
     }
-    
-    return NSMakeRect(p.x - (self.StrokeWidth / 2), p.y - (self.StrokeWidth / 2), q.width + self.StrokeWidth, q.height + self.StrokeWidth);
-}
-
-- (NSRect)makeNSRectWithRealSizeViewFrame
-{
-    //親FrameにおけるRealSizeRect(Fill部分のみのRect)を返す。
-    NSRect realRect;
-    
-    realRect = self.frame;
-    
-    realRect.origin.x += (self.StrokeWidth / 2);
-    realRect.origin.y += (self.StrokeWidth / 2);
-    realRect.size.height -= self.StrokeWidth;
-    realRect.size.width -= self.StrokeWidth;
-    
-    return realRect;
-}
-
-- (NSRect)makeNSRectWithRealSizeViewFrameInLocal
-{
-    //このViewにおける、ローカル座標のRealSizeRect(Fill部分のみのRect)を返す。
-    NSRect realRect;
-    
-    realRect.origin.x = (self.StrokeWidth / 2);
-    realRect.origin.y = (self.StrokeWidth / 2);
-    realRect.size.height = self.frame.size.height - self.StrokeWidth;
-    realRect.size.width = self.frame.size.width - self.StrokeWidth;
-    
-    return realRect;
-}
-
-- (NSRect)makeNSRectWithFullSizeViewFrameFromRealSizeViewFrame:(NSRect)RealSizeViewFrame
-{
-    RealSizeViewFrame.origin.x -= (self.StrokeWidth / 2);
-    RealSizeViewFrame.origin.y -= (self.StrokeWidth / 2);
-    RealSizeViewFrame.size.height += self.StrokeWidth;
-    RealSizeViewFrame.size.width += self.StrokeWidth;
-    
-    return RealSizeViewFrame;
+    return NSMakeRect(p.x, p.y, q.width, q.height);
 }
 
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event

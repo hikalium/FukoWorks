@@ -28,6 +28,7 @@
 // objectShape
 @property (nonatomic) CGFloat StrokeWidth;
 @property (nonatomic) NSRect bodyRect;
+@property (nonatomic, readonly) NSRect bodyRectBounds;
 
 // objectInfo
 @property (readonly, nonatomic) CanvasObjectType ObjectType;
@@ -47,7 +48,6 @@
 
 // NSView override
 - (id)initWithFrame:(NSRect)frameRect;
-- (id)initWithEncodedString:(NSString *)sourceString;
 - (void)drawRect:(NSRect)dirtyRect;
 - (void)setFrame:(NSRect)frameRect;
 
@@ -55,6 +55,7 @@
 - (void)drawFocusRect;
 
 // data encoding
+- (id)initWithEncodedString:(NSString *)sourceString;
 - (NSString *)encodedStringForCanvasObject;
 + (NSString *)encodedStringForCGColorRef:(CGColorRef)cref;
 + (CGColorRef)decodedCGColorRefFromString:(NSString *)sourceString;
@@ -75,10 +76,7 @@
 - (NSUInteger)numberOfEditHandlesForCanvasObject;
 
 // ViewComputing
-- (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
-- (NSRect)makeNSRectWithRealSizeViewFrame;
-- (NSRect)makeNSRectWithRealSizeViewFrameInLocal;
-- (NSRect)makeNSRectWithFullSizeViewFrameFromRealSizeViewFrame:(NSRect)RealSizeViewFrame;
++ (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
 
 @end

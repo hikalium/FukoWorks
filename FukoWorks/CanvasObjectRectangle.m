@@ -33,7 +33,7 @@
     
     mainContext = [[NSGraphicsContext currentContext] graphicsPort];
     
-    rect = [self makeNSRectWithRealSizeViewFrameInLocal];
+    rect = self.bodyRectBounds;
     
     CGContextSaveGState(mainContext);
     {

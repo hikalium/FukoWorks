@@ -242,4 +242,21 @@ CanvasObjectListWindowController *_sharedCanvasObjectListWindowController = nil;
     return NO;
 }
 
+- (BOOL)outlineView:(NSOutlineView *)outlineView shouldSelectItem:(id)item
+{
+    // itemはCanvasObjectであるはず
+    /*
+    CanvasObject *lastSelectedCanvasObject;
+    lastSelectedCanvasObject = [outlineView itemAtRow:[outlineView selectedRow]];
+    if(lastSelectedCanvasObject){
+        
+    }
+     */
+    if([item isKindOfClass:[CanvasObject class]]){
+        [self.currentCanvas deselectAllCanvasObject];
+        [self.currentCanvas selectCanvasObject:item];
+    }
+    
+    return YES;
+}
 @end

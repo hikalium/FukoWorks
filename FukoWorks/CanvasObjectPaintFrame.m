@@ -13,7 +13,11 @@
 
 @synthesize ObjectType = _ObjectType;
 
+//
+// Function
+//
 
+// NSView override
 - (id)initWithFrame:(NSRect)frame
 {
     self = [super initWithFrame:frame];
@@ -23,13 +27,35 @@
         editingContext = NULL;
         bmpBuffer = NULL;
         contextRect = CGRectNull;
-        
-        [self resetPaintContext];
     }
     
     return self;
 }
 
+- (void)drawRect:(NSRect)dirtyRect
+{
+    CGContextRef mainContext;
+    CGImageRef paintImage, editingImage;
+    
+    mainContext = [[NSGraphicsContext currentContext] graphicsPort];
+    if(paintContext && editingContext){
+        CGContextSetShouldAntialias(mainContext, false);
+        paintImage = CGBitmapContextCreateImage(paintContext);
+        editingImage = CGBitmapContextCreateImage(editingContext);
+        CGContextDrawImage(mainContext, self.bodyRectBounds, paintImage);
+        CGContextDrawImage(mainContext, self.bodyRectBounds, editingImage);
+        CGImageRelease(paintImage);
+        CGImageRelease(editingImage);
+        //
+        CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor.CGColor);
+        CGContextStrokeRectWithWidth(mainContext, self.bodyRectBounds, self.StrokeWidth);
+    }
+    
+    [self drawFocusRect];
+}
+
+// data encoding
+// Frame|Data
 - (id)initWithEncodedString:(NSString *)sourceString
 {
     NSArray *dataValues;
@@ -49,7 +75,6 @@
     return self;
 }
 
-//Frame|Data
 - (NSString *)encodedStringForCanvasObject
 {
     NSMutableString *encodedString;
@@ -72,6 +97,7 @@
     return [NSString stringWithString:encodedString];
 }
 
+// paintContext
 - (void)resetPaintContext
 {
     int px, py;
@@ -81,14 +107,16 @@
         CGContextRelease(paintContext);
         CGContextRelease(editingContext);
     }
-    
     if(bmpBuffer != NULL){
         free(bmpBuffer);
     }
+    contextRect = CGRectMake(0, 0, self.bodyRect.size.width, self.bodyRect.size.height);
+    px = ceil(contextRect.size.width);
+    py = ceil(contextRect.size.height);
+    if(px < 0 || py < 0){
+        return;
+    }
     
-    px = ceilf(self.frame.size.width);
-    py = ceilf(self.frame.size.height);
-    contextRect = CGRectMake(0, 0, self.frame.size.width, self.frame.size.height);
     aColorSpace = CGColorSpaceCreateDeviceRGB();
     
     bmpBuffer = malloc(4 * px * py);
@@ -119,25 +147,7 @@
     CGContextFillRect(editingContext, self.bounds);
 }
 
-- (void)drawRect:(NSRect)dirtyRect
-{
-    CGContextRef mainContext;
-    CGImageRef paintImage, editingImage;
-    
-    mainContext = [[NSGraphicsContext currentContext] graphicsPort];
-    if(paintContext && editingContext){
-        CGContextSetShouldAntialias(mainContext, false);
-        paintImage = CGBitmapContextCreateImage(paintContext);
-        editingImage = CGBitmapContextCreateImage(editingContext);
-        CGContextDrawImage(mainContext, contextRect, paintImage);
-        CGContextDrawImage(mainContext, contextRect, editingImage);
-        CGImageRelease(paintImage);
-        CGImageRelease(editingImage);
-    }
-    
-    [self drawFocusRect];
-}
-
+// Preview drawing
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
 {
     currentPointInCanvas = [self getNSPointIntegral:currentPointInCanvas];
@@ -161,7 +171,7 @@
 {
     currentPointInCanvas = [self getNSPointIntegral:currentPointInCanvas];
     //
-    [self setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
+    [self setFrame:[CanvasObject makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
     [self setNeedsDisplay:YES];
     //
     [self.undoManager enableUndoRegistration];
@@ -170,10 +180,7 @@
     return nil;
 }
 
-//
-//
-//
-
+// EditHandle <CanvasObjectHandling>
 - (void)editHandleDown:(NSPoint)currentHandlePointInCanvas :(NSInteger)tag
 {
     [super editHandleDown:[self getNSPointIntegral:currentHandlePointInCanvas] forHandleID:tag];
@@ -192,10 +199,7 @@
     [self resetPaintContext];
 }
 
-//
-// drawing to paintframe context
-//
-
+// User interaction
 - (void)drawPaintFrameMouseDown:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode
 {
     NSPoint localPoint = [self getNSPointIntegral:[self convertPoint:currentPointInCanvas fromView:self.superview]];
@@ -217,7 +221,11 @@
 }
 - (void)drawPaintFrameMouseDragged:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode
 {
-    NSPoint localPoint = [self getNSPointIntegral:[self convertPoint:currentPointInCanvas fromView:self.superview]];
+    NSPoint localPoint = [self convertPoint:currentPointInCanvas fromView:self.superview];
+    localPoint.x -= self.StrokeWidth / 2;
+    localPoint.y -= self.StrokeWidth / 2;
+    localPoint = [self getNSPointIntegral:localPoint];
+    
     CGRect rect;
     
     if(mode > PaintToolsBase && mode != PaintPen){
@@ -226,7 +234,7 @@
         CGContextClearRect(editingContext, contextRect);
     }
     
-    rect = NSRectToCGRect([self makeNSRectFromMouseMoving:drawingStartPoint :localPoint]);
+    rect = NSRectToCGRect([CanvasObject makeNSRectFromMouseMoving:drawingStartPoint :localPoint]);
     
     CGContextSaveGState(editingContext);
     {
@@ -282,6 +290,7 @@
     }
 }
 
+// ViewComputing
 - (NSPoint)getNSPointIntegral: (NSPoint)basePoint
 {
     basePoint.x += 0.5;
@@ -290,53 +299,5 @@
     basePoint.y = floor(basePoint.y) + 0.5;
     return basePoint;
 }
-
-//
-// ViewComputing
-//
-// Without StrokeWidth version
-- (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
-{
-    //全体を含むframeRectを返す。
-    NSPoint p;
-    NSSize q;
-    
-    if(endPoint.x < startPoint.x){
-        p.x = endPoint.x;
-        q.width = startPoint.x - endPoint.x;
-    } else{
-        p.x = startPoint.x;
-        q.width = endPoint.x - startPoint.x;
-    }
-    
-    if(endPoint.y < startPoint.y){
-        p.y = endPoint.y;
-        q.height = startPoint.y - endPoint.y;
-    } else{
-        p.y = startPoint.y;
-        q.height = endPoint.y - startPoint.y;
-    }
-    
-    return NSMakeRect(p.x, p.y, q.width, q.height);
-}
-
-- (NSRect)makeNSRectWithRealSizeViewFrame
-{
-    //親FrameにおけるRealSizeRect(Fill部分のみのRect)を返す。
-    return self.frame;
-}
-
-- (NSRect)makeNSRectWithRealSizeViewFrameInLocal
-{
-    //このViewに対する、ローカル座標のRealSizeRect(Fill部分のみのRect)を返す。
-    return self.frame;
-}
-
-- (NSRect)makeNSRectWithFullSizeViewFrameFromRealSizeViewFrame:(NSRect)RealSizeViewFrame
-{
-    return self.frame;
-}
-
-
 
 @end

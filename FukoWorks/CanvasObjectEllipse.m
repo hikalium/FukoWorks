@@ -30,7 +30,7 @@
     
     mainContext = [[NSGraphicsContext currentContext] graphicsPort];
     
-    ellipseRect = [self makeNSRectWithRealSizeViewFrameInLocal];
+    ellipseRect = self.bodyRectBounds;
     
     CGContextSaveGState(mainContext);
     {

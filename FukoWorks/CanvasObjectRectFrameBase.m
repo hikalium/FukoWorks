@@ -26,7 +26,7 @@
 
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas
 {
-    [self setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
+    [self setFrame:[CanvasObject makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
     [self setNeedsDisplay:YES];
     
     return self;
@@ -34,7 +34,7 @@
 
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
 {
-    [self setFrame:[self makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
+    [self setFrame:[CanvasObject makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
     [self setNeedsDisplay:YES];
     //
     [self.undoManager enableUndoRegistration];
@@ -56,7 +56,7 @@
     //2----3
     //|    |
     //0----1
-    NSRect realRect = [self makeNSRectWithRealSizeViewFrame];
+    NSRect realRect = self.bodyRect;
     NSPoint p = realRect.origin;
     switch (hid) {
         case 1:
@@ -103,7 +103,7 @@
     NSPoint p;
     
     p = [((CanvasObjectHandle *)[self.editHandleList objectAtIndex:(3 - hid)])makeNSPointWithHandlePoint];
-    [self setFrame:[self makeNSRectFromMouseMoving:p :currentHandlePointInCanvas]];
+    [self setBodyRect:[CanvasObject makeNSRectFromMouseMoving:p :currentHandlePointInCanvas]];
 
     [self setNeedsDisplay:YES];
     [((MainCanvasView *)self.ownerMainCanvasView) resetCanvasObjectHandleForCanvasObject:self];

@@ -16,34 +16,36 @@
     CGRect contextRect;
 }
 
-- (id)initWithFrame:(NSRect)frame;
+//
+// Function
+//
 
+// NSView override
+- (id)initWithFrame:(NSRect)frame;
+- (void)drawRect:(NSRect)dirtyRect;
+
+// data encoding
 - (id)initWithEncodedString:(NSString *)sourceString;
 - (NSString *)encodedStringForCanvasObject;
 
+// paintContext
 - (void)resetPaintContext;
-- (void)drawRect:(NSRect)dirtyRect;
 
+// Preview drawing
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;
 
+// EditHandle <CanvasObjectHandling>
 - (void)editHandleDown:(NSPoint)currentHandlePointInCanvas :(NSInteger)tag;
 - (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas :(NSInteger)tag;
 - (void)editHandleUp:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag;
 
+// User interaction
 - (void)drawPaintFrameMouseDown:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;
 - (void)drawPaintFrameMouseDragged:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;
 - (void)drawPaintFrameMouseUp:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;
 
-- (NSPoint)getNSPointIntegral: (NSPoint)basePoint;
-
-//
 // ViewComputing
-//
-- (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
-- (NSRect)makeNSRectWithRealSizeViewFrame;
-- (NSRect)makeNSRectWithRealSizeViewFrameInLocal;
-- (NSRect)makeNSRectWithFullSizeViewFrameFromRealSizeViewFrame:(NSRect)RealSizeViewFrame;
-
+- (NSPoint)getNSPointIntegral: (NSPoint)basePoint;
 @end
