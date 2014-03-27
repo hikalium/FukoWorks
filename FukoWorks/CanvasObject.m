@@ -143,19 +143,15 @@ NSString * objectTypeNameList[5] = {
     //
     if(newSize.width > FWK_MAX_SIZE_PIXEL){
         newSize.width = FWK_MAX_SIZE_PIXEL;
-        NSLog(@"Too large frame width!");
     }
     if(newSize.height > FWK_MAX_SIZE_PIXEL){
         newSize.height = FWK_MAX_SIZE_PIXEL;
-        NSLog(@"Too large frame height!");
     }
     if(newSize.width < FWK_MIN_SIZE_PIXEL + self.StrokeWidth){
         newSize.width = FWK_MIN_SIZE_PIXEL + self.StrokeWidth;
-        NSLog(@"Too small frame width!");
     }
     if(newSize.height < FWK_MIN_SIZE_PIXEL + self.StrokeWidth){
         newSize.height = FWK_MIN_SIZE_PIXEL + self.StrokeWidth;
-        NSLog(@"Too small frame height!");
     }
     
     [super setFrameSize:newSize];

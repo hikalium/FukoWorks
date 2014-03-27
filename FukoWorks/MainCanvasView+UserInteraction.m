@@ -132,7 +132,6 @@
 
 - (NSMenu *)menuForEvent:(NSEvent *)event
 {
-    NSLog(@"rmDown");
     // 右クリック時に呼ばれる
     // メニューを開く
     rightClickedObject = [self getCanvasObjectAtCursorLocation:event];

@@ -177,8 +177,8 @@
     }
     [objectHandles removeAllObjects];
     for(CanvasObject *aCanvasObject in selectedObjects){
-        aCanvasObject.editHandleList = nil;
         if(aCanvasObject != obj){
+            aCanvasObject.editHandleList = nil;
             [aCanvasObject deselected];
         }
     }

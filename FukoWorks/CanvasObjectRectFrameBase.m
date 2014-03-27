@@ -102,7 +102,9 @@
 {
     NSPoint p;
     
-    p = [((CanvasObjectHandle *)[self.editHandleList objectAtIndex:(3 - hid)])makeNSPointWithHandlePoint];
+    NSLog(@"%lu", (unsigned long)self.editHandleList.count);
+    
+    p = [((CanvasObjectHandle *)[self.editHandleList objectAtIndex:(3 - hid)]) makeNSPointWithHandlePoint];
     [self setBodyRect:[CanvasObject makeNSRectFromMouseMoving:p :currentHandlePointInCanvas]];
 
     [self setNeedsDisplay:YES];

@@ -197,7 +197,6 @@
 
 - (void)deselected
 {
-    NSLog(@"adasg");
     [textField setEditable:NO];
 }
 
@@ -211,7 +210,6 @@
     [textField sizeToFit];
     [textField setFrameSize:NSMakeSize(textField.frame.size.width * 1.5 + 100, textField.frame.size.height)];
     [super setFrameSize:textField.frame.size];
-    NSLog(@"called!");
 }
 
 - (void)controlTextDidChange:(NSNotification *)obj
