@@ -40,6 +40,9 @@
     
     NSMutableDictionary *objectHandles;
     NSMutableArray *selectedObjects;
+    
+    CanvasObject *rightClickedObject;
+    NSPoint rightClickedLocationInScreen;
 }
 
 @property (strong, nonatomic) NSTextField *label_indicator;
@@ -64,6 +67,7 @@
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
 - (NSPoint)getPointerLocationInScreen:(NSEvent *)event;
 - (CanvasObject *)getCanvasObjectAtCursorLocation:(NSEvent *)event;
+- (CanvasObject *)getCanvasObjectAtCursorLocationOnCanvas:(NSPoint)currentPointOnCanvas;
 
 - (IBAction)copy:(id)sender;
 - (IBAction)paste:(id)sender;
@@ -100,8 +104,8 @@
 - (void)mouseDown:(NSEvent*)event;
 - (void)mouseUp:(NSEvent*)event;
 - (void)mouseDragged:(NSEvent*)event;
-- (void)rightMouseDown:(NSEvent *)theEvent;
-- (void)rightMouseUp:(NSEvent *)theEvent;
+- (NSMenu *)menuForEvent:(NSEvent *)event;
+- (void)openInspectorWindow:(NSEvent *)theEvent;
 @end
 
 @interface MainCanvasView (Sorting)

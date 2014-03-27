@@ -194,7 +194,7 @@
 }
 
 - (CanvasObject *)getCanvasObjectAtCursorLocation:(NSEvent *)event
-{
+{/*
     CanvasObject *aCanvasObject, *candidateCanvasObject;
     NSBitmapImageRep *bitmapImage;
     NSPoint currentPointOnCanvas;
@@ -205,6 +205,49 @@
     NSRect subRect;
     NSRect visibleRectOnObject;
     currentPointOnCanvas = [self getPointerLocationRelativeToSelfView:event];
+    
+    candidateCanvasObject = nil;
+    for(NSView *aSubview in subviews){
+        if([aSubview isKindOfClass:[CanvasObject class]]){
+            //前面にあるオブジェクトから順番に、ポインタの指す座標が含まれているか調べる。
+            aCanvasObject = (CanvasObject *)aSubview;
+            currentPointOnObjectOwner = [self convertPoint:currentPointOnCanvas toView:aCanvasObject.superview];
+            if(NSPointInRect(currentPointOnObjectOwner, aCanvasObject.frame)){
+                currentPointOnObject = [aCanvasObject convertPoint:currentPointOnCanvas fromView:self];
+                visibleRectOnObject = [aCanvasObject convertRect:[self getVisibleRectOnObjectLayer] fromView:rootSubCanvas];
+                subRect = NSIntersectionRect(aCanvasObject.bounds, visibleRectOnObject);
+                //vvv 指定するRectはオブジェクト自身上での座標
+                bitmapImage = [aCanvasObject bitmapImageRepForCachingDisplayInRect:subRect];
+                //vvv 生成されるbitmapは、表示状態の倍率なので注意
+                [aCanvasObject cacheDisplayInRect:subRect toBitmapImageRep:bitmapImage];
+                pointColor = [bitmapImage
+                              colorAtX: (currentPointOnObject.x - subRect.origin.x) * self.canvasScale
+                              //vvv Y座標は逆方向
+                              y:(subRect.size.height - (currentPointOnObject.y - subRect.origin.y)) * self.canvasScale];
+                if([pointColor numberOfComponents] == 0 || [pointColor alphaComponent] != 0){
+                    //指定された座標が、完全に透明でないことを確認
+                    //NSLog(@"%@", [pointColor debugDescription]);
+                    candidateCanvasObject = aCanvasObject;
+                    break;
+                }
+            }
+        }
+    }
+    return candidateCanvasObject;
+  */
+    return [self getCanvasObjectAtCursorLocationOnCanvas:[self getPointerLocationRelativeToSelfView:event]];
+}
+
+- (CanvasObject *)getCanvasObjectAtCursorLocationOnCanvas:(NSPoint)currentPointOnCanvas
+{
+    CanvasObject *aCanvasObject, *candidateCanvasObject;
+    NSBitmapImageRep *bitmapImage;
+    NSPoint currentPointOnObject;
+    NSPoint currentPointOnObjectOwner;
+    NSColor *pointColor;
+    NSArray *subviews = [[rootSubCanvas.subviews reverseObjectEnumerator] allObjects];
+    NSRect subRect;
+    NSRect visibleRectOnObject;
     
     candidateCanvasObject = nil;
     for(NSView *aSubview in subviews){

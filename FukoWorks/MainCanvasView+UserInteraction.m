@@ -130,36 +130,45 @@
     
 }
 
-- (void)rightMouseDown:(NSEvent *)theEvent
+- (NSMenu *)menuForEvent:(NSEvent *)event
 {
-    NSPoint currentPointInScreen;
-    currentPointInScreen = [self getPointerLocationInScreen:theEvent];
+    NSLog(@"rmDown");
+    // 右クリック時に呼ばれる
+    // メニューを開く
+    rightClickedObject = [self getCanvasObjectAtCursorLocation:event];
+    rightClickedLocationInScreen = [self getPointerLocationInScreen:event];
     
-    //編集終了or詳細設定
-    CanvasObject *aCanvasObject;
+    NSMenu *menu = [[NSMenu alloc] init];
+    [menu insertItemWithTitle:@"詳細設定" action:@selector(openInspectorWindow:) keyEquivalent:@"" atIndex:0];
+    
+    return menu;
+}
+
+- (void)openInspectorWindow:(NSMenuItem *)theMenuItem
+{
+    
     InspectorWindowController *anInspectorWindowController;
     
     if(creatingObject == nil){
         //詳細設定を開く
-        aCanvasObject = [self getCanvasObjectAtCursorLocation:theEvent];
-        if(aCanvasObject == nil){
+        if(rightClickedObject == nil){
             //キャンバスの詳細設定
             anInspectorWindowController = [[InspectorWindowController alloc] initWithEditView:self];
         } else{
             //オブジェクトの詳細設定
-            anInspectorWindowController = [[InspectorWindowController alloc] initWithEditView:aCanvasObject];
+            anInspectorWindowController = [[InspectorWindowController alloc] initWithEditView:rightClickedObject];
         }
         [inspectorWindows addObject:anInspectorWindowController];
         [anInspectorWindowController showWindow:self];
-        [[anInspectorWindowController window]setFrameOrigin:currentPointInScreen];
+        [[anInspectorWindowController window]setFrameOrigin:rightClickedLocationInScreen];
     }
 }
-
+/*
 - (void)rightMouseUp:(NSEvent *)theEvent
 {
     //self.focusedObject = [self getCanvasObjectAtCursorLocation:theEvent];
 }
-
+*/
 
 
 /*

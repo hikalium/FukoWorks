@@ -35,6 +35,7 @@
 		176EEFE01707C16800F56FF4 /* ToolboxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 176EEFDF1707C16800F56FF4 /* ToolboxController.m */; };
 		177F33F8172E63D9004D6778 /* CanvasObjectHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */; };
 		178E9CBD189E91FB0076B671 /* CanvasObjectTextBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 178E9CBC189E91FB0076B671 /* CanvasObjectTextBox.m */; };
+		17913DC818E26B60001ECD0A /* NSColor+CGColorConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 17913DC718E26B60001ECD0A /* NSColor+CGColorConversion.m */; };
 		1796862E181BC15E00BA65E4 /* NSString+PixelConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1796862D181BC15E00BA65E4 /* NSString+PixelConversion.m */; };
 		17968631181C9D3300BA65E4 /* NSColor+StringConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 17968630181C9D3300BA65E4 /* NSColor+StringConversion.m */; };
 		17968635181CEAA600BA65E4 /* iconEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 17968632181CEAA600BA65E4 /* iconEllipse.png */; };
@@ -101,6 +102,8 @@
 		177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectHandle.m; sourceTree = "<group>"; };
 		178E9CBB189E91FB0076B671 /* CanvasObjectTextBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectTextBox.h; sourceTree = "<group>"; };
 		178E9CBC189E91FB0076B671 /* CanvasObjectTextBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectTextBox.m; sourceTree = "<group>"; };
+		17913DC618E26B60001ECD0A /* NSColor+CGColorConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+CGColorConversion.h"; sourceTree = "<group>"; };
+		17913DC718E26B60001ECD0A /* NSColor+CGColorConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+CGColorConversion.m"; sourceTree = "<group>"; };
 		1796862C181BC15E00BA65E4 /* NSString+PixelConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+PixelConversion.h"; sourceTree = "<group>"; };
 		1796862D181BC15E00BA65E4 /* NSString+PixelConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+PixelConversion.m"; sourceTree = "<group>"; };
 		1796862F181C9D3300BA65E4 /* NSColor+StringConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+StringConversion.h"; sourceTree = "<group>"; };
@@ -191,7 +194,6 @@
 				176E66B7188BB4D3007216EB /* MainCanvasView */,
 				176E66A9188AC4BF007216EB /* SubCanvasView.h */,
 				176E66AA188AC4BF007216EB /* SubCanvasView.m */,
-				1715CA8F18D2C689007F0295 /* notused */,
 			);
 			name = UserInterface;
 			sourceTree = "<group>";
@@ -201,6 +203,8 @@
 			children = (
 				173E70201840FCEA0046C002 /* OverlayCanvasView.h */,
 				173E70211840FCEA0046C002 /* OverlayCanvasView.m */,
+				17913DC618E26B60001ECD0A /* NSColor+CGColorConversion.h */,
+				17913DC718E26B60001ECD0A /* NSColor+CGColorConversion.m */,
 			);
 			name = notused;
 			sourceTree = "<group>";
@@ -307,6 +311,7 @@
 				17BCF80516F42BDD00E7E472 /* AppDelegate.m */,
 				170A83241707A302003A6AB9 /* CanvasObject */,
 				174A841217043FB200A53520 /* Resources */,
+				1715CA8F18D2C689007F0295 /* notused */,
 				17BCF7F916F42BDD00E7E472 /* Supporting Files */,
 				170A83251707A35F003A6AB9 /* UserInterface */,
 			);
@@ -449,6 +454,7 @@
 				17968631181C9D3300BA65E4 /* NSColor+StringConversion.m in Sources */,
 				173E70221840FCEA0046C002 /* OverlayCanvasView.m in Sources */,
 				176E66BD188BB6FF007216EB /* MainCanvasView+UndoManaging.m in Sources */,
+				17913DC818E26B60001ECD0A /* NSColor+CGColorConversion.m in Sources */,
 				1796862E181BC15E00BA65E4 /* NSString+PixelConversion.m in Sources */,
 				17FFED70180A66BF0029F6F4 /* CanvasObjectListWindowController.m in Sources */,
 				176E66C0188BB7A9007216EB /* MainCanvasView+Printing.m in Sources */,
@@ -540,6 +546,9 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FukoWorks/FukoWorks-Prefix.pch";
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "FukoWorks/FukoWorks-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -554,6 +563,9 @@
 				COMBINE_HIDPI_IMAGES = YES;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FukoWorks/FukoWorks-Prefix.pch";
+				GCC_WARN_UNUSED_FUNCTION = NO;
+				GCC_WARN_UNUSED_LABEL = YES;
+				GCC_WARN_UNUSED_PARAMETER = NO;
 				INFOPLIST_FILE = "FukoWorks/FukoWorks-Info.plist";
 				MACOSX_DEPLOYMENT_TARGET = 10.6;
 				PRODUCT_NAME = "$(TARGET_NAME)";

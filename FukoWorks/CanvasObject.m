@@ -11,10 +11,12 @@
 #import "NSString+UUIDGeneration.h"
 
 @implementation CanvasObject
+
 //
 // Property
 //
 
+// baseColor
 @synthesize FillColor = _FillColor;
 - (void)setFillColor:(NSColor *)FillColor
 {
@@ -33,6 +35,7 @@
     [self setNeedsDisplay:YES];
 }
 
+// objectShape
 @synthesize StrokeWidth = _StrokeWidth;
 - (void)setStrokeWidth:(CGFloat)StrokeWidth
 {
@@ -46,8 +49,7 @@
     [self setNeedsDisplay:YES];
 }
 
-@synthesize ObjectType = _ObjectType;
-@synthesize isSelected = _isSelected;
+// objectInfo
 NSString * objectTypeNameList[5] = {
     @"未定義",
     @"矩形",
@@ -55,6 +57,7 @@ NSString * objectTypeNameList[5] = {
     @"ペイント枠",
     @"テキスト",
 };
+@synthesize ObjectType = _ObjectType;
 - (NSString *)ObjectTypeName
 {
     NSInteger t = self.ObjectType;
@@ -63,16 +66,21 @@ NSString * objectTypeNameList[5] = {
     }
     return nil;
 }
-
 @synthesize objectName = _objectName;
-@synthesize undoManager = _undoManager;
 @synthesize uuid = _uuid;
+@synthesize isSelected = _isSelected;
+
+// MainCanvasView property
+@synthesize undoManager = _undoManager;
 @synthesize editHandleList = _editHandleList;
 @synthesize ownerMainCanvasView = _ownerMainCanvasView;
+
 
 //
 // Function
 //
+
+// NSView override
 - (id)initWithFrame:(NSRect)frameRect
 {
     self = [super initWithFrame:frameRect];
@@ -107,32 +115,9 @@ NSString * objectTypeNameList[5] = {
     return self;
 }
 
-
 - (void)drawRect:(NSRect)dirtyRect
 {
     
-}
-
-- (void)drawFocusRect
-{
-    CGContextRef mainContext;
-    CGRect rect;
-    NSColor *c;
-    
-    if(_isSelected){
-        mainContext = [[NSGraphicsContext currentContext] graphicsPort];
-        
-        rect = [self makeNSRectWithRealSizeViewFrameInLocal];
-        c = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace];
-        c = [NSColor colorWithCalibratedRed:c.redComponent green:c.greenComponent blue:c.blueComponent alpha:0.75];
-        
-        CGContextSaveGState(mainContext);
-        {
-            CGContextSetStrokeColorWithColor(mainContext, [c CGColor]);;
-            CGContextStrokeRectWithWidth(mainContext, rect, 8);
-        }
-        CGContextRestoreGState(mainContext);
-    }
 }
 
 - (void)setFrame:(NSRect)frameRect
@@ -150,7 +135,31 @@ NSString * objectTypeNameList[5] = {
     [super setFrame:frameRect];
 }
 
-//Frame|FillColor|StrokeColor|StrokeWidth
+//
+- (void)drawFocusRect
+{
+    CGContextRef mainContext;
+    CGRect rect;
+    NSColor *c;
+    
+    if(_isSelected){
+        mainContext = [[NSGraphicsContext currentContext] graphicsPort];
+        
+        rect = [self makeNSRectWithRealSizeViewFrameInLocal];
+        c = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+        c = [NSColor colorWithCalibratedRed:c.redComponent green:c.greenComponent blue:c.blueComponent alpha:0.75];
+        
+        CGContextSaveGState(mainContext);
+        {
+            CGContextSetStrokeColorWithColor(mainContext, [c CGColor]);
+            CGContextStrokeRectWithWidth(mainContext, rect, 8);
+        }
+        CGContextRestoreGState(mainContext);
+    }
+}
+
+// data encoding
+// Frame|FillColor|StrokeColor|StrokeWidth
 - (NSString *)encodedStringForCanvasObject
 {
     NSMutableString *encodedString;
@@ -202,6 +211,7 @@ NSString * objectTypeNameList[5] = {
     return cRef;
 }
 
+// Preview drawing
 -(CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
 {
     return nil;
@@ -217,6 +227,7 @@ NSString * objectTypeNameList[5] = {
     return nil;
 }
 
+// User interaction
 - (void)doubleClicked
 {
 
@@ -225,26 +236,20 @@ NSString * objectTypeNameList[5] = {
 - (void)selected
 {
     _isSelected = true;
-    NSLog(@"TRUE");
 }
 
 - (void)deselected
 {
     _isSelected = false;
-    NSLog(@"FALSE");
 }
 
-//
-// EditHandle
-//
+// EditHandle <CanvasObjectHandling>
 - (NSUInteger)numberOfEditHandlesForCanvasObject
 {
     return 0;
 }
 
-//
 // ViewComputing
-//
 - (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint
 {
     //全体を含むframeRectを返す。
@@ -287,7 +292,7 @@ NSString * objectTypeNameList[5] = {
 
 - (NSRect)makeNSRectWithRealSizeViewFrameInLocal
 {
-    //このViewに対する、ローカル座標のRealSizeRect(Fill部分のみのRect)を返す。
+    //このViewにおける、ローカル座標のRealSizeRect(Fill部分のみのRect)を返す。
     NSRect realRect;
     
     realRect.origin.x = (self.StrokeWidth / 2);

@@ -57,7 +57,6 @@
 - (IBAction)showToolBox:(id)sender
 {
     [[ToolboxController sharedToolboxController] showWindow:sender];
-    //[window addChildWindow:toolboxController.window ordered:NSWindowAbove];
 }
 
 - (IBAction)showCanvasObjectListWindow:(id)sender
