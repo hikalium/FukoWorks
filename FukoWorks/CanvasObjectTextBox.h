@@ -6,8 +6,8 @@
 //  Copyright (c) 2014年 TokyoGakugeiUniversitySeniorHighSchool. All rights reserved.
 //
 
-#import "CanvasObject.h"
+#import "CanvasObjectRectangle.h"
 
-@interface CanvasObjectTextBox : CanvasObject <NSTextFieldDelegate>
+@interface CanvasObjectTextBox : CanvasObjectRectangle  <NSTextFieldDelegate>
 - (void)controlTextDidChange:(NSNotification *)obj;
 @end

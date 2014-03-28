@@ -9,6 +9,10 @@
 #import "CanvasObjectTextBox.h"
 #import "NSColor+StringConversion.h"
 
+//
+// FWKCanvasTextField
+//
+
 @interface FWKCanvasTextField : NSTextField
 - (id)initWithDelegete: (id<NSTextFieldDelegate>)delegete;
 - (NSAttributedString *)attributedString;
@@ -28,7 +32,6 @@
         [self setStringValue:@"テキストを入力"];
         [self setFocusRingType:NSFocusRingTypeNone];
         [self setFont:[NSFont fontWithName:@"HiraMaruPro-W4" size:32]];
-        [self setBackgroundColor:[NSColor whiteColor]];
     }
     return self;
 }
@@ -51,37 +54,36 @@
 
 @end
 
+//
+// CanvasObjectTextBox
+//
+
 @implementation CanvasObjectTextBox
 {
     FWKCanvasTextField *textField;
 }
 
-@synthesize ObjectType = _ObjectType;
+- (void)setFillColor:(NSColor *)FillColor
+{
+    if(!textField.isEditable){
+        [super setFillColor:FillColor];
+    }
+}
+
 - (void)setStrokeColor:(NSColor *)StrokeColor
 {
-    return;
+    if(!textField.isEditable){
+        [super setStrokeColor:StrokeColor];
+    }
 }
--(NSColor *)StrokeColor
+
+- (void)setStrokeWidth:(CGFloat)StrokeWidth
 {
-    return nil;
+    [super setStrokeWidth:StrokeWidth];
+    [textField setFrameOrigin:self.bodyRectBounds.origin];
 }
--(void)setStrokeWidth:(CGFloat)StrokeWidth
-{
-    return;
-}
-- (CGFloat)StrokeWidth
-{
-    return 1;
-}
--(void)setFillColor:(NSColor *)FillColor
-{
-    [textField setBackgroundColor:FillColor];
-    return;
-}
--(NSColor *)FillColor
-{
-    return textField.backgroundColor;
-}
+@synthesize ObjectType = _ObjectType;
+
 
 //
 // NSView
@@ -92,31 +94,23 @@
     if (self) {
         _ObjectType = TextBox;
         textField = [[FWKCanvasTextField alloc] initWithDelegete:self];
+        textField.drawsBackground = YES;
+        textField.backgroundColor = [NSColor clearColor];
         [self addSubview:textField];
         [self controlTextDidEndEditing:nil];
-        self.StrokeColor = textField.textColor;
-        self.FillColor = textField.backgroundColor;
+        [self setStrokeWidth:self.StrokeWidth];
     }
     return self;
 }
 
-- (void)drawRect:(NSRect)dirtyRect
-{
-	[super drawRect:dirtyRect];
-    [self drawFocusRect];
-}
-
-- (void)setFrame:(NSRect)frameRect
-{
-    //サイズは自動設定なので変更させない
-    frameRect.size = self.frame.size;
-    [super setFrame:frameRect];
-}
-
 - (void)setFrameSize:(NSSize)newSize
 {
-    //サイズは自動設定なので変更させない
-    return;
+    //サイズは自動設定なので、与えられた数値に関係なく設定する
+    newSize = self.bodyRect.size;
+    newSize.width += self.StrokeWidth;
+    newSize.height += self.StrokeWidth;
+    
+    [super setFrameSize:newSize];
 }
 
 //
@@ -182,6 +176,7 @@
 
 - (void)doubleClicked
 {
+    [[NSColorPanel sharedColorPanel] close];
     [[NSFontPanel sharedFontPanel] orderFront:self];
     [[NSColorPanel sharedColorPanel] orderFront:self];
     [textField setEditable:YES];
@@ -191,8 +186,7 @@
 
 - (void)selected
 {
-    //[[NSColorPanel sharedColorPanel] setColor:textField.textColor];
-    [[NSColorPanel sharedColorPanel] setTarget:nil];
+
 }
 
 - (void)deselected
