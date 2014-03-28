@@ -15,6 +15,7 @@
                 <outlet property="toolEllipse" destination="9" id="5h9-kL-vM0"/>
                 <outlet property="toolPaintEllipse" destination="71" id="77"/>
                 <outlet property="toolPaintFrame" destination="67" id="xMB-zF-Afm"/>
+                <outlet property="toolPaintLine" destination="Jx3-U3-JFA" id="imX-7V-tyC"/>
                 <outlet property="toolPaintPen" destination="01A-af-Tpb" id="ju9-LU-wE8"/>
                 <outlet property="toolPaintRect" destination="70" id="76"/>
                 <outlet property="toolRect" destination="7" id="Un6-dn-Zl7"/>
@@ -157,6 +158,17 @@
                         </buttonCell>
                         <connections>
                             <action selector="drawingObjectTypeChanged:" target="-2" id="WqE-rh-NTW"/>
+                        </connections>
+                    </button>
+                    <button toolTip="ペイントペン" tag="104" id="Jx3-U3-JFA">
+                        <rect key="frame" x="60" y="180" width="32" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconRect" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="tR8-8c-WnA">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="drawingObjectTypeChanged:" target="-2" id="IXJ-vk-4ps"/>
                         </connections>
                     </button>
                 </subviews>

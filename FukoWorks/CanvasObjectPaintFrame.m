@@ -264,6 +264,15 @@
                 CGContextStrokePath(editingContext);
                 drawingStartPoint = localPoint;
                 break;
+            case PaintLine:
+                CGContextBeginPath(editingContext);
+                CGContextMoveToPoint(editingContext, drawingStartPoint.x, drawingStartPoint.y);
+                CGContextAddLineToPoint(editingContext, localPoint.x, localPoint.y);
+                CGContextClosePath(editingContext);
+                CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
+                CGContextSetLineWidth(editingContext, floor(self.StrokeWidth + 0.5));
+                CGContextStrokePath(editingContext);
+                break;
             default:
                 break;
         }
