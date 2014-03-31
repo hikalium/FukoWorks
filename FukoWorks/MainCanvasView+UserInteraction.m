@@ -49,6 +49,9 @@
             case TextBox:
                 creatingObject = [[CanvasObjectTextBox alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
                 break;
+            case Line:
+                creatingObject = [[CanvasObjectLine alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
+                break;
             //
             case PaintRectangle:
             case PaintEllipse:
@@ -107,13 +110,15 @@
     
     creatingObject = [creatingObject drawMouseUp:currentPoint];
     
+    //図形移動終了を報告
+    [movingObject moved];
+    
     //フォーカスを戻す
     [self resetCanvasObjectHandleForCanvasObject:movingObject];
     [self showCanvasObjectHandleForCanvasObject:movingObject];
-    
-    //図形移動終了
+
+    //移動処理終了
     movingObject = nil;
-    
     
     //ペイント枠に描くなら描く
     [editingPaintFrame drawPaintFrameMouseUp:currentPoint mode:self.toolboxController.drawingObjectType];

@@ -68,12 +68,13 @@
 }
 
 // objectInfo
-NSString * objectTypeNameList[5] = {
+NSString * objectTypeNameList[6] = {
     @"未定義",
     @"矩形",
     @"楕円",
     @"ペイント枠",
     @"テキスト",
+    @"直線",
 };
 @synthesize ObjectType = _ObjectType;
 - (NSString *)ObjectTypeName
@@ -82,7 +83,7 @@ NSString * objectTypeNameList[5] = {
     if(0 <= t && t < (sizeof(objectTypeNameList) / sizeof(objectTypeNameList[0]))){
         return objectTypeNameList[t];
     }
-    return nil;
+    return objectTypeNameList[0];
 }
 @synthesize objectName = _objectName;
 @synthesize uuid = _uuid;
@@ -184,16 +185,17 @@ NSString * objectTypeNameList[5] = {
 }
 
 // data encoding
-// Frame|FillColor|StrokeColor|StrokeWidth
 - (id)initWithEncodedString:(NSString *)sourceString
 {
     NSArray *dataValues;
     
     dataValues = [sourceString componentsSeparatedByString:@"|"];
     
-    self = [self initWithFrame:NSRectFromString([dataValues objectAtIndex:0])];
+    self = [self initWithFrame:NSZeroRect];
     
     if(self){
+        // BodyRect|FillColor|StrokeColor|StrokeWidth
+        [self setBodyRect:NSRectFromString([dataValues objectAtIndex:0])];
         self.FillColor = [NSColor colorFromString:[dataValues objectAtIndex:1] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
         self.StrokeColor = [NSColor colorFromString:[dataValues objectAtIndex:2] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
         self.StrokeWidth = ((NSString *) [dataValues objectAtIndex:3]).floatValue;
@@ -207,15 +209,16 @@ NSString * objectTypeNameList[5] = {
 
     
     encodedString = [[NSMutableString alloc] init];
-    
-    [encodedString appendFormat:@"%@|", NSStringFromRect(self.frame)];
+    // BodyRect|FillColor|StrokeColor|StrokeWidth
+    [encodedString appendFormat:@"%@|", NSStringFromRect(self.bodyRect)];
     [encodedString appendFormat:@"%@|", [self.FillColor stringRepresentation]];
     [encodedString appendFormat:@"%@|", [self.StrokeColor stringRepresentation]];
     [encodedString appendFormat:@"%f|", self.StrokeWidth];
     
     return [NSString stringWithString:encodedString];
 }
-
+/*
+ // いらなくなった
 + (NSString *)encodedStringForCGColorRef:(CGColorRef)cref
 {
     NSMutableString *encodedString;
@@ -234,6 +237,7 @@ NSString * objectTypeNameList[5] = {
     return [NSString stringWithString:encodedString];
 }
 
+
 + (CGColorRef)decodedCGColorRefFromString:(NSString *)sourceString
 {
     NSArray *dataValues;
@@ -251,6 +255,7 @@ NSString * objectTypeNameList[5] = {
     
     return cRef;
 }
+ */
 
 // Preview drawing
 -(CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
@@ -282,6 +287,11 @@ NSString * objectTypeNameList[5] = {
 - (void)deselected
 {
     _isSelected = false;
+}
+
+- (void)moved
+{
+    
 }
 
 // EditHandle <CanvasObjectHandling>

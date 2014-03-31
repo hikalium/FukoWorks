@@ -125,13 +125,19 @@
     
     dataValues = [sourceString componentsSeparatedByString:@"|"];
     
-    self = [self initWithFrame:NSRectFromString([dataValues objectAtIndex:0])];
+    self = [self initWithFrame:NSZeroRect];
     
     if(self){
+        // BodyRect|FillColor|StrokeColor|StrokeWidth|RTFData
+        [self setBodyRect:NSRectFromString([dataValues objectAtIndex:0])];
         self.FillColor = [NSColor colorFromString:[dataValues objectAtIndex:1] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        self.StrokeColor = [NSColor colorFromString:[dataValues objectAtIndex:2] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        self.StrokeWidth = ((NSString *) [dataValues objectAtIndex:3]).floatValue;
         index = 0;
         index += [[dataValues objectAtIndex:0] length] + 1;
         index += [[dataValues objectAtIndex:1] length] + 1;
+        index += [[dataValues objectAtIndex:2] length] + 1;
+        index += [[dataValues objectAtIndex:3] length] + 1;
         atrstrdata = [[sourceString substringFromIndex:index] dataUsingEncoding:NSUTF8StringEncoding];
         atrstr = [[NSAttributedString alloc] initWithData:atrstrdata options:nil documentAttributes:nil error:nil];
         [textField setAttributedStringValue:atrstr];
@@ -148,8 +154,11 @@
     
     encodedString = [[NSMutableString alloc] init];
     
-    [encodedString appendFormat:@"%@|", NSStringFromRect(self.frame)];
+    // BodyRect|FillColor|StrokeColor|StrokeWidth|RTFData
+    [encodedString appendFormat:@"%@|", NSStringFromRect(self.bodyRect)];
     [encodedString appendFormat:@"%@|", [self.FillColor stringRepresentation]];
+    [encodedString appendFormat:@"%@|", [self.StrokeColor stringRepresentation]];
+    [encodedString appendFormat:@"%f|", self.StrokeWidth];
     atrstr = [textField attributedString];
     atrstrdata = [atrstr RTFFromRange:NSMakeRange(0, atrstr.length) documentAttributes:nil];
     [encodedString appendFormat:@"%@", [[[NSString alloc] initWithData:atrstrdata encoding:NSUTF8StringEncoding] stringByReplacingOccurrencesOfString:@"\n" withString:@""]];

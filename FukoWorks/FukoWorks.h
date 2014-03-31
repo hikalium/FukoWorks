@@ -17,6 +17,7 @@ typedef enum : NSInteger {
     Ellipse,
     PaintFrame,
     TextBox,
+    Line,
     PaintToolsBase = 100,
     PaintRectangle,
     PaintEllipse,

@@ -41,6 +41,7 @@
                 case Ellipse:
                 case PaintFrame:
                 case TextBox:
+                case Line:
                     [stringRep appendFormat:@"%ld:", aCanvasObject.ObjectType];
                     [stringRep appendFormat:@"%@\n",[aCanvasObject encodedStringForCanvasObject]];
                     break;
@@ -99,6 +100,9 @@
                 break;
             case TextBox:
                 aCanvasObject = [[CanvasObjectTextBox alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
+                break;
+            case Line:
+                aCanvasObject = [[CanvasObjectLine alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
                 break;
             default:
                 NSLog(@"Not implemented operation to load object type %ld.\n", aDataString.integerValue);

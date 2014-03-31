@@ -8,6 +8,7 @@
 
 #import "CanvasObjectPaintFrame.h"
 #import "NSData+HexadecimalConversion.h"
+#import "NSColor+StringConversion.h"
 
 @implementation CanvasObjectPaintFrame
 
@@ -55,7 +56,6 @@
 }
 
 // data encoding
-// Frame|Data
 - (id)initWithEncodedString:(NSString *)sourceString
 {
     NSArray *dataValues;
@@ -63,10 +63,16 @@
     
     dataValues = [sourceString componentsSeparatedByString:@"|"];
     
-    self = [self initWithFrame:NSRectFromString([dataValues objectAtIndex:0])];
+    self = [self initWithFrame:NSZeroRect];
     
     if(self){
-        bitmap = [NSBitmapImageRep imageRepWithData:[[NSData alloc] initWithHexadecimalString:[dataValues objectAtIndex:1]]];
+        // BodyRect|FillColor|StrokeColor|StrokeWidth|BMPData
+        [self setBodyRect:NSRectFromString([dataValues objectAtIndex:0])];
+        [self resetPaintContext];
+        self.FillColor = [NSColor colorFromString:[dataValues objectAtIndex:1] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        self.StrokeColor = [NSColor colorFromString:[dataValues objectAtIndex:2] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        self.StrokeWidth = ((NSString *) [dataValues objectAtIndex:3]).floatValue;
+        bitmap = [NSBitmapImageRep imageRepWithData:[[NSData alloc] initWithHexadecimalString:[dataValues objectAtIndex:4]]];
         //NSLog(@"%@", bitmap);
         CGContextDrawImage(paintContext, CGRectMake(0, 0, bitmap.size.width, bitmap.size.height), [bitmap CGImage]);
         [self setNeedsDisplay:YES];
@@ -91,7 +97,11 @@
     
     contextData = [contextImage TIFFRepresentation];
     
-    [encodedString appendFormat:@"%@|", NSStringFromRect(self.frame)];
+    // BodyRect|FillColor|StrokeColor|StrokeWidth|BMPData
+    [encodedString appendFormat:@"%@|", NSStringFromRect(self.bodyRect)];
+    [encodedString appendFormat:@"%@|", [self.FillColor stringRepresentation]];
+    [encodedString appendFormat:@"%@|", [self.StrokeColor stringRepresentation]];
+    [encodedString appendFormat:@"%f|", self.StrokeWidth];
     [encodedString appendFormat:@"%@|", [contextData hexadecimalString]];
     
     return [NSString stringWithString:encodedString];

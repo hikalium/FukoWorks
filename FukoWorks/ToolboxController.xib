@@ -86,6 +86,17 @@
                             <action selector="drawingObjectTypeChanged:" target="-2" id="asC-Sq-V0w"/>
                         </connections>
                     </button>
+                    <button toolTip="テキスト" tag="5" id="MEl-SO-tQl">
+                        <rect key="frame" x="20" y="301" width="32" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconLine" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="0a6-s2-RMu">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="drawingObjectTypeChanged:" target="-2" id="Cdy-Eh-1Mq"/>
+                        </connections>
+                    </button>
                     <slider verticalHuggingPriority="750" id="13">
                         <rect key="frame" x="18" y="16" width="76" height="21"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
@@ -178,6 +189,7 @@
     <resources>
         <image name="iconCursor" width="32" height="32"/>
         <image name="iconEllipse" width="32" height="32"/>
+        <image name="iconLine" width="64" height="64"/>
         <image name="iconPaintFrame" width="32" height="32"/>
         <image name="iconRect" width="32" height="32"/>
         <image name="iconTextBox" width="32" height="32"/>

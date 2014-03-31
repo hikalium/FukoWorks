@@ -57,8 +57,8 @@
 // data encoding
 - (id)initWithEncodedString:(NSString *)sourceString;
 - (NSString *)encodedStringForCanvasObject;
-+ (NSString *)encodedStringForCGColorRef:(CGColorRef)cref;
-+ (CGColorRef)decodedCGColorRefFromString:(NSString *)sourceString;
+//+ (NSString *)encodedStringForCGColorRef:(CGColorRef)cref;
+//+ (CGColorRef)decodedCGColorRefFromString:(NSString *)sourceString;
 
 // Preview drawing
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
@@ -71,6 +71,7 @@
 - (void)doubleClicked;
 - (void)selected;
 - (void)deselected;
+- (void)moved;
 
 // EditHandle <CanvasObjectHandling>
 - (NSUInteger)numberOfEditHandlesForCanvasObject;

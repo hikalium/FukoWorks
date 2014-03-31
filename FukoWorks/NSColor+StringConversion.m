@@ -12,10 +12,14 @@
 - (NSString*)stringRepresentation
 {
     CGFloat components[10];
+    NSColor *tmp;
     
-    [self getComponents:components];
+    // 手抜き
+    tmp = [self colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+    
+    [tmp getComponents:components];
     NSMutableString *string = [NSMutableString string];
-    for (int i = 0; i < [self numberOfComponents]; i++) {
+    for (int i = 0; i < [tmp numberOfComponents]; i++) {
         [string appendFormat:@"%f,", components[i]];
     }
     [string deleteCharactersInRange:NSMakeRange([string length]-1, 1)]; // trim the trailing space
