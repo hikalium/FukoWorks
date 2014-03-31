@@ -37,15 +37,11 @@
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;
 
 // EditHandle <CanvasObjectHandling>
-- (void)editHandleDown:(NSPoint)currentHandlePointInCanvas :(NSInteger)tag;
-- (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas :(NSInteger)tag;
-- (void)editHandleUp:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag;
+- (void)editHandleUp:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
 
 // User interaction
 - (void)drawPaintFrameMouseDown:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;
 - (void)drawPaintFrameMouseDragged:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;
 - (void)drawPaintFrameMouseUp:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode;
 
-// ViewComputing
-- (NSPoint)getNSPointIntegral: (NSPoint)basePoint;
 @end

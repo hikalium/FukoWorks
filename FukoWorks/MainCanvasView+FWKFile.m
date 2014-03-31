@@ -105,12 +105,13 @@
                 aCanvasObject = [[CanvasObjectLine alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
                 break;
             default:
-                NSLog(@"Not implemented operation to load object type %ld.\n", aDataString.integerValue);
+                if([aDataString length] > 0){
+                    NSLog(@"Not implemented operation to load object type %ld.\n", aDataString.integerValue);
+                }
                 break;
         }
         if(aCanvasObject != nil){
             [self addCanvasObject:aCanvasObject];
-            //NSLog(@"Added CanvasObject to %@ \n%@\n", self.className, self.subviews.description);
         }
     }
 }

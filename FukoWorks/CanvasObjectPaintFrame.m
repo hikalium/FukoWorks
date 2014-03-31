@@ -14,6 +14,27 @@
 
 @synthesize ObjectType = _ObjectType;
 
+- (void)setStrokeWidth:(CGFloat)StrokeWidth
+{
+    [super setStrokeWidth:floor(StrokeWidth + 0.5)];
+}
+
+- (void)setFrameOrigin:(NSPoint)newOrigin
+{
+    NSPoint bodyOrigin;
+    
+    bodyOrigin = newOrigin;
+    bodyOrigin.x += (self.StrokeWidth / 2);
+    bodyOrigin.y += (self.StrokeWidth / 2);
+    bodyOrigin.x = floor(bodyOrigin.x + 0.5);
+    bodyOrigin.y = floor(bodyOrigin.y + 0.5);
+    newOrigin = bodyOrigin;
+    newOrigin.x -= (self.StrokeWidth / 2);
+    newOrigin.y -= (self.StrokeWidth / 2);
+    
+    [super setFrameOrigin:newOrigin];
+}
+
 //
 // Function
 //
@@ -120,12 +141,12 @@
     if(bmpBuffer != NULL){
         free(bmpBuffer);
     }
-    contextRect = CGRectMake(0, 0, self.bodyRect.size.width, self.bodyRect.size.height);
-    px = ceil(contextRect.size.width);
-    py = ceil(contextRect.size.height);
-    if(px < 0 || py < 0){
+    contextRect = CGRectMake(0, 0, ceil(self.bodyRect.size.width), ceil(self.bodyRect.size.height));
+    if(contextRect.size.width < 0 || contextRect.size.height < 0){
         return;
     }
+    px = contextRect.size.width;
+    py = contextRect.size.height;
     
     aColorSpace = CGColorSpaceCreateDeviceRGB();
     
@@ -160,8 +181,6 @@
 // Preview drawing
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
 {
-    currentPointInCanvas = [self getNSPointIntegral:currentPointInCanvas];
-    //
     [[self.undoManager prepareWithInvocationTarget:self] setFrame:self.frame];
     //https://github.com/Pixen/Pixen/issues/228
     [self.undoManager endUndoGrouping];
@@ -174,13 +193,11 @@
 
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas
 {
-    return [super drawMouseDragged:[self getNSPointIntegral:currentPointInCanvas]];
+    return [super drawMouseDragged:currentPointInCanvas];
 }
 
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
 {
-    currentPointInCanvas = [self getNSPointIntegral:currentPointInCanvas];
-    //
     [self setFrame:[CanvasObject makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
     [self setNeedsDisplay:YES];
     //
@@ -191,30 +208,19 @@
 }
 
 // EditHandle <CanvasObjectHandling>
-- (void)editHandleDown:(NSPoint)currentHandlePointInCanvas :(NSInteger)tag
+- (void)editHandleUp:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
 {
-    [super editHandleDown:[self getNSPointIntegral:currentHandlePointInCanvas] forHandleID:tag];
-}
-
-- (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas :(NSInteger)tag
-{
-    [super editHandleDragged:[self getNSPointIntegral:currentHandlePointInCanvas] forHandleID:tag];
-}
-
-- (void)editHandleUp:(NSPoint)currentHandlePointInCanvas :(NSInteger) tag
-{
-    currentHandlePointInCanvas = [self getNSPointIntegral:currentHandlePointInCanvas];
-
-    [super editHandleUp:currentHandlePointInCanvas forHandleID:tag];
+    [super editHandleUp:currentHandlePointInCanvas forHandleID:hid];
     [self resetPaintContext];
 }
 
 // User interaction
 - (void)drawPaintFrameMouseDown:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode
 {
-    NSPoint localPoint = [self getNSPointIntegral:[self convertPoint:currentPointInCanvas fromView:self.superview]];
-    
+    NSPoint localPoint = [self convertPoint:currentPointInCanvas fromView:self.superview];
     drawingStartPoint = localPoint;
+    drawingStartPoint.x -= self.StrokeWidth / 2;
+    drawingStartPoint.y -= self.StrokeWidth / 2;
     
     if(mode == PaintPen){
         //ペンはクリックした時点で点を打つ
@@ -223,7 +229,7 @@
         CGContextAddLineToPoint(editingContext, drawingStartPoint.x + (self.StrokeWidth / 2), drawingStartPoint.y);
         CGContextClosePath(editingContext);
         CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
-        CGContextSetLineWidth(editingContext, floor(self.StrokeWidth + 0.5));
+        CGContextSetLineWidth(editingContext, self.StrokeWidth);
         CGContextStrokePath(editingContext);
         //NSLog(@"drawPoint!%f",self.StrokeWidth);
         [self setNeedsDisplay:YES];
@@ -234,7 +240,6 @@
     NSPoint localPoint = [self convertPoint:currentPointInCanvas fromView:self.superview];
     localPoint.x -= self.StrokeWidth / 2;
     localPoint.y -= self.StrokeWidth / 2;
-    localPoint = [self getNSPointIntegral:localPoint];
     
     CGRect rect;
     
@@ -254,7 +259,7 @@
                 CGContextFillRect(editingContext, rect);
                 //
                 CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
-                CGContextStrokeRectWithWidth(editingContext, rect, floor(self.StrokeWidth + 0.5));
+                CGContextStrokeRectWithWidth(editingContext, rect, self.StrokeWidth);
                 break;
             case PaintEllipse:
                 CGContextAddEllipseInRect(editingContext, rect);
@@ -263,14 +268,14 @@
                 //
                 CGContextAddEllipseInRect(editingContext, rect);
                 CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
-                CGContextSetLineWidth(editingContext, floor(self.StrokeWidth + 0.5));
+                CGContextSetLineWidth(editingContext, self.StrokeWidth);
                 CGContextStrokePath(editingContext);
                 break;
             case PaintPen:
                 CGContextMoveToPoint(editingContext, drawingStartPoint.x, drawingStartPoint.y);
                 CGContextAddLineToPoint(editingContext, localPoint.x, localPoint.y);
                 CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
-                CGContextSetLineWidth(editingContext, floor(self.StrokeWidth + 0.5));
+                CGContextSetLineWidth(editingContext, self.StrokeWidth);
                 CGContextStrokePath(editingContext);
                 drawingStartPoint = localPoint;
                 break;
@@ -280,7 +285,7 @@
                 CGContextAddLineToPoint(editingContext, localPoint.x, localPoint.y);
                 CGContextClosePath(editingContext);
                 CGContextSetStrokeColorWithColor(editingContext, self.StrokeColor.CGColor);
-                CGContextSetLineWidth(editingContext, floor(self.StrokeWidth + 0.5));
+                CGContextSetLineWidth(editingContext, self.StrokeWidth);
                 CGContextStrokePath(editingContext);
                 break;
             default:
@@ -307,16 +312,6 @@
         
         CGImageRelease(editingImage);
     }
-}
-
-// ViewComputing
-- (NSPoint)getNSPointIntegral: (NSPoint)basePoint
-{
-    basePoint.x += 0.5;
-    basePoint.y += 0.5;
-    basePoint.x = floor(basePoint.x) + 0.5;
-    basePoint.y = floor(basePoint.y) + 0.5;
-    return basePoint;
 }
 
 @end
