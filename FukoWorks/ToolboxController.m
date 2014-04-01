@@ -25,11 +25,13 @@
         [toolPaintEllipse setEnabled:YES];
         [toolPaintPen setEnabled:YES];
         [toolPaintLine setEnabled:YES];
+        [toolPaintFill setEnabled:YES];
     } else{
         [toolPaintRect setEnabled:NO];
         [toolPaintEllipse setEnabled:NO];
         [toolPaintPen setEnabled:NO];
         [toolPaintLine setEnabled:NO];
+        [toolPaintFill setEnabled:NO];
         if(_drawingObjectType > PaintToolsBase){
             //ペイントツールを選択していたので、カーソルにモードを戻す。
             [self drawingObjectTypeChanged:toolCursor];

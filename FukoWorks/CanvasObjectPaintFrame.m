@@ -9,6 +9,7 @@
 #import "CanvasObjectPaintFrame.h"
 #import "NSData+HexadecimalConversion.h"
 #import "NSColor+StringConversion.h"
+#import "NSColor+HexValueConversion.h"
 
 @implementation CanvasObjectPaintFrame
 
@@ -64,6 +65,7 @@
         CGContextSetShouldAntialias(mainContext, false);
         paintImage = CGBitmapContextCreateImage(paintContext);
         editingImage = CGBitmapContextCreateImage(editingContext);
+        
         CGContextDrawImage(mainContext, self.bodyRectBounds, paintImage);
         CGContextDrawImage(mainContext, self.bodyRectBounds, editingImage);
         CGImageRelease(paintImage);
@@ -80,7 +82,6 @@
 - (id)initWithEncodedString:(NSString *)sourceString
 {
     NSArray *dataValues;
-    NSBitmapImageRep *bitmap;
     
     dataValues = [sourceString componentsSeparatedByString:@"|"];
     
@@ -93,9 +94,7 @@
         self.FillColor = [NSColor colorFromString:[dataValues objectAtIndex:1] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
         self.StrokeColor = [NSColor colorFromString:[dataValues objectAtIndex:2] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
         self.StrokeWidth = ((NSString *) [dataValues objectAtIndex:3]).floatValue;
-        bitmap = [NSBitmapImageRep imageRepWithData:[[NSData alloc] initWithHexadecimalString:[dataValues objectAtIndex:4]]];
-        //NSLog(@"%@", bitmap);
-        CGContextDrawImage(paintContext, CGRectMake(0, 0, bitmap.size.width, bitmap.size.height), [bitmap CGImage]);
+        memcpy(bmpBuffer, [[[NSData alloc] initWithHexadecimalString:[dataValues objectAtIndex:4]] bytes], bmpBufferByteSize);
         [self setNeedsDisplay:YES];
     }
     
@@ -105,18 +104,13 @@
 - (NSString *)encodedStringForCanvasObject
 {
     NSMutableString *encodedString;
-    NSImage *contextImage;
     NSData *contextData;
-    CGImageRef imageRef;
     
     encodedString = [[NSMutableString alloc] init];
     
-    //PNGデータを生成
-    imageRef = CGBitmapContextCreateImage(paintContext);
-    contextImage = [[NSImage alloc] initWithCGImage:imageRef size:self.frame.size];
-    CFRelease(imageRef);
-    
-    contextData = [contextImage TIFFRepresentation];
+    [self drawRect:self.bodyRectBounds];
+    //データを生成
+    contextData = [NSData dataWithBytes:bmpBuffer length:bmpBufferByteSize];
     
     // BodyRect|FillColor|StrokeColor|StrokeWidth|BMPData
     [encodedString appendFormat:@"%@|", NSStringFromRect(self.bodyRect)];
@@ -150,7 +144,8 @@
     
     aColorSpace = CGColorSpaceCreateDeviceRGB();
     
-    bmpBuffer = malloc(4 * px * py);
+    bmpBufferByteSize = 4 * px * py;
+    bmpBuffer = malloc(bmpBufferByteSize);
     if(bmpBuffer != NULL){
         paintContext = CGBitmapContextCreate(bmpBuffer, px, py, 8, px * 4, aColorSpace, (CGBitmapInfo)kCGImageAlphaPremultipliedLast);
         if(paintContext == NULL){
@@ -218,11 +213,15 @@
 - (void)drawPaintFrameMouseDown:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode
 {
     NSPoint localPoint = [self convertPoint:currentPointInCanvas fromView:self.superview];
+    localPoint.x -= self.StrokeWidth / 2;
+    localPoint.y -= self.StrokeWidth / 2;
+    localPoint.x = floor(localPoint.x);
+    localPoint.y = floor(localPoint.y);
+    
     drawingStartPoint = localPoint;
-    drawingStartPoint.x -= self.StrokeWidth / 2;
-    drawingStartPoint.y -= self.StrokeWidth / 2;
     
     if(mode == PaintPen){
+        //NSLog(@"%@", NSStringFromPoint(drawingStartPoint));
         //ペンはクリックした時点で点を打つ
         CGContextBeginPath(editingContext);
         CGContextMoveToPoint(editingContext, drawingStartPoint.x - (self.StrokeWidth / 2), drawingStartPoint.y);
@@ -240,6 +239,8 @@
     NSPoint localPoint = [self convertPoint:currentPointInCanvas fromView:self.superview];
     localPoint.x -= self.StrokeWidth / 2;
     localPoint.y -= self.StrokeWidth / 2;
+    localPoint.x = floor(localPoint.x);
+    localPoint.y = floor(localPoint.y);
     
     CGRect rect;
     
@@ -296,9 +297,14 @@
     
     [self setNeedsDisplay:YES];
 }
+
 - (void)drawPaintFrameMouseUp:(NSPoint)currentPointInCanvas mode:(CanvasObjectType)mode
 {
-    //NSPoint localPoint = [self getNSPointIntegral:[self convertPoint:currentPointInCanvas fromView:self.superview]];
+    NSPoint localPoint = [self convertPoint:currentPointInCanvas fromView:self.superview];
+    localPoint.x -= self.StrokeWidth / 2;
+    localPoint.y -= self.StrokeWidth / 2;
+    localPoint.x = floor(localPoint.x);
+    localPoint.y = floor(localPoint.y);
     
     CGImageRef editingImage;
     
@@ -312,6 +318,216 @@
         
         CGImageRelease(editingImage);
     }
+    if(mode == PaintFill){
+        // 塗りつぶし
+        [self fillAreaAroundPoint:localPoint];
+    }
 }
+
+- (void)fillAreaAroundPoint:(NSPoint)basePoint
+{
+    int bx, by;
+    bx = basePoint.x;
+    by = contextRect.size.height - basePoint.y - 1;
+    
+    if(!bmpBuffer){
+        return;
+    }
+    if(bx < 0 || by < 0 || contextRect.size.width <= bx || contextRect.size.height <= by){
+        return;
+    }
+    
+    bmp = bmpBuffer;
+    xsize = (unsigned int)contextRect.size.width;
+    ysize = (unsigned int)contextRect.size.height;
+    bc = bmpBuffer[by * xsize + bx];
+    fc = self.FillColor.hexValue;
+    
+    if(bc == fc){
+        return;
+    }
+    
+    //fillAreaAroundPointSub(bx, by);
+    [self fillAreaAroundPointSubBx:bx by:by];
+    [self drawRect:contextRect];
+}
+
+unsigned int bc;    // baseColor
+unsigned int fc;    // fillColor
+unsigned int *bmp;
+unsigned int xsize;
+unsigned int ysize;
+
+- (void) fillAreaAroundPointSubBx:(int)bx by:(int)by
+{
+    int lx, rx, flg;
+    // 左端の捜索
+    // 与えられた座標はbitmap内かつ、ぬりつぶし領域上にあることを想定
+    for(;;){
+        if(bx <= 0){
+            break;
+        }
+        if(bmp[by * xsize + bx - 1] != bc){
+            break;
+        }
+        bx--;
+    }
+    // lxは左端のx座標になっている
+    lx = bx;
+    
+    // 現在のラインを塗る
+    for(;;){
+        if(bx >= xsize){
+            break;
+        }
+        if(bmp[by * xsize + bx] == bc){
+            //bmp[by * xsize + bx] = fc;
+            
+        } else{
+            break;
+        }
+        bx++;
+    }
+    // rxは右端のx座標になっている
+    rx = bx - 1;
+    
+    CGContextBeginPath(paintContext);
+    CGContextMoveToPoint(paintContext, lx, ysize - by - 1);
+    CGContextAddLineToPoint(paintContext, rx, ysize - by - 1);
+    CGContextClosePath(paintContext);
+    CGContextSetStrokeColorWithColor(paintContext, self.FillColor.CGColor);
+    CGContextSetLineWidth(paintContext, 1);
+    CGContextStrokePath(paintContext);
+    
+    // 上方向の検索
+    bx = lx;
+    if(by > 0){
+        flg = 0;
+        for(;;){
+            if(bx > rx){
+                // 右端に到達したら戻る
+                break;
+            }
+            if(bmp[(by - 1) * xsize + bx] == bc){
+                // さらに上側を調査
+                if(flg == 0){
+                    //fillAreaAroundPointSub(bx, by - 1);
+                    [self fillAreaAroundPointSubBx:bx by:by - 1];
+                    flg = 1;
+                }
+            } else{
+                flg = 0;
+            }
+            bx++;
+        }
+    }
+    
+    // 下方向の検索
+    bx = lx;
+    if(by < ysize - 1){
+        flg = 0;
+        for(;;){
+            if(bx >= rx){
+                // 右端に到達したら戻る
+                break;
+            }
+            if(bmp[(by + 1) * xsize + bx] == bc){
+                // さらに上側を調査
+                if(flg == 0){
+                    //fillAreaAroundPointSub(bx, by + 1);
+                     [self fillAreaAroundPointSubBx:bx by:by + 1];
+                    flg = 1;
+                }
+            } else{
+                flg = 0;
+            }
+            bx++;
+        }
+    }
+    return;
+}
+
+
+/*
+void fillAreaAroundPointSub(int bx, int by)
+{
+    int lx, rx, flg;
+    // 左端の捜索
+    // 与えられた座標はbitmap内かつ、ぬりつぶし領域上にあることを想定
+    for(;;){
+        if(bx <= 0){
+            break;
+        }
+        if(bmp[by * xsize + bx - 1] != bc){
+            break;
+        }
+        bx--;
+    }
+    // lxは左端のx座標になっている
+    lx = bx;
+    
+    // 現在のラインを塗る
+    for(;;){
+        if(bx >= xsize){
+            break;
+        }
+        if(bmp[by * xsize + bx] == bc){
+            bmp[by * xsize + bx] = fc;
+        } else{
+            break;
+        }
+        bx++;
+    }
+    // rxは右端のx座標になっている
+    rx = bx - 1;
+    
+    // 上方向の検索
+    bx = lx;
+    if(by > 0){
+        flg = 0;
+        for(;;){
+            if(bx > rx){
+                // 右端に到達したら戻る
+                break;
+            }
+            if(bmp[(by - 1) * xsize + bx] == bc){
+                // さらに上側を調査
+                if(flg == 0){
+                    fillAreaAroundPointSub(bx, by - 1);
+                    flg = 1;
+                }
+            } else{
+                flg = 0;
+            }
+            bx++;
+        }
+    }
+    
+    // 下方向の検索
+    bx = lx;
+    if(by < ysize - 1){
+        flg = 0;
+        for(;;){
+            if(bx >= rx){
+                // 右端に到達したら戻る
+                break;
+            }
+            if(bmp[(by + 1) * xsize + bx] == bc){
+                // さらに上側を調査
+                if(flg == 0){
+                    fillAreaAroundPointSub(bx, by + 1);
+                    flg = 1;
+                }
+            } else{
+                flg = 0;
+            }
+            bx++;
+        }
+    }
+    return;
+}
+*/
+
+
 
 @end

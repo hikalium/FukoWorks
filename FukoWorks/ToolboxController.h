@@ -27,6 +27,7 @@
     IBOutlet NSButton *toolPaintEllipse;
     IBOutlet NSButton *toolPaintPen;
     IBOutlet NSButton *toolPaintLine;
+    IBOutlet NSButton *toolPaintFill;
     
     NSButton *selectedDrawingObjectTypeButton;
 }

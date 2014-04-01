@@ -10,7 +10,8 @@
 
 @interface CanvasObjectPaintFrame : CanvasObjectRectFrameBase
 {
-    void *bmpBuffer;
+    unsigned int *bmpBuffer;
+    NSUInteger bmpBufferByteSize;
     CGContextRef paintContext;
     CGContextRef editingContext;
     CGRect contextRect;

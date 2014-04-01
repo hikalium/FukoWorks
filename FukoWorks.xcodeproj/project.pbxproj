@@ -38,6 +38,9 @@
 		17913DC818E26B60001ECD0A /* NSColor+CGColorConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 17913DC718E26B60001ECD0A /* NSColor+CGColorConversion.m */; };
 		17913DCB18E513FA001ECD0A /* CanvasObjectLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 17913DCA18E513FA001ECD0A /* CanvasObjectLine.m */; };
 		17913DCD18E517A4001ECD0A /* iconLine.png in Resources */ = {isa = PBXBuildFile; fileRef = 17913DCC18E517A4001ECD0A /* iconLine.png */; };
+		17913DCF18E90B40001ECD0A /* iconPaintPen.png in Resources */ = {isa = PBXBuildFile; fileRef = 17913DCE18E90B40001ECD0A /* iconPaintPen.png */; };
+		17913DD118E90EDD001ECD0A /* iconPaintFill.png in Resources */ = {isa = PBXBuildFile; fileRef = 17913DD018E90EDD001ECD0A /* iconPaintFill.png */; };
+		17913DD418E92497001ECD0A /* NSColor+HexValueConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 17913DD318E92497001ECD0A /* NSColor+HexValueConversion.m */; };
 		1796862E181BC15E00BA65E4 /* NSString+PixelConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1796862D181BC15E00BA65E4 /* NSString+PixelConversion.m */; };
 		17968631181C9D3300BA65E4 /* NSColor+StringConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 17968630181C9D3300BA65E4 /* NSColor+StringConversion.m */; };
 		17968635181CEAA600BA65E4 /* iconEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 17968632181CEAA600BA65E4 /* iconEllipse.png */; };
@@ -109,6 +112,10 @@
 		17913DC918E513FA001ECD0A /* CanvasObjectLine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectLine.h; sourceTree = "<group>"; };
 		17913DCA18E513FA001ECD0A /* CanvasObjectLine.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectLine.m; sourceTree = "<group>"; };
 		17913DCC18E517A4001ECD0A /* iconLine.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconLine.png; sourceTree = "<group>"; };
+		17913DCE18E90B40001ECD0A /* iconPaintPen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconPaintPen.png; sourceTree = "<group>"; };
+		17913DD018E90EDD001ECD0A /* iconPaintFill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconPaintFill.png; sourceTree = "<group>"; };
+		17913DD218E92497001ECD0A /* NSColor+HexValueConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+HexValueConversion.h"; sourceTree = "<group>"; };
+		17913DD318E92497001ECD0A /* NSColor+HexValueConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+HexValueConversion.m"; sourceTree = "<group>"; };
 		1796862C181BC15E00BA65E4 /* NSString+PixelConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+PixelConversion.h"; sourceTree = "<group>"; };
 		1796862D181BC15E00BA65E4 /* NSString+PixelConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+PixelConversion.m"; sourceTree = "<group>"; };
 		1796862F181C9D3300BA65E4 /* NSColor+StringConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+StringConversion.h"; sourceTree = "<group>"; };
@@ -227,8 +234,10 @@
 				173E701C1840F4830046C002 /* magnifying_glass_add.png */,
 				173E701A1840DF760046C002 /* arrow_down.png */,
 				173E70181840DF6E0046C002 /* arrow_up.png */,
+				17913DCE18E90B40001ECD0A /* iconPaintPen.png */,
 				17968632181CEAA600BA65E4 /* iconEllipse.png */,
 				17968633181CEAA600BA65E4 /* iconPaintFrame.png */,
+				17913DD018E90EDD001ECD0A /* iconPaintFill.png */,
 				17968634181CEAA600BA65E4 /* iconRect.png */,
 				174A841317050F1500A53520 /* iconCursor.png */,
 			);
@@ -246,6 +255,8 @@
 				1796862D181BC15E00BA65E4 /* NSString+PixelConversion.m */,
 				1796862F181C9D3300BA65E4 /* NSColor+StringConversion.h */,
 				17968630181C9D3300BA65E4 /* NSColor+StringConversion.m */,
+				17913DD218E92497001ECD0A /* NSColor+HexValueConversion.h */,
+				17913DD318E92497001ECD0A /* NSColor+HexValueConversion.m */,
 			);
 			name = Categories;
 			sourceTree = "<group>";
@@ -395,9 +406,11 @@
 				173E701F1840F4890046C002 /* magnifying_glass_remove.png in Resources */,
 				17BCF7FD16F42BDD00E7E472 /* InfoPlist.strings in Resources */,
 				17BCF80916F42BDD00E7E472 /* MainMenu.xib in Resources */,
+				17913DCF18E90B40001ECD0A /* iconPaintPen.png in Resources */,
 				17BCF81316F43F9100E7E472 /* Credits.rtf in Resources */,
 				17F662AA18AA46D30097C858 /* iconTextBox.png in Resources */,
 				17968635181CEAA600BA65E4 /* iconEllipse.png in Resources */,
+				17913DD118E90EDD001ECD0A /* iconPaintFill.png in Resources */,
 				17913DCD18E517A4001ECD0A /* iconLine.png in Resources */,
 				17968637181CEAA600BA65E4 /* iconRect.png in Resources */,
 				176E66A8188AB2ED007216EB /* icon_256x256.png in Resources */,
@@ -453,6 +466,7 @@
 				174A840A170433B500A53520 /* CanvasObject.m in Sources */,
 				174A840D1704397100A53520 /* CanvasObjectEllipse.m in Sources */,
 				17913DCB18E513FA001ECD0A /* CanvasObjectLine.m in Sources */,
+				17913DD418E92497001ECD0A /* NSColor+HexValueConversion.m in Sources */,
 				176EEFE01707C16800F56FF4 /* ToolboxController.m in Sources */,
 				177F33F8172E63D9004D6778 /* CanvasObjectHandle.m in Sources */,
 				176E66BA188BB543007216EB /* MainCanvasView+CanvasObjectSelection.m in Sources */,

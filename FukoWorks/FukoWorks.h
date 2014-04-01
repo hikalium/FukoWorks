@@ -23,6 +23,7 @@ typedef enum : NSInteger {
     PaintEllipse,
     PaintPen,
     PaintLine,
+    PaintFill
 } CanvasObjectType;
 
 #define FWK_PASTEBOARD_TYPE @"com.pcd.fwk.data.pasteboard"

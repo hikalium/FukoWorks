@@ -14,6 +14,7 @@
                 <outlet property="toolCursor" destination="8" id="Z8g-Gb-I9d"/>
                 <outlet property="toolEllipse" destination="9" id="5h9-kL-vM0"/>
                 <outlet property="toolPaintEllipse" destination="71" id="77"/>
+                <outlet property="toolPaintFill" destination="YDk-GS-IhW" id="NJn-fE-rc9"/>
                 <outlet property="toolPaintFrame" destination="67" id="xMB-zF-Afm"/>
                 <outlet property="toolPaintLine" destination="Jx3-U3-JFA" id="imX-7V-tyC"/>
                 <outlet property="toolPaintPen" destination="01A-af-Tpb" id="ju9-LU-wE8"/>
@@ -86,7 +87,7 @@
                             <action selector="drawingObjectTypeChanged:" target="-2" id="asC-Sq-V0w"/>
                         </connections>
                     </button>
-                    <button toolTip="テキスト" tag="5" id="MEl-SO-tQl">
+                    <button toolTip="直線" tag="5" id="MEl-SO-tQl">
                         <rect key="frame" x="20" y="301" width="32" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                         <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconLine" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="0a6-s2-RMu">
@@ -163,7 +164,7 @@
                     <button toolTip="ペイントペン" tag="103" id="01A-af-Tpb">
                         <rect key="frame" x="20" y="180" width="32" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconRect" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="Lyb-P0-SCP">
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconPaintPen" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="Lyb-P0-SCP">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
@@ -171,15 +172,26 @@
                             <action selector="drawingObjectTypeChanged:" target="-2" id="WqE-rh-NTW"/>
                         </connections>
                     </button>
-                    <button toolTip="ペイントペン" tag="104" id="Jx3-U3-JFA">
+                    <button toolTip="ペイント直線" tag="104" id="Jx3-U3-JFA">
                         <rect key="frame" x="60" y="180" width="32" height="33"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconRect" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="tR8-8c-WnA">
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconLine" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="tR8-8c-WnA">
                             <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
                         <connections>
                             <action selector="drawingObjectTypeChanged:" target="-2" id="IXJ-vk-4ps"/>
+                        </connections>
+                    </button>
+                    <button toolTip="ペイント直線" tag="105" id="YDk-GS-IhW">
+                        <rect key="frame" x="20" y="137" width="32" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconPaintFill" imagePosition="only" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="igp-L5-EhO">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="drawingObjectTypeChanged:" target="-2" id="Myd-bE-aNv"/>
                         </connections>
                     </button>
                 </subviews>
@@ -190,7 +202,9 @@
         <image name="iconCursor" width="32" height="32"/>
         <image name="iconEllipse" width="32" height="32"/>
         <image name="iconLine" width="64" height="64"/>
+        <image name="iconPaintFill" width="64" height="64"/>
         <image name="iconPaintFrame" width="32" height="32"/>
+        <image name="iconPaintPen" width="64" height="64"/>
         <image name="iconRect" width="32" height="32"/>
         <image name="iconTextBox" width="32" height="32"/>
     </resources>
