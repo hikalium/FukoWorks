@@ -10,4 +10,7 @@
 
 @interface CanvasObjectLine : CanvasObject
 
+@property (nonatomic) NSPoint p0;
+@property (nonatomic) NSPoint p1;
+
 @end

@@ -38,7 +38,7 @@
 @property (nonatomic, readonly) BOOL isSelected;
 
 // MainCanvasView property
-@property (nonatomic) NSUndoManager *undoManager;   //MainCanvasViewが設定する。
+@property (nonatomic) NSUndoManager *canvasUndoManager;   //MainCanvasViewが設定する。
 @property (nonatomic) NSArray *editHandleList;  //MainCanvasViewが設定する。
 @property (nonatomic) NSView *ownerMainCanvasView;  //MainCanvasViewが設定する。
 

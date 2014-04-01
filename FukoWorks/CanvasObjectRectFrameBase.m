@@ -14,10 +14,11 @@
 
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
 {
-    [[self.undoManager prepareWithInvocationTarget:self] setFrame:self.frame];
+    // 初期描画中は変形を記録しないようにする
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] setFrame:self.frame];
     //https://github.com/Pixen/Pixen/issues/228
-    [self.undoManager endUndoGrouping];
-    [self.undoManager disableUndoRegistration];
+    [self.canvasUndoManager endUndoGrouping];
+    [self.canvasUndoManager disableUndoRegistration];
     //
     drawingStartPoint = currentPointInCanvas;
     
@@ -37,7 +38,7 @@
     [self setFrame:[CanvasObject makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
     [self setNeedsDisplay:YES];
     //
-    [self.undoManager enableUndoRegistration];
+    [self.canvasUndoManager enableUndoRegistration];
     //
     return nil;
 }
@@ -75,10 +76,10 @@
 
 - (void)editHandleDown:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
 {
-    [[self.undoManager prepareWithInvocationTarget:self] setFrame:self.frame];
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] setFrame:self.frame];
     //https://github.com/Pixen/Pixen/issues/228
-    [self.undoManager endUndoGrouping];
-    [self.undoManager disableUndoRegistration];
+    [self.canvasUndoManager endUndoGrouping];
+    [self.canvasUndoManager disableUndoRegistration];
     //
     switch (hid) {
         case 0:
@@ -130,7 +131,7 @@
             break;
     }
     //
-    [self.undoManager enableUndoRegistration];
+    [self.canvasUndoManager enableUndoRegistration];
     //
 }
 

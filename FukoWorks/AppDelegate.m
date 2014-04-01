@@ -73,6 +73,7 @@
     [aCanvasWindowController showWindow:sender];
     [self showToolBox:self];
     [splashWindow close];
+    [aCanvasWindowController.window makeKeyAndOrderFront:self];
 }
 
 - (IBAction)openFile:(id)sender

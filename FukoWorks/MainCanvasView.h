@@ -20,7 +20,8 @@
 
 @interface MainCanvasView : NSView
 {
-    NSUndoManager *undoManager;
+    NSUndoManager *canvasUndoManager;
+    BOOL needsMoveUndoRegistration;
     
     SubCanvasView *rootSubCanvas;
     

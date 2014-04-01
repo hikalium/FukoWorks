@@ -20,7 +20,7 @@
 @synthesize FillColor = _FillColor;
 - (void)setFillColor:(NSColor *)FillColor
 {
-    [[_undoManager prepareWithInvocationTarget:self] setFillColor:_FillColor];
+    [[_canvasUndoManager prepareWithInvocationTarget:self] setFillColor:_FillColor];
     //
     _FillColor = FillColor;
     [self setNeedsDisplay:YES];
@@ -29,7 +29,7 @@
 @synthesize StrokeColor = _StrokeColor;
 - (void)setStrokeColor:(NSColor *)StrokeColor
 {
-    [[_undoManager prepareWithInvocationTarget:self] setStrokeColor:_StrokeColor];
+    [[_canvasUndoManager prepareWithInvocationTarget:self] setStrokeColor:_StrokeColor];
     //
     _StrokeColor = StrokeColor;
     [self setNeedsDisplay:YES];
@@ -39,7 +39,7 @@
 @synthesize StrokeWidth = _StrokeWidth;
 - (void)setStrokeWidth:(CGFloat)StrokeWidth
 {
-    [[_undoManager prepareWithInvocationTarget:self] setStrokeWidth:_StrokeWidth];
+    [[_canvasUndoManager prepareWithInvocationTarget:self] setStrokeWidth:_StrokeWidth];
     //
     _StrokeWidth = StrokeWidth;
     // 間接的にself.frameを更新
@@ -90,7 +90,7 @@ NSString * objectTypeNameList[6] = {
 @synthesize isSelected = _isSelected;
 
 // MainCanvasView property
-@synthesize undoManager = _undoManager;
+@synthesize canvasUndoManager = _canvasUndoManager;
 @synthesize editHandleList = _editHandleList;
 @synthesize ownerMainCanvasView = _ownerMainCanvasView;
 
@@ -130,7 +130,7 @@ NSString * objectTypeNameList[6] = {
 
 - (void)setFrameOrigin:(NSPoint)newOrigin
 {
-    [[_undoManager prepareWithInvocationTarget:self] setFrameOrigin:self.frame.origin];
+    [[_canvasUndoManager prepareWithInvocationTarget:self] setFrameOrigin:self.frame.origin];
     //
     [super setFrameOrigin:newOrigin];
     // bodyRectを更新
@@ -140,7 +140,7 @@ NSString * objectTypeNameList[6] = {
 
 - (void)setFrameSize:(NSSize)newSize
 {
-    [[_undoManager prepareWithInvocationTarget:self] setFrameSize:self.frame.size];
+    [[_canvasUndoManager prepareWithInvocationTarget:self] setFrameSize:self.frame.size];
     //
     if(newSize.width > FWK_MAX_SIZE_PIXEL){
         newSize.width = FWK_MAX_SIZE_PIXEL;

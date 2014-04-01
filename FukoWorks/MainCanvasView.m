@@ -49,7 +49,7 @@
 {
     self = [super initWithFrame:frame];
     if (self) {
-        undoManager = [[NSUndoManager alloc] init];
+        canvasUndoManager = [[NSUndoManager alloc] init];
         
         drawingStartPoint.x = 0;
         drawingStartPoint.y = 0;
@@ -252,9 +252,9 @@
     } else if([menuItem action] == @selector(paste:)){
         return [self pasteboardHas:FWK_PASTEBOARD_TYPE];
     } else if([menuItem action] == @selector(undo:)){
-        return [undoManager canUndo];
+        return [canvasUndoManager canUndo];
     } else if([menuItem action] == @selector(redo:)){
-        return [undoManager canRedo];
+        return [canvasUndoManager canRedo];
     }
     return YES;
 }

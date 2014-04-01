@@ -32,6 +32,11 @@
                 //図形移動を初期化
                 movingObject = [self getCanvasObjectAtCursorLocation:event];
                 if(movingObject){
+                    // 移動中は変形を記録しないようにする
+                    needsMoveUndoRegistration = YES;
+                    //https://github.com/Pixen/Pixen/issues/228
+                    [canvasUndoManager disableUndoRegistration];
+                    //
                     moveHandleOffset = NSMakePoint(currentPoint.x - movingObject.frame.origin.x, currentPoint.y - movingObject.frame.origin.y);
                 }
                 //移動中はフォーカスを消す
@@ -66,7 +71,7 @@
             creatingObject.FillColor = self.toolboxController.drawingFillColor;
             creatingObject.StrokeColor = self.toolboxController.drawingStrokeColor;
             creatingObject.StrokeWidth = self.toolboxController.drawingStrokeWidth;
-            creatingObject.undoManager = undoManager;
+            creatingObject.canvasUndoManager = canvasUndoManager;
             [self addCanvasObject:creatingObject];
             
             creatingObject = [creatingObject drawMouseDown:currentPoint];
@@ -95,6 +100,18 @@
     creatingObject = [creatingObject drawMouseDragged:currentPoint];
     
     //図形移動するならする
+    if(movingObject && needsMoveUndoRegistration){
+        // 動かす前の位置を記憶しておく
+        // 記録を再開
+        [canvasUndoManager enableUndoRegistration];
+        // 取り消し情報を記録
+        [[canvasUndoManager prepareWithInvocationTarget:movingObject] setFrameOrigin:movingObject.frame.origin];
+        [canvasUndoManager endUndoGrouping];
+        // 一回の移動で一回だけ実行するようにするためのフラグ
+        needsMoveUndoRegistration = NO;
+        // 記録を再び停止
+        [canvasUndoManager disableUndoRegistration];
+    }
     [movingObject setFrameOrigin:NSMakePoint(currentPoint.x - moveHandleOffset.x, currentPoint.y - moveHandleOffset.y)];
     
     //ペイント枠に描くなら描く
@@ -118,6 +135,9 @@
     [self showCanvasObjectHandleForCanvasObject:movingObject];
 
     //移動処理終了
+    if(movingObject){
+        [canvasUndoManager enableUndoRegistration];
+    }
     movingObject = nil;
     
     //ペイント枠に描くなら描く

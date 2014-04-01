@@ -15,10 +15,12 @@
 
 - (IBAction)undo:(id)sender
 {
-    [undoManager undo];
+    [canvasUndoManager undo];
+    [self resetAllCanvasObjectHandle];
 }
 - (IBAction)redo:(id)sender
 {
-    [undoManager redo];
+    [canvasUndoManager redo];
+    [self resetAllCanvasObjectHandle];
 }
 @end
