@@ -329,6 +329,34 @@ NSString * objectTypeNameList[6] = {
     return NSMakeRect(p.x, p.y, q.width, q.height);
 }
 
++ (NSRect)makeNSRectFromMouseMovingWithModifierKey:(NSPoint)startPoint :(NSPoint)endPoint
+{
+    CGFloat xsize, ysize;
+    
+    NSUInteger modifierFlags = [[NSApp currentEvent] modifierFlags];
+    if (modifierFlags & NSShiftKeyMask) {
+        // fix 1:1
+        xsize = fabs(startPoint.x - endPoint.x);
+        ysize = fabs(startPoint.y - endPoint.y);
+        if(xsize > ysize){
+            // y based
+            if(endPoint.x > startPoint.x){
+                endPoint.x = startPoint.x + ysize;
+            } else{
+                endPoint.x = startPoint.x - ysize;
+            }
+        } else{
+            // x based
+            if(endPoint.y > startPoint.y){
+                endPoint.y = startPoint.y + xsize;
+            } else{
+                endPoint.y = startPoint.y - xsize;
+            }
+        }
+    }
+    return [self makeNSRectFromMouseMoving:startPoint :endPoint];
+}
+
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event
 {
     //このViewに相対的な座標でマウスポインタの座標を返す。

@@ -70,10 +70,9 @@
         CGContextDrawImage(mainContext, self.bodyRectBounds, editingImage);
         CGImageRelease(paintImage);
         CGImageRelease(editingImage);
-        //
-        CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor.CGColor);
-        CGContextStrokeRectWithWidth(mainContext, self.bodyRectBounds, self.StrokeWidth);
     }
+    CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor.CGColor);
+    CGContextStrokeRectWithWidth(mainContext, self.bodyRectBounds, self.StrokeWidth);
     
     [self drawFocusRect];
 }
@@ -209,12 +208,14 @@
 
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas
 {
+    [self setFrame:[CanvasObject makeNSRectFromMouseMovingWithModifierKey:drawingStartPoint :currentPointInCanvas]];
+    [self setNeedsDisplay:YES];
     return [super drawMouseDragged:currentPointInCanvas];
 }
 
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
 {
-    [self setFrame:[CanvasObject makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
+    [self setFrame:[CanvasObject makeNSRectFromMouseMovingWithModifierKey:drawingStartPoint :currentPointInCanvas]];
     [self setNeedsDisplay:YES];
     //
     [self.canvasUndoManager enableUndoRegistration];
@@ -271,7 +272,7 @@
         CGContextClearRect(editingContext, contextRect);
     }
     
-    rect = NSRectToCGRect([CanvasObject makeNSRectFromMouseMoving:drawingStartPoint :localPoint]);
+    rect = NSRectToCGRect([CanvasObject makeNSRectFromMouseMovingWithModifierKey:drawingStartPoint :localPoint]);
     
     CGContextSaveGState(editingContext);
     {

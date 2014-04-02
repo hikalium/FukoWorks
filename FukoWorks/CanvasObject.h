@@ -80,6 +80,7 @@
 
 // ViewComputing
 + (NSRect)makeNSRectFromMouseMoving:(NSPoint)startPoint :(NSPoint)endPoint;
++ (NSRect)makeNSRectFromMouseMovingWithModifierKey:(NSPoint)startPoint :(NSPoint)endPoint;
 - (NSPoint)getPointerLocationRelativeToSelfView:(NSEvent*)event;
 
 @end

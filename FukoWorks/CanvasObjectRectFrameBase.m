@@ -27,7 +27,7 @@
 
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas
 {
-    [self setFrame:[CanvasObject makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
+    [self setFrame:[CanvasObject makeNSRectFromMouseMovingWithModifierKey:drawingStartPoint :currentPointInCanvas]];
     [self setNeedsDisplay:YES];
     
     return self;
@@ -35,7 +35,7 @@
 
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
 {
-    [self setFrame:[CanvasObject makeNSRectFromMouseMoving:drawingStartPoint :currentPointInCanvas]];
+    [self setFrame:[CanvasObject makeNSRectFromMouseMovingWithModifierKey:drawingStartPoint :currentPointInCanvas]];
     [self setNeedsDisplay:YES];
     //
     [self.canvasUndoManager enableUndoRegistration];
@@ -106,7 +106,7 @@
     //NSLog(@"%lu", (unsigned long)self.editHandleList.count);
     
     p = [((CanvasObjectHandle *)[self.editHandleList objectAtIndex:(3 - hid)]) makeNSPointWithHandlePoint];
-    [self setBodyRect:[CanvasObject makeNSRectFromMouseMoving:p :currentHandlePointInCanvas]];
+    [self setBodyRect:[CanvasObject makeNSRectFromMouseMovingWithModifierKey:p :currentHandlePointInCanvas]];
 
     [self setNeedsDisplay:YES];
     [((MainCanvasView *)self.ownerMainCanvasView) resetCanvasObjectHandleForCanvasObject:self];
