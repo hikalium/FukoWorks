@@ -50,7 +50,9 @@
 - (id)initWithFrame:(NSRect)frameRect;
 - (void)drawRect:(NSRect)dirtyRect;
 - (void)setFrame:(NSRect)frameRect;
-
+- (void)setFrameOrigin:(NSPoint)newOrigin;
+- (void)setFrameSize:(NSSize)newSize;
+- (void)setFrameSizeInternal:(NSSize)newSize;
 //
 - (void)drawFocusRect;
 

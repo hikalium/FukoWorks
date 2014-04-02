@@ -109,15 +109,58 @@
 - (void)addCanvasObject:(CanvasObject *)aCanvasObject
 {
     //最上面に追加
+    [self addCanvasObject:aCanvasObject positioned:NSWindowAbove relativeTo:nil];
+}
+
+- (void)addCanvasObject:(CanvasObject *)aCanvasObject positioned:(NSWindowOrderingMode)place relativeTo:(NSView *)otherView
+{
+    NSUInteger index;
+    
+    if(!aCanvasObject){
+        return;
+    }
+    // Undo処理登録
+    [[canvasUndoManager prepareWithInvocationTarget:self] removeCanvasObject:aCanvasObject];
+    //
     aCanvasObject.ownerMainCanvasView = self;
-    [rootSubCanvas addSubview:aCanvasObject positioned:NSWindowAbove relativeTo:nil];
-    [_canvasObjects addObject:aCanvasObject];
+    //指定した位置に追加
+    [rootSubCanvas addSubview:aCanvasObject positioned:place relativeTo:otherView];
+    if(place == NSWindowAbove){
+        if(otherView){
+            index = [_canvasObjects indexOfObject:otherView] + 1;
+        } else{
+            index = [_canvasObjects count];
+        }
+    } else{
+        if(otherView){
+            index = [_canvasObjects indexOfObject:otherView];
+        } else{
+            index = 0;
+        }
+    }
+    [_canvasObjects insertObject:aCanvasObject atIndex:index];
     //NSLog(@"Added CanvasObject to %@ \n%@\n", rootSubCanvas.className, rootSubCanvas.subviews.description);
     [[CanvasObjectListWindowController sharedCanvasObjectListWindowController] reloadData];
 }
 
 - (void)removeCanvasObject:(CanvasObject *)aCanvasObject
 {
+    NSUInteger index;
+    
+    if(!aCanvasObject){
+        return;
+    }
+    // Undo処理登録
+    index =[_canvasObjects indexOfObject:aCanvasObject];
+    if(index > 0){
+        [[canvasUndoManager prepareWithInvocationTarget:self] addCanvasObject:aCanvasObject positioned:NSWindowAbove relativeTo:[_canvasObjects objectAtIndex:index - 1]];
+    } else if(index == 0){
+        // 最背面に戻す処理
+        [[canvasUndoManager prepareWithInvocationTarget:self] addCanvasObject:aCanvasObject positioned:NSWindowBelow relativeTo:nil];
+    } else{
+        
+    }
+    
     aCanvasObject.ownerMainCanvasView = self;
     if(creatingObject == aCanvasObject){
         creatingObject = nil;

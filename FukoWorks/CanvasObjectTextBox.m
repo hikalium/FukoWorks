@@ -14,11 +14,14 @@
 //
 
 @interface FWKCanvasTextField : NSTextField
+@property (nonatomic) NSUndoManager *canvasUndoManager;
 - (id)initWithDelegete: (id<NSTextFieldDelegate>)delegete;
 - (NSAttributedString *)attributedString;
 @end
 
 @implementation FWKCanvasTextField
+
+@synthesize canvasUndoManager = _canvasUndoManager;
 
 - (id)initWithDelegete: (id<NSTextFieldDelegate>)delegete
 {
@@ -52,6 +55,14 @@
     return [self.cell attributedStringValue];
 }
 
+- (void)setAttributedStringValue:(NSAttributedString *)obj
+{
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] setAttributedStringValue:self.attributedStringValue];
+    [super setAttributedStringValue:obj];
+    [self sizeToFit];
+    [self.superview setFrameSize:NSZeroSize];    // 引数はダミー
+}
+
 @end
 
 //
@@ -79,11 +90,17 @@
 
 - (void)setStrokeWidth:(CGFloat)StrokeWidth
 {
+    
     [super setStrokeWidth:StrokeWidth];
     [textField setFrameOrigin:self.bodyRectBounds.origin];
 }
 @synthesize ObjectType = _ObjectType;
 
+- (void)setCanvasUndoManager:(NSUndoManager *)canvasUndoManager
+{
+    [super setCanvasUndoManager:canvasUndoManager];
+    textField.canvasUndoManager = canvasUndoManager;
+}
 
 //
 // NSView
@@ -106,7 +123,7 @@
 - (void)setFrameSize:(NSSize)newSize
 {
     //サイズは自動設定なので、与えられた数値に関係なく設定する
-    newSize = self.bodyRect.size;
+    newSize = textField.frame.size;
     newSize.width += self.StrokeWidth;
     newSize.height += self.StrokeWidth;
     
@@ -167,6 +184,12 @@
 
 -(CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
 {
+    // 初期描画中は変形を記録しないようにする
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] setFrame:self.frame];
+    //https://github.com/Pixen/Pixen/issues/228
+    [self.canvasUndoManager endUndoGrouping];
+    [self.canvasUndoManager disableUndoRegistration];
+    //
     [super setFrameOrigin:currentPointInCanvas];
     return self;
 }
@@ -174,12 +197,17 @@
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas
 {
     [super setFrameOrigin:currentPointInCanvas];
+
     return self;
 }
 
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
 {
     [super setFrameOrigin:currentPointInCanvas];
+    
+    //
+    [self.canvasUndoManager enableUndoRegistration];
+    //
     return nil;
 }
 
@@ -210,23 +238,24 @@
 
 - (void)controlTextDidBeginEditing:(NSNotification *)obj
 {
+    [[self.canvasUndoManager prepareWithInvocationTarget:textField] setAttributedStringValue:[textField attributedString]];
+    //
     [textField sizeToFit];
     [textField setFrameSize:NSMakeSize(textField.frame.size.width * 1.5 + 100, textField.frame.size.height)];
-    [super setFrameSize:textField.frame.size];
+    [super setFrameSizeInternal:textField.frame.size];
 }
 
 - (void)controlTextDidChange:(NSNotification *)obj
 {
     [textField sizeToFit];
     [textField setFrameSize:NSMakeSize(textField.frame.size.width * 1.5 + 200, textField.frame.size.height)];
-    [super setFrameSize:textField.frame.size];
+    [super setFrameSizeInternal:textField.frame.size];
 }
 
 - (void)controlTextDidEndEditing:(NSNotification *)obj
 {
     [textField sizeToFit];
-    [super setFrameSize:textField.frame.size];
-    //[[NSFontPanel sharedFontPanel] close];
+    [super setFrameSizeInternal:textField.frame.size];
 }
 
 @end

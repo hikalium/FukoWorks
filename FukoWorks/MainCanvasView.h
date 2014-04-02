@@ -51,7 +51,7 @@
 @property (nonatomic) ToolboxController *toolboxController;
 @property (nonatomic) CGFloat canvasScale;
 @property (nonatomic) NSSize canvasSize;
-@property (nonatomic, readonly) NSMutableArray *canvasObjects;
+@property (nonatomic, readonly) NSMutableArray *canvasObjects;  // indexが大きいほど前面
 @property (nonatomic, readonly) NSView *realSizeCanvas;
 @property (nonatomic, readonly) NSArray *selectedObjectList;
 

@@ -174,14 +174,14 @@
 				174A840C1704397100A53520 /* CanvasObjectEllipse.m */,
 				1723966716F5A8200089DF1E /* CanvasObjectRectangle.h */,
 				1723966816F5A8200089DF1E /* CanvasObjectRectangle.m */,
-				177F33F6172E63D9004D6778 /* CanvasObjectHandle.h */,
-				177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */,
 				17677F3F17647BC500F12210 /* CanvasObjectPaintFrame.h */,
 				17677F4017647BC500F12210 /* CanvasObjectPaintFrame.m */,
 				178E9CBB189E91FB0076B671 /* CanvasObjectTextBox.h */,
 				178E9CBC189E91FB0076B671 /* CanvasObjectTextBox.m */,
 				17913DC918E513FA001ECD0A /* CanvasObjectLine.h */,
 				17913DCA18E513FA001ECD0A /* CanvasObjectLine.m */,
+				177F33F6172E63D9004D6778 /* CanvasObjectHandle.h */,
+				177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */,
 			);
 			name = CanvasObject;
 			sourceTree = "<group>";

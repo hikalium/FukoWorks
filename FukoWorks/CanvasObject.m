@@ -142,6 +142,11 @@ NSString * objectTypeNameList[6] = {
 {
     [[_canvasUndoManager prepareWithInvocationTarget:self] setFrameSize:self.frame.size];
     //
+    [self setFrameSizeInternal:newSize];
+}
+
+- (void)setFrameSizeInternal:(NSSize)newSize
+{
     if(newSize.width > FWK_MAX_SIZE_PIXEL){
         newSize.width = FWK_MAX_SIZE_PIXEL;
     }
