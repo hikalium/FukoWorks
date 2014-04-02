@@ -127,23 +127,28 @@
 {
     int px, py;
     CGColorSpaceRef aColorSpace;
+    //
+    CGContextRef oldPaintContext;
+    unsigned int *oldBMPBuffer;
+    CGRect oldContextRect;
+    CGImageRef paintImage;
     
     if(paintContext != NULL){
-        CGContextRelease(paintContext);
+        // editingContextをpaintContextに反映
+        [self drawRect:contextRect];
+        // 古いpaintContextを保存
+        oldPaintContext = paintContext;
+        oldBMPBuffer = bmpBuffer;
+        // editingContextは解放
         CGContextRelease(editingContext);
+        // 古いcontextRectを保存
+        oldContextRect = contextRect;
     }
-    if(bmpBuffer != NULL){
-        free(bmpBuffer);
-    }
+    // 新しいcontextRectを生成
     contextRect = CGRectMake(0, 0, ceil(self.bodyRect.size.width), ceil(self.bodyRect.size.height));
-    if(contextRect.size.width < 0 || contextRect.size.height < 0){
-        return;
-    }
     px = contextRect.size.width;
     py = contextRect.size.height;
-    
     aColorSpace = CGColorSpaceCreateDeviceRGB();
-    
     bmpBufferByteSize = 4 * px * py;
     bmpBuffer = malloc(bmpBufferByteSize);
     if(bmpBuffer != NULL){
@@ -171,6 +176,21 @@
     CGContextFillRect(paintContext, contextRect);
     CGContextSetRGBFillColor(editingContext, 0, 0, 0, 0);
     CGContextFillRect(editingContext, self.bounds);
+    
+    // 以前のペイント枠の内容をコピー
+    if(oldPaintContext){
+        paintImage = CGBitmapContextCreateImage(oldPaintContext);
+        
+        CGContextDrawImage(paintContext, oldContextRect, paintImage);
+        CGImageRelease(paintImage);
+        
+        CGContextRelease(oldPaintContext);
+        if(bmpBuffer != NULL){
+            free(oldBMPBuffer);
+        }
+    }
+    [self setNeedsDisplay:YES];
+
 }
 
 // Preview drawing
