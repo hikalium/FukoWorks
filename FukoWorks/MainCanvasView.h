@@ -15,6 +15,7 @@
 #import "CanvasObjectPaintFrame.h"
 #import "CanvasObjectTextBox.h"
 #import "CanvasObjectLine.h"
+#import "CanvasObjectBezierPath.h"
 #import "SubCanvasView.h"
 #import "CanvasObjectHandle.h"
 

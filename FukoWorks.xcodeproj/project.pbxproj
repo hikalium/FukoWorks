@@ -41,6 +41,7 @@
 		17913DCF18E90B40001ECD0A /* iconPaintPen.png in Resources */ = {isa = PBXBuildFile; fileRef = 17913DCE18E90B40001ECD0A /* iconPaintPen.png */; };
 		17913DD118E90EDD001ECD0A /* iconPaintFill.png in Resources */ = {isa = PBXBuildFile; fileRef = 17913DD018E90EDD001ECD0A /* iconPaintFill.png */; };
 		17913DD418E92497001ECD0A /* NSColor+HexValueConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 17913DD318E92497001ECD0A /* NSColor+HexValueConversion.m */; };
+		17913DD718EBE7A9001ECD0A /* CanvasObjectBezierPath.m in Sources */ = {isa = PBXBuildFile; fileRef = 17913DD618EBE7A9001ECD0A /* CanvasObjectBezierPath.m */; };
 		1796862E181BC15E00BA65E4 /* NSString+PixelConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 1796862D181BC15E00BA65E4 /* NSString+PixelConversion.m */; };
 		17968631181C9D3300BA65E4 /* NSColor+StringConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 17968630181C9D3300BA65E4 /* NSColor+StringConversion.m */; };
 		17968635181CEAA600BA65E4 /* iconEllipse.png in Resources */ = {isa = PBXBuildFile; fileRef = 17968632181CEAA600BA65E4 /* iconEllipse.png */; };
@@ -116,6 +117,8 @@
 		17913DD018E90EDD001ECD0A /* iconPaintFill.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconPaintFill.png; sourceTree = "<group>"; };
 		17913DD218E92497001ECD0A /* NSColor+HexValueConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+HexValueConversion.h"; sourceTree = "<group>"; };
 		17913DD318E92497001ECD0A /* NSColor+HexValueConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSColor+HexValueConversion.m"; sourceTree = "<group>"; };
+		17913DD518EBE7A9001ECD0A /* CanvasObjectBezierPath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectBezierPath.h; sourceTree = "<group>"; };
+		17913DD618EBE7A9001ECD0A /* CanvasObjectBezierPath.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectBezierPath.m; sourceTree = "<group>"; };
 		1796862C181BC15E00BA65E4 /* NSString+PixelConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+PixelConversion.h"; sourceTree = "<group>"; };
 		1796862D181BC15E00BA65E4 /* NSString+PixelConversion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+PixelConversion.m"; sourceTree = "<group>"; };
 		1796862F181C9D3300BA65E4 /* NSColor+StringConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+StringConversion.h"; sourceTree = "<group>"; };
@@ -182,6 +185,8 @@
 				17913DCA18E513FA001ECD0A /* CanvasObjectLine.m */,
 				177F33F6172E63D9004D6778 /* CanvasObjectHandle.h */,
 				177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */,
+				17913DD518EBE7A9001ECD0A /* CanvasObjectBezierPath.h */,
+				17913DD618EBE7A9001ECD0A /* CanvasObjectBezierPath.m */,
 			);
 			name = CanvasObject;
 			sourceTree = "<group>";
@@ -456,6 +461,7 @@
 				17BCF80616F42BDD00E7E472 /* AppDelegate.m in Sources */,
 				17BCF81616F4400300E7E472 /* MainCanvasView.m in Sources */,
 				17F662A818A7B0A10097C858 /* MainCanvasView+FWKFile.m in Sources */,
+				17913DD718EBE7A9001ECD0A /* CanvasObjectBezierPath.m in Sources */,
 				1723966916F5A8200089DF1E /* CanvasObjectRectangle.m in Sources */,
 				17B089C916FDAEF10006FA2C /* CanvasWindowController.m in Sources */,
 				176E66C6188BB9B0007216EB /* MainCanvasView+UserInteraction.m in Sources */,

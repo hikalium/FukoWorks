@@ -57,6 +57,9 @@
             case Line:
                 creatingObject = [[CanvasObjectLine alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
                 break;
+            case BezierPath:
+                creatingObject = [[CanvasObjectBezierPath alloc] initWithFrame:NSMakeRect(0, 0, 1, 1)];
+                break;
             //
             case PaintRectangle:
             case PaintEllipse:

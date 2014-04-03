@@ -194,6 +194,17 @@
                             <action selector="drawingObjectTypeChanged:" target="-2" id="Myd-bE-aNv"/>
                         </connections>
                     </button>
+                    <button toolTip="ベジェ曲線" tag="6" id="4Sv-q3-2bC">
+                        <rect key="frame" x="60" y="301" width="32" height="33"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <buttonCell key="cell" type="square" bezelStyle="shadowlessSquare" image="iconLine" imagePosition="only" alignment="center" borderStyle="border" imageScaling="proportionallyUpOrDown" inset="2" id="u5v-kX-nN2">
+                            <behavior key="behavior" lightByBackground="YES" lightByGray="YES" changeBackground="YES" changeGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                        <connections>
+                            <action selector="drawingObjectTypeChanged:" target="-2" id="Ub3-a7-hLo"/>
+                        </connections>
+                    </button>
                 </subviews>
             </view>
         </window>
