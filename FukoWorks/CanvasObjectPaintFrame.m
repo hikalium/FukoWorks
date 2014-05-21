@@ -368,8 +368,6 @@
     if(bc == fc){
         return;
     }
-    
-    //fillAreaAroundPointSub(bx, by);
     [self fillAreaAroundPointSubBx:bx by:by];
     [self drawRect:contextRect];
 }
@@ -394,7 +392,7 @@ unsigned int ysize;
         }
         bx--;
     }
-    // lxは左端のx座標になっている
+    // lxは塗りつぶすラインの左端のx座標になっている
     lx = bx;
     
     // 現在のラインを塗る
@@ -402,15 +400,12 @@ unsigned int ysize;
         if(bx >= xsize){
             break;
         }
-        if(bmp[by * xsize + bx] == bc){
-            //bmp[by * xsize + bx] = fc;
-            
-        } else{
+        if(bmp[by * xsize + bx] != bc){
             break;
         }
         bx++;
     }
-    // rxは右端のx座標になっている
+    // rxは塗りつぶすラインの右端のx座標になる
     rx = bx - 1;
     
     CGContextBeginPath(paintContext);
@@ -433,7 +428,6 @@ unsigned int ysize;
             if(bmp[(by - 1) * xsize + bx] == bc){
                 // さらに上側を調査
                 if(flg == 0){
-                    //fillAreaAroundPointSub(bx, by - 1);
                     [self fillAreaAroundPointSubBx:bx by:by - 1];
                     flg = 1;
                 }
@@ -454,9 +448,8 @@ unsigned int ysize;
                 break;
             }
             if(bmp[(by + 1) * xsize + bx] == bc){
-                // さらに上側を調査
+                // さらに下側を調査
                 if(flg == 0){
-                    //fillAreaAroundPointSub(bx, by + 1);
                      [self fillAreaAroundPointSubBx:bx by:by + 1];
                     flg = 1;
                 }
@@ -468,88 +461,6 @@ unsigned int ysize;
     }
     return;
 }
-
-
-/*
-void fillAreaAroundPointSub(int bx, int by)
-{
-    int lx, rx, flg;
-    // 左端の捜索
-    // 与えられた座標はbitmap内かつ、ぬりつぶし領域上にあることを想定
-    for(;;){
-        if(bx <= 0){
-            break;
-        }
-        if(bmp[by * xsize + bx - 1] != bc){
-            break;
-        }
-        bx--;
-    }
-    // lxは左端のx座標になっている
-    lx = bx;
-    
-    // 現在のラインを塗る
-    for(;;){
-        if(bx >= xsize){
-            break;
-        }
-        if(bmp[by * xsize + bx] == bc){
-            bmp[by * xsize + bx] = fc;
-        } else{
-            break;
-        }
-        bx++;
-    }
-    // rxは右端のx座標になっている
-    rx = bx - 1;
-    
-    // 上方向の検索
-    bx = lx;
-    if(by > 0){
-        flg = 0;
-        for(;;){
-            if(bx > rx){
-                // 右端に到達したら戻る
-                break;
-            }
-            if(bmp[(by - 1) * xsize + bx] == bc){
-                // さらに上側を調査
-                if(flg == 0){
-                    fillAreaAroundPointSub(bx, by - 1);
-                    flg = 1;
-                }
-            } else{
-                flg = 0;
-            }
-            bx++;
-        }
-    }
-    
-    // 下方向の検索
-    bx = lx;
-    if(by < ysize - 1){
-        flg = 0;
-        for(;;){
-            if(bx >= rx){
-                // 右端に到達したら戻る
-                break;
-            }
-            if(bmp[(by + 1) * xsize + bx] == bc){
-                // さらに上側を調査
-                if(flg == 0){
-                    fillAreaAroundPointSub(bx, by + 1);
-                    flg = 1;
-                }
-            } else{
-                flg = 0;
-            }
-            bx++;
-        }
-    }
-    return;
-}
-*/
-
 
 
 @end

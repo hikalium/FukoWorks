@@ -42,6 +42,7 @@
                 case PaintFrame:
                 case TextBox:
                 case Line:
+                case BezierPath:
                     [stringRep appendFormat:@"%ld:", aCanvasObject.ObjectType];
                     [stringRep appendFormat:@"%@\n",[aCanvasObject encodedStringForCanvasObject]];
                     break;
@@ -103,6 +104,9 @@
                 break;
             case Line:
                 aCanvasObject = [[CanvasObjectLine alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
+                break;
+            case BezierPath:
+                aCanvasObject = [[CanvasObjectBezierPath alloc] initWithEncodedString:[dataItem objectAtIndex:1]];
                 break;
             default:
                 if([aDataString length] > 0){

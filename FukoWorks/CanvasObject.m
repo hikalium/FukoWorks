@@ -68,13 +68,14 @@
 }
 
 // objectInfo
-NSString * objectTypeNameList[6] = {
+NSString * objectTypeNameList[7] = {
     @"未定義",
     @"矩形",
     @"楕円",
     @"ペイント枠",
     @"テキスト",
     @"直線",
+    @"ベジェ曲線"
 };
 @synthesize ObjectType = _ObjectType;
 - (NSString *)ObjectTypeName

@@ -58,6 +58,7 @@
 		17BCF80916F42BDD00E7E472 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF80716F42BDD00E7E472 /* MainMenu.xib */; };
 		17BCF81316F43F9100E7E472 /* Credits.rtf in Resources */ = {isa = PBXBuildFile; fileRef = 17BCF81216F43F9100E7E472 /* Credits.rtf */; };
 		17BCF81616F4400300E7E472 /* MainCanvasView.m in Sources */ = {isa = PBXBuildFile; fileRef = 17BCF81516F4400300E7E472 /* MainCanvasView.m */; };
+		17CB4AA618F52C1700724515 /* iconBezier.png in Resources */ = {isa = PBXBuildFile; fileRef = 17CB4AA518F52C1700724515 /* iconBezier.png */; };
 		17F662A818A7B0A10097C858 /* MainCanvasView+FWKFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 17F662A718A7B0A10097C858 /* MainCanvasView+FWKFile.m */; };
 		17F662AA18AA46D30097C858 /* iconTextBox.png in Resources */ = {isa = PBXBuildFile; fileRef = 17F662A918AA46D30097C858 /* iconTextBox.png */; };
 		17FFED70180A66BF0029F6F4 /* CanvasObjectListWindowController.m in Sources */ = {isa = PBXBuildFile; fileRef = 17FFED6E180A66BF0029F6F4 /* CanvasObjectListWindowController.m */; };
@@ -147,6 +148,7 @@
 		17BCF81216F43F9100E7E472 /* Credits.rtf */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.rtf; path = Credits.rtf; sourceTree = "<group>"; };
 		17BCF81416F4400300E7E472 /* MainCanvasView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = MainCanvasView.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		17BCF81516F4400300E7E472 /* MainCanvasView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = MainCanvasView.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		17CB4AA518F52C1700724515 /* iconBezier.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconBezier.png; sourceTree = "<group>"; };
 		17F662A718A7B0A10097C858 /* MainCanvasView+FWKFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MainCanvasView+FWKFile.m"; sourceTree = "<group>"; };
 		17F662A918AA46D30097C858 /* iconTextBox.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = iconTextBox.png; sourceTree = "<group>"; };
 		17FFED6D180A66BF0029F6F4 /* CanvasObjectListWindowController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectListWindowController.h; sourceTree = "<group>"; };
@@ -245,6 +247,7 @@
 				17913DD018E90EDD001ECD0A /* iconPaintFill.png */,
 				17968634181CEAA600BA65E4 /* iconRect.png */,
 				174A841317050F1500A53520 /* iconCursor.png */,
+				17CB4AA518F52C1700724515 /* iconBezier.png */,
 			);
 			name = Resources;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 				173E701F1840F4890046C002 /* magnifying_glass_remove.png in Resources */,
 				17BCF7FD16F42BDD00E7E472 /* InfoPlist.strings in Resources */,
 				17BCF80916F42BDD00E7E472 /* MainMenu.xib in Resources */,
+				17CB4AA618F52C1700724515 /* iconBezier.png in Resources */,
 				17913DCF18E90B40001ECD0A /* iconPaintPen.png in Resources */,
 				17BCF81316F43F9100E7E472 /* Credits.rtf in Resources */,
 				17F662AA18AA46D30097C858 /* iconTextBox.png in Resources */,

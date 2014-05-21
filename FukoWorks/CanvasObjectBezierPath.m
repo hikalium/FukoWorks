@@ -81,13 +81,17 @@
 - (void)drawRect:(NSRect)dirtyRect
 {
     //再描画時に呼ばれる。
-    [self.StrokeColor set];
     [bp setLineWidth:self.StrokeWidth];
     
     [bp moveToPoint:lp0];
     [bp curveToPoint:lp1 controlPoint1:lcp0 controlPoint2:lcp1];
     
+    [self.StrokeColor set];
     [bp stroke];
+    
+    [self.FillColor set];
+    [bp fill];
+    
     [bp removeAllPoints];
     
     if(self.isSelected){
@@ -119,12 +123,13 @@
     
     if(self){
         // p0|p1|StrokeColor|StrokeWidth
-        p0 = NSPointFromString([dataValues objectAtIndex:0]);
-        p1 = NSPointFromString([dataValues objectAtIndex:1]);
-        [self setBodyRect:[CanvasObject makeNSRectFromMouseMoving:p0 :p1]];
-        [self bindLinePointToLocal];
-        self.StrokeColor = [NSColor colorFromString:[dataValues objectAtIndex:2] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
-        self.StrokeWidth = ((NSString *) [dataValues objectAtIndex:3]).floatValue;
+        self.p0 = NSPointFromString([dataValues objectAtIndex:0]);
+        self.p1 = NSPointFromString([dataValues objectAtIndex:1]);
+        self.cp0 = NSPointFromString([dataValues objectAtIndex:2]);
+        self.cp1 = NSPointFromString([dataValues objectAtIndex:3]);
+        self.StrokeColor = [NSColor colorFromString:[dataValues objectAtIndex:4] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        self.FillColor = [NSColor colorFromString:[dataValues objectAtIndex:5] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        self.StrokeWidth = ((NSString *) [dataValues objectAtIndex:6]).floatValue;
         
         [self setNeedsDisplay:YES];
     }
@@ -140,8 +145,12 @@
     // p0|p1|StrokeColor|StrokeWidth
     [encodedString appendFormat:@"%@|", NSStringFromPoint(p0)];
     [encodedString appendFormat:@"%@|", NSStringFromPoint(p1)];
+    [encodedString appendFormat:@"%@|", NSStringFromPoint(cp0)];
+    [encodedString appendFormat:@"%@|", NSStringFromPoint(cp1)];
     [encodedString appendFormat:@"%@|", [self.StrokeColor stringRepresentation]];
+    [encodedString appendFormat:@"%@|", [self.FillColor stringRepresentation]];
     [encodedString appendFormat:@"%f|", self.StrokeWidth];
+    
     
     return [NSString stringWithString:encodedString];
 }
