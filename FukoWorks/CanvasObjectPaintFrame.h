@@ -9,13 +9,6 @@
 #import "CanvasObjectRectFrameBase.h"
 
 @interface CanvasObjectPaintFrame : CanvasObjectRectFrameBase
-{
-    unsigned int *bmpBuffer;
-    NSUInteger bmpBufferByteSize;
-    CGContextRef paintContext;
-    CGContextRef editingContext;
-    CGRect contextRect;
-}
 
 //
 // Function
@@ -30,7 +23,7 @@
 - (NSString *)encodedStringForCanvasObject;
 
 // paintContext
-- (void)resetPaintContext;
+//- (void)resetPaintContext;
 
 // Preview drawing
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;

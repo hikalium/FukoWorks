@@ -34,6 +34,7 @@
 		176E66C6188BB9B0007216EB /* MainCanvasView+UserInteraction.m in Sources */ = {isa = PBXBuildFile; fileRef = 176E66C5188BB9AF007216EB /* MainCanvasView+UserInteraction.m */; };
 		176EEFE01707C16800F56FF4 /* ToolboxController.m in Sources */ = {isa = PBXBuildFile; fileRef = 176EEFDF1707C16800F56FF4 /* ToolboxController.m */; };
 		177F33F8172E63D9004D6778 /* CanvasObjectHandle.m in Sources */ = {isa = PBXBuildFile; fileRef = 177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */; };
+		17811B8B192CDB5500300C1D /* FWKBitmap.m in Sources */ = {isa = PBXBuildFile; fileRef = 17811B8A192CDB5500300C1D /* FWKBitmap.m */; };
 		178E9CBD189E91FB0076B671 /* CanvasObjectTextBox.m in Sources */ = {isa = PBXBuildFile; fileRef = 178E9CBC189E91FB0076B671 /* CanvasObjectTextBox.m */; };
 		17913DC818E26B60001ECD0A /* NSColor+CGColorConversion.m in Sources */ = {isa = PBXBuildFile; fileRef = 17913DC718E26B60001ECD0A /* NSColor+CGColorConversion.m */; };
 		17913DCB18E513FA001ECD0A /* CanvasObjectLine.m in Sources */ = {isa = PBXBuildFile; fileRef = 17913DCA18E513FA001ECD0A /* CanvasObjectLine.m */; };
@@ -107,6 +108,8 @@
 		176EEFDF1707C16800F56FF4 /* ToolboxController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ToolboxController.m; sourceTree = "<group>"; };
 		177F33F6172E63D9004D6778 /* CanvasObjectHandle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectHandle.h; sourceTree = "<group>"; };
 		177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectHandle.m; sourceTree = "<group>"; };
+		17811B89192CDB5500300C1D /* FWKBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FWKBitmap.h; sourceTree = "<group>"; };
+		17811B8A192CDB5500300C1D /* FWKBitmap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FWKBitmap.m; sourceTree = "<group>"; };
 		178E9CBB189E91FB0076B671 /* CanvasObjectTextBox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CanvasObjectTextBox.h; sourceTree = "<group>"; };
 		178E9CBC189E91FB0076B671 /* CanvasObjectTextBox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CanvasObjectTextBox.m; sourceTree = "<group>"; };
 		17913DC618E26B60001ECD0A /* NSColor+CGColorConversion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSColor+CGColorConversion.h"; sourceTree = "<group>"; };
@@ -189,6 +192,8 @@
 				177F33F7172E63D9004D6778 /* CanvasObjectHandle.m */,
 				17913DD518EBE7A9001ECD0A /* CanvasObjectBezierPath.h */,
 				17913DD618EBE7A9001ECD0A /* CanvasObjectBezierPath.m */,
+				17811B89192CDB5500300C1D /* FWKBitmap.h */,
+				17811B8A192CDB5500300C1D /* FWKBitmap.m */,
 			);
 			name = CanvasObject;
 			sourceTree = "<group>";
@@ -472,6 +477,7 @@
 				1796863A181D0BED00BA65E4 /* CanvasObjectRectFrameBase.m in Sources */,
 				170C3AFE170194DE0030CA0C /* PreferenceWindowController.m in Sources */,
 				176E66AB188AC4C0007216EB /* SubCanvasView.m in Sources */,
+				17811B8B192CDB5500300C1D /* FWKBitmap.m in Sources */,
 				176E66C3188BB86A007216EB /* MainCanvasView+Sorting.m in Sources */,
 				174A840A170433B500A53520 /* CanvasObject.m in Sources */,
 				174A840D1704397100A53520 /* CanvasObjectEllipse.m in Sources */,
