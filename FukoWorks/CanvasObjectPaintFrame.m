@@ -18,6 +18,11 @@
 }
 
 @synthesize ObjectType = _ObjectType;
+- (void)setCanvasUndoManager:(NSUndoManager *)canvasUndoManager
+{
+    [super setCanvasUndoManager:canvasUndoManager];
+    bitmap.undoManager = canvasUndoManager;
+}
 
 - (void)setStrokeWidth:(CGFloat)StrokeWidth
 {
@@ -40,6 +45,10 @@
     [super setFrameOrigin:newOrigin];
 }
 
+@synthesize PaintFillColor = _PaintFillColor;
+@synthesize PaintStrokeColor = _PaintStrokeColor;
+@synthesize PaintStrokeWidth = _PaintStrokeWidth;
+
 //
 // Function
 //
@@ -51,6 +60,7 @@
     if (self) {
         _ObjectType = PaintFrame;
         bitmap = [[FWKBitmap alloc] init];
+        bitmap.ownerView = self;
     }
     
     return self;
@@ -120,32 +130,9 @@
 }
 
 // Preview drawing
-- (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
-{
-    // 初期描画中は変形を記録しないようにする
-    [[self.canvasUndoManager prepareWithInvocationTarget:self] setFrame:self.frame];
-    //https://github.com/Pixen/Pixen/issues/228
-    [self.canvasUndoManager endUndoGrouping];
-    [self.canvasUndoManager disableUndoRegistration];
-    //
-    drawingStartPoint = currentPointInCanvas;
-    
-    return self;
-}
-
-- (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas
-{
-    [self setFrame:[CanvasObject makeNSRectFromMouseMovingWithModifierKey:drawingStartPoint :currentPointInCanvas]];
-    [self setNeedsDisplay:YES];
-    return [super drawMouseDragged:currentPointInCanvas];
-}
-
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
 {
-    [self setFrame:[CanvasObject makeNSRectFromMouseMovingWithModifierKey:drawingStartPoint :currentPointInCanvas]];
-    [self setNeedsDisplay:YES];
-    //
-    [self.canvasUndoManager enableUndoRegistration];
+    [super drawMouseUp:currentPointInCanvas];
     //
     [self resetPaintContext];
     return nil;
@@ -194,17 +181,17 @@
     
     switch(mode){
         case PaintRectangle:
-            [bitmap paintRectangle:rect withFillColor:self.FillColor strokeColor:self.StrokeColor strokeWidth:self.StrokeWidth];
+            [bitmap paintRectangle:rect withFillColor:self.PaintFillColor strokeColor:self.PaintStrokeColor strokeWidth:self.PaintStrokeWidth];
             break;
         case PaintEllipse:
-            [bitmap paintEllipse:rect withFillColor:self.FillColor strokeColor:self.StrokeColor strokeWidth:self.StrokeWidth];
+            [bitmap paintEllipse:rect withFillColor:self.PaintFillColor strokeColor:self.PaintStrokeColor strokeWidth:self.PaintStrokeWidth];
             break;
         case PaintPen:
-            [bitmap paintLineFrom:drawingStartPoint to:localPoint withStrokeColor:self.StrokeColor strokeWidth:self.StrokeWidth];
+            [bitmap paintLineFrom:drawingStartPoint to:localPoint withStrokeColor:self.PaintStrokeColor strokeWidth:self.PaintStrokeWidth];
             drawingStartPoint = localPoint;
             break;
         case PaintLine:
-            [bitmap paintLineFrom:drawingStartPoint to:localPoint withStrokeColor:self.StrokeColor strokeWidth:self.StrokeWidth];
+            [bitmap paintLineFrom:drawingStartPoint to:localPoint withStrokeColor:self.PaintStrokeColor strokeWidth:self.PaintStrokeWidth];
             break;
         default:
             break;
@@ -227,7 +214,7 @@
     if(mode == PaintFill){
         // 塗りつぶし
         [bitmap selectBitmapAreaByPoint:localPoint];
-        [bitmap fillBySelectionMapWithColor:self.FillColor];
+        [bitmap fillBySelectionMapWithColor:self.PaintFillColor];
     }
 }
 @end

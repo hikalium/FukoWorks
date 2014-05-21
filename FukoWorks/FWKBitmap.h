@@ -9,6 +9,10 @@
 #import <Foundation/Foundation.h>
 
 @interface FWKBitmap : NSObject
+
+@property (nonatomic) NSUndoManager *undoManager;
+@property (nonatomic) NSView *ownerView;
+
 - (id)init;
 - (void)drawRectWithContext: (CGContextRef)destinationContext;
 - (void)copyBufferFromNSData: (NSData *)data;

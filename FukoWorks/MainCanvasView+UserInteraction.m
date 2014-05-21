@@ -85,9 +85,9 @@
     }
     //ペイント枠に描くなら描く
     if(editingPaintFrame){
-        editingPaintFrame.FillColor = self.toolboxController.drawingFillColor;
-        editingPaintFrame.StrokeColor = self.toolboxController.drawingStrokeColor;
-        editingPaintFrame.StrokeWidth = self.toolboxController.drawingStrokeWidth;
+        editingPaintFrame.PaintFillColor = self.toolboxController.drawingFillColor;
+        editingPaintFrame.PaintStrokeColor = self.toolboxController.drawingStrokeColor;
+        editingPaintFrame.PaintStrokeWidth = self.toolboxController.drawingStrokeWidth;
         [editingPaintFrame drawPaintFrameMouseDown:currentPoint mode:self.toolboxController.drawingObjectType];
     }
 }

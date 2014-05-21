@@ -26,6 +26,9 @@
     unsigned int searchColor;
 }
 
+@synthesize undoManager = _undoManager;
+@synthesize ownerView = _ownerView;
+
 - (id)init
 {
     self = [super init];
@@ -60,12 +63,15 @@
 
 - (void)copyBufferFromNSData: (NSData *)data
 {
+    [[self.undoManager prepareWithInvocationTarget:self] copyBufferFromNSData:[self bufferData]];
+    
     NSUInteger len;
     len = [data length];
     if(len > bmpBufferByteSize){
         len = bmpBufferByteSize;
     }
     memcpy(bmpBuffer, [data bytes], len);
+    [_ownerView setNeedsDisplay:YES];
 }
 
 - (NSData *)bufferData
@@ -157,6 +163,8 @@
 {
     CGImageRef editingImage;
     
+    [[self.undoManager prepareWithInvocationTarget:self] copyBufferFromNSData:[self bufferData]];
+    
     editingImage = CGBitmapContextCreateImage(overlayContext);
     
     CGContextSetShouldAntialias(paintContext, false);
@@ -223,6 +231,8 @@
     int lx;
     int x, y;
     int flg;
+    
+    [[self.undoManager prepareWithInvocationTarget:self] copyBufferFromNSData:[self bufferData]];
     
     for(y = 0; y < ysize; y++){
         flg = 0;

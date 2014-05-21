@@ -10,6 +10,9 @@
 
 @interface CanvasObjectPaintFrame : CanvasObjectRectFrameBase
 
+@property (nonatomic) NSColor *PaintFillColor;
+@property (nonatomic) NSColor *PaintStrokeColor;
+@property (nonatomic) CGFloat PaintStrokeWidth;
 //
 // Function
 //
@@ -26,8 +29,6 @@
 //- (void)resetPaintContext;
 
 // Preview drawing
-- (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
-- (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;
 
 // EditHandle <CanvasObjectHandling>
