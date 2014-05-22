@@ -85,6 +85,7 @@
     //
     CGContextRef oldPaintContext = nil;
     unsigned int *oldBMPBuffer = NULL;
+    NSData *oldBMPData = [self bufferData];
     CGRect oldContextRect;
     CGImageRef paintImage;
     
@@ -140,7 +141,9 @@
     CGContextFillRect(overlayContext, contextRect);
     
     // 以前のペイント枠の内容をコピー
+    
     if(oldPaintContext){
+        [[self.undoManager prepareWithInvocationTarget:self] copyBufferFromNSData:oldBMPData];
         paintImage = CGBitmapContextCreateImage(oldPaintContext);
         
         CGContextDrawImage(paintContext, oldContextRect, paintImage);
@@ -150,8 +153,8 @@
         if(bmpBuffer != NULL){
             free(oldBMPBuffer);
         }
+        [[self.undoManager prepareWithInvocationTarget:self] resetBitmapContextToSize:oldContextRect.size];
     }
-    //[self setNeedsDisplay:YES];
 }
 
 - (void)clearOverlayContext

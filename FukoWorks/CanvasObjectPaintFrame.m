@@ -130,19 +130,34 @@
 }
 
 // Preview drawing
+-(CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
+{
+    [self.canvasUndoManager beginUndoGrouping];
+    return [super drawMouseDown:currentPointInCanvas];
+}
+
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
 {
     [super drawMouseUp:currentPointInCanvas];
-    //
     [self resetPaintContext];
+    [self.canvasUndoManager endUndoGrouping];
+    
     return nil;
 }
 
 // EditHandle <CanvasObjectHandling>
-- (void)editHandleUp:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
+
+-(void)editHandleDown:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid
+{
+    [self.canvasUndoManager beginUndoGrouping];
+    [super editHandleDown:currentHandlePointInCanvas forHandleID:hid];
+}
+
+- (void)editHandleUp:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid
 {
     [super editHandleUp:currentHandlePointInCanvas forHandleID:hid];
     [self resetPaintContext];
+    [self.canvasUndoManager endUndoGrouping];
 }
 
 // User interaction

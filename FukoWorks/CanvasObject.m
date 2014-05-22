@@ -131,8 +131,9 @@ NSString * objectTypeNameList[7] = {
 
 - (void)setFrameOrigin:(NSPoint)newOrigin
 {
-    [[_canvasUndoManager prepareWithInvocationTarget:self] setFrameOrigin:self.frame.origin];
-    //
+    if([_canvasUndoManager isUndoing] || [_canvasUndoManager isRedoing]){
+        [[_canvasUndoManager prepareWithInvocationTarget:self] setFrameOrigin:self.frame.origin];
+    }
     [super setFrameOrigin:newOrigin];
     // bodyRectを更新
     _bodyRect.origin.x = newOrigin.x + (self.StrokeWidth / 2);
@@ -141,7 +142,9 @@ NSString * objectTypeNameList[7] = {
 
 - (void)setFrameSize:(NSSize)newSize
 {
-    [[_canvasUndoManager prepareWithInvocationTarget:self] setFrameSize:self.frame.size];
+    if([_canvasUndoManager isUndoing] || [_canvasUndoManager isRedoing]){
+        [[_canvasUndoManager prepareWithInvocationTarget:self] setFrameSize:self.frame.size];
+    }
     //
     [self setFrameSizeInternal:newSize];
 }
@@ -223,45 +226,6 @@ NSString * objectTypeNameList[7] = {
     
     return [NSString stringWithString:encodedString];
 }
-/*
- // いらなくなった
-+ (NSString *)encodedStringForCGColorRef:(CGColorRef)cref
-{
-    NSMutableString *encodedString;
-    NSInteger i, i_max;
-    const CGFloat *colorComponents;
-    
-    encodedString = [[NSMutableString alloc] init];
-    
-    colorComponents = CGColorGetComponents(cref);
-    i_max = CGColorGetNumberOfComponents(cref);
-    
-    for(i = 0; i < i_max; i++){
-        [encodedString appendFormat:@"%f,", colorComponents[i]];
-    }
-    
-    return [NSString stringWithString:encodedString];
-}
-
-
-+ (CGColorRef)decodedCGColorRefFromString:(NSString *)sourceString
-{
-    NSArray *dataValues;
-    CGColorRef cRef;
-    CGFloat colorComponents[4];
-    NSUInteger i;
-    
-    dataValues = [sourceString componentsSeparatedByString:@","];
-
-    for(i = 0; i < sizeof(colorComponents) / sizeof(CGFloat); i++){
-        colorComponents[i] = ((NSString *)[dataValues objectAtIndex:i]).floatValue;
-    }
-       
-    cRef = CGColorCreateGenericRGB(colorComponents[0], colorComponents[1], colorComponents[2], colorComponents[3]);
-    
-    return cRef;
-}
- */
 
 // Preview drawing
 -(CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
