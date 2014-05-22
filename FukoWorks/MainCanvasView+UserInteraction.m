@@ -32,10 +32,8 @@
                 //図形移動を初期化
                 movingObject = [self getCanvasObjectAtCursorLocation:event];
                 if(movingObject){
-                    // 移動中は変形を記録しないようにする
+                    // 一回の移動で一回だけ実行するようにするためのフラグ
                     needsMoveUndoRegistration = YES;
-                    //https://github.com/Pixen/Pixen/issues/228
-                    [canvasUndoManager disableUndoRegistration];
                     //
                     moveHandleOffset = NSMakePoint(currentPoint.x - movingObject.frame.origin.x, currentPoint.y - movingObject.frame.origin.y);
                 }
@@ -71,18 +69,25 @@
                 break;
         }
         if(creatingObject != nil){
+            // undoのグループ化を開始
+            [canvasUndoManager beginUndoGrouping];
             creatingObject.FillColor = self.toolboxController.drawingFillColor;
             creatingObject.StrokeColor = self.toolboxController.drawingStrokeColor;
             creatingObject.StrokeWidth = self.toolboxController.drawingStrokeWidth;
             creatingObject.canvasUndoManager = canvasUndoManager;
             [self addCanvasObject:creatingObject];
-            
-            creatingObject = [creatingObject drawMouseDown:currentPoint];
         }
-    } else{
-        //図形作成の途中
-        creatingObject = [creatingObject drawMouseDown:currentPoint];
     }
+    
+    if(creatingObject){
+        //作成中の図形があるので座標を送る
+        creatingObject = [creatingObject drawMouseDown:currentPoint];
+        if(!creatingObject){
+            //作成が終了したらundoのグループ化を終了
+            [canvasUndoManager endUndoGrouping];
+        }
+    }
+    
     //ペイント枠に描くなら描く
     if(editingPaintFrame){
         editingPaintFrame.PaintFillColor = self.toolboxController.drawingFillColor;
@@ -99,21 +104,22 @@
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mDr:%@", NSStringFromPoint(currentPoint)]];
     
-    //作成中の図形があるなら座標を送る
-    creatingObject = [creatingObject drawMouseDragged:currentPoint];
+    if(creatingObject){
+        //作成中の図形があるので座標を送る
+        creatingObject = [creatingObject drawMouseDragged:currentPoint];
+        if(!creatingObject){
+            //作成が終了したらundoのグループ化を終了
+            [canvasUndoManager endUndoGrouping];
+        }
+    }
     
     //図形移動するならする
     if(movingObject && needsMoveUndoRegistration){
-        // 動かす前の位置を記憶しておく
-        // 記録を再開
-        [canvasUndoManager enableUndoRegistration];
-        // 取り消し情報を記録
-        [[canvasUndoManager prepareWithInvocationTarget:movingObject] setFrameOrigin:movingObject.frame.origin];
-        [canvasUndoManager endUndoGrouping];
         // 一回の移動で一回だけ実行するようにするためのフラグ
         needsMoveUndoRegistration = NO;
-        // 記録を再び停止
-        [canvasUndoManager disableUndoRegistration];
+        // 動かす前の位置を記憶しておく
+        [canvasUndoManager beginUndoGrouping];
+        [[canvasUndoManager prepareWithInvocationTarget:movingObject] setFrameOrigin:movingObject.frame.origin];
     }
     [movingObject setFrameOrigin:NSMakePoint(currentPoint.x - moveHandleOffset.x, currentPoint.y - moveHandleOffset.y)];
     
@@ -128,18 +134,27 @@
     currentPoint = [self getPointerLocationRelativeToSelfView:event];
     [self.label_indicator setStringValue:[NSString stringWithFormat:@"mUp:%@", NSStringFromPoint(currentPoint)]];
     
-    creatingObject = [creatingObject drawMouseUp:currentPoint];
+    if(creatingObject){
+        //作成中の図形があるので座標を送る
+        creatingObject = [creatingObject drawMouseUp:currentPoint];
+        if(!creatingObject){
+            //作成が終了したらundoのグループ化を終了
+            [canvasUndoManager endUndoGrouping];
+        }
+    }
     
-    //図形移動終了を報告
-    [movingObject moved];
+    //図形移動終了を報告（移動していない場合は送信しない）
+    if(!needsMoveUndoRegistration){
+        [movingObject moved];
+    }
     
     //フォーカスを戻す
     [self resetCanvasObjectHandleForCanvasObject:movingObject];
     [self showCanvasObjectHandleForCanvasObject:movingObject];
 
-    //移動処理終了
-    if(movingObject){
-        [canvasUndoManager enableUndoRegistration];
+    //移動したのでUndoのグループ化を終了
+    if(movingObject && !needsMoveUndoRegistration){
+        [canvasUndoManager endUndoGrouping];
     }
     movingObject = nil;
     

@@ -23,45 +23,43 @@
 @synthesize p0 = p0;
 - (void)setP0:(NSPoint)_p0
 {
-    [[self.canvasUndoManager prepareWithInvocationTarget:self] setP0:p0];
-    //
+    if([self.canvasUndoManager isUndoing] || [self.canvasUndoManager isRedoing]){
+        [[self.canvasUndoManager prepareWithInvocationTarget:self] setP0:p0];
+        lp0 = [self bindLinePointToLocalSub:_p0];
+    }
     p0 = _p0;
-    [self setBodyRect:[CanvasObject makeNSRectFromMouseMoving:p0 :p1]];
-    [self bindLinePointToLocal];
     [self sizeToFit];
-    [self setNeedsDisplay:YES];
 }
 @synthesize p1 = p1;
 - (void)setP1:(NSPoint)_p1
 {
-    [[self.canvasUndoManager prepareWithInvocationTarget:self] setP1:p1];
-    //
+    if([self.canvasUndoManager isUndoing] || [self.canvasUndoManager isRedoing]){
+        [[self.canvasUndoManager prepareWithInvocationTarget:self] setP1:p1];
+        lp1 = [self bindLinePointToLocalSub:_p1];
+    }
     p1 = _p1;
-    [self setBodyRect:[CanvasObject makeNSRectFromMouseMoving:p0 :p1]];
-    [self bindLinePointToLocal];
     [self sizeToFit];
-    [self setNeedsDisplay:YES];
 }
 
 @synthesize cp0 = cp0;
 - (void)setCp0:(NSPoint)_cp0
 {
-    [[self.canvasUndoManager prepareWithInvocationTarget:self] setCp0:cp0];
-    //
+    if([self.canvasUndoManager isUndoing] || [self.canvasUndoManager isRedoing]){
+        [[self.canvasUndoManager prepareWithInvocationTarget:self] setCp0:cp0];
+        lcp0 = [self bindLinePointToLocalSub:_cp0];
+    }
     cp0 = _cp0;
-    [self bindLinePointToLocal];
     [self sizeToFit];
-    [self setNeedsDisplay:YES];
 }
 @synthesize cp1 = cp1;
 - (void)setCp1:(NSPoint)_cp1
 {
-    [[self.canvasUndoManager prepareWithInvocationTarget:self] setCp1:cp1];
-    //
+    if([self.canvasUndoManager isUndoing] || [self.canvasUndoManager isRedoing]){
+        [[self.canvasUndoManager prepareWithInvocationTarget:self] setCp1:cp1];
+        lcp1 = [self bindLinePointToLocalSub:_cp1];
+    }
     cp1 = _cp1;
-    [self bindLinePointToLocal];
     [self sizeToFit];
-    [self setNeedsDisplay:YES];
 }
 
 // メソッド
@@ -104,12 +102,6 @@
         [bp removeAllPoints];
     }
     
-}
-
-- (BOOL)wantsDefaultClipping
-{
-    // ビューをクリッピングするかどうか
-    return YES;
 }
 
 // data encoding
@@ -157,19 +149,11 @@
 
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
 {
-    // 初期描画中は変形を記録しないようにする
-    [[self.canvasUndoManager prepareWithInvocationTarget:self] setFrame:self.frame];
-    
-    //https://github.com/Pixen/Pixen/issues/228
-    [self.canvasUndoManager endUndoGrouping];
-    [self.canvasUndoManager disableUndoRegistration];
-    //
-    
     p0 = currentPointInCanvas;
     currentPointInCanvas.x += 20;
     currentPointInCanvas.y += 20;
     cp0 = currentPointInCanvas;
-    //
+    
     return self;
 }
 
@@ -179,12 +163,8 @@
     currentPointInCanvas.x -= 20;
     currentPointInCanvas.y -= 20;
     cp1 = currentPointInCanvas;
-    //
-    [self bindLinePointToLocal];
+    
     [self sizeToFit];
-    [self setNeedsDisplay:YES];
-    
-    
     
     return self;
 }
@@ -195,19 +175,18 @@
     currentPointInCanvas.x -= 20;
     currentPointInCanvas.y -= 20;
     cp1 = currentPointInCanvas;
-    //
-    [self bindLinePointToLocal];
+    
     [self sizeToFit];
-    [self setNeedsDisplay:YES];
-    //
-    [self.canvasUndoManager enableUndoRegistration];
-    //
     
     return nil;
 }
 
 - (void)moved
 {
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] setP0:p0];
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] setP1:p1];
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] setCp0:cp0];
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] setCp1:cp1];
     [self bindLinePointFromLocal];
 }
 
@@ -224,6 +203,8 @@
     // hid:
     //  0:p0
     //  1:p1
+    //  2:cp0
+    //  3:cp1
     NSPoint p;
     switch (hid) {
         case 0:
@@ -237,7 +218,6 @@
             break;
         case 3:
             p = cp1;
-            
             break;
     }
     return p;
@@ -245,6 +225,8 @@
 
 - (void)editHandleDown:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
 {
+    // Undo登録
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] sizeToFit];
     switch (hid) {
         case 0:
             [[self.canvasUndoManager prepareWithInvocationTarget:self] setP0:p0];
@@ -259,9 +241,6 @@
             [[self.canvasUndoManager prepareWithInvocationTarget:self] setCp1:cp1];
             break;
     }
-    //https://github.com/Pixen/Pixen/issues/228
-    [self.canvasUndoManager endUndoGrouping];
-    [self.canvasUndoManager disableUndoRegistration];
 }
 
 - (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
@@ -300,7 +279,6 @@
             self.cp1 = currentHandlePointInCanvas;
             break;
     }
-    [self.canvasUndoManager enableUndoRegistration];
 }
 
 
@@ -333,7 +311,7 @@
 - (void)sizeToFit
 {
     NSRect r;
-    
+    /*
     [bp moveToPoint:lp0];
     [bp curveToPoint:lp1 controlPoint1:lcp0 controlPoint2:lcp1];
     
@@ -341,6 +319,16 @@
     [self setBodyRect:r];
     [self bindLinePointToLocal];
     [bp removeAllPoints];
+     */
+    // キャンバス座標ベース
+    [bp moveToPoint:p0];
+    [bp curveToPoint:p1 controlPoint1:cp0 controlPoint2:cp1];
+    
+    r = [bp controlPointBounds];
+    [self setBodyRect:r];
+    [self bindLinePointToLocal];
+    [bp removeAllPoints];
+    [self setNeedsDisplay:YES];
 }
 
 @end

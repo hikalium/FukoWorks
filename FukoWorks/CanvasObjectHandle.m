@@ -24,7 +24,7 @@ CGColorRef handleStrokeColor;
     if (self) {
         _ownerCanvasObject = nil;
         handleFillColor = CGColorCreateGenericRGB(1, 1, 1, 0.5);
-        handleStrokeColor = CGColorCreateGenericRGB(0.5, 0.5, 0.5, 0.5);
+        handleStrokeColor = [[NSColor selectedControlColor] CGColor];
     }
     
     return self;

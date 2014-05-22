@@ -21,7 +21,9 @@
 @synthesize p0 = p0;
 - (void)setP0:(NSPoint)_p0
 {
-    [[self.canvasUndoManager prepareWithInvocationTarget:self] setP0:p0];
+    if([self.canvasUndoManager isUndoing] || [self.canvasUndoManager isRedoing]){
+        [[self.canvasUndoManager prepareWithInvocationTarget:self] setP0:p0];
+    }
     //
     p0 = _p0;
     [self setBodyRect:[CanvasObject makeNSRectFromMouseMoving:p0 :p1]];
@@ -31,7 +33,9 @@
 @synthesize p1 = p1;
 - (void)setP1:(NSPoint)_p1
 {
-    [[self.canvasUndoManager prepareWithInvocationTarget:self] setP1:p1];
+    if([self.canvasUndoManager isUndoing] || [self.canvasUndoManager isRedoing]){
+        [[self.canvasUndoManager prepareWithInvocationTarget:self] setP1:p1];
+    }
     //
     p1 = _p1;
     [self setBodyRect:[CanvasObject makeNSRectFromMouseMoving:p0 :p1]];
@@ -114,11 +118,6 @@
 {
     // 初期描画中は変形を記録しないようにする
     [[self.canvasUndoManager prepareWithInvocationTarget:self] setFrame:self.frame];
-    
-    //https://github.com/Pixen/Pixen/issues/228
-    [self.canvasUndoManager endUndoGrouping];
-    [self.canvasUndoManager disableUndoRegistration];
-    //
 
     p0 = currentPointInCanvas;
     
@@ -141,15 +140,14 @@
     [self setBodyRect:[CanvasObject makeNSRectFromMouseMoving:p0 :p1]];
     [self bindLinePointToLocal];
     [self setNeedsDisplay:YES];
-    //
-    [self.canvasUndoManager enableUndoRegistration];
-    //
     
     return nil;
 }
 
 - (void)moved
 {
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] setP0:p0];
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] setP1:p1];
     [self bindLinePointFromLocal];
 }
 
@@ -185,10 +183,6 @@
     } else{
         [[self.canvasUndoManager prepareWithInvocationTarget:self] setP1:p1];
     }
-    
-    //https://github.com/Pixen/Pixen/issues/228
-    [self.canvasUndoManager endUndoGrouping];
-    [self.canvasUndoManager disableUndoRegistration];
 }
 
 - (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
@@ -215,7 +209,6 @@
             self.p1 = currentHandlePointInCanvas;
             break;
     }
-    [self.canvasUndoManager enableUndoRegistration];
 }
 
 
