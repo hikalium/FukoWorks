@@ -99,6 +99,17 @@ NSString * objectTypeNameList[7] = {
 // Function
 //
 
+// NSView basefuncion
+- (void)setFrameOriginRaw:(NSPoint)newOrigin
+{
+    [super setFrameOrigin:newOrigin];
+}
+
+- (void)setFrameSizeRaw:(NSSize)newSize
+{
+    [super setFrameSize:newSize];
+}
+
 // NSView override
 - (id)initWithFrame:(NSRect)frameRect
 {
@@ -122,19 +133,20 @@ NSString * objectTypeNameList[7] = {
 {
     
 }
-
+/*
 - (void)setFrame:(NSRect)frameRect
 {
     // setFrameOriginとsetFrameSizeが内部的に呼び出される。
     [super setFrame:frameRect];
 }
+*/
 
 - (void)setFrameOrigin:(NSPoint)newOrigin
 {
     if([_canvasUndoManager isUndoing] || [_canvasUndoManager isRedoing]){
         [[_canvasUndoManager prepareWithInvocationTarget:self] setFrameOrigin:self.frame.origin];
     }
-    [super setFrameOrigin:newOrigin];
+    [self setFrameOriginRaw:newOrigin];
     // bodyRectを更新
     _bodyRect.origin.x = newOrigin.x + (self.StrokeWidth / 2);
     _bodyRect.origin.y = newOrigin.y + (self.StrokeWidth / 2);
@@ -164,7 +176,7 @@ NSString * objectTypeNameList[7] = {
         newSize.height = FWK_MIN_SIZE_PIXEL + self.StrokeWidth;
     }
     
-    [super setFrameSize:newSize];
+    [self setFrameSizeRaw:newSize];
     // bodyRectを更新
     _bodyRect.size.width = newSize.width - self.StrokeWidth;
     _bodyRect.size.height = newSize.height - self.StrokeWidth;

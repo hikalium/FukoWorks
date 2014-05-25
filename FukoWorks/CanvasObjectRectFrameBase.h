@@ -11,8 +11,17 @@
 @interface CanvasObjectRectFrameBase : CanvasObject
 {
     NSPoint drawingStartPoint;
+    NSPoint rotationHandleVector;
 }
 
+//
+// For object rotation
+//
+@property (nonatomic) CGFloat rotationAngle;    // [0, 2 * pi]
+
+//
+// initial drawing
+//
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas;
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas;

@@ -37,6 +37,10 @@
     
     CGContextSaveGState(mainContext);
     {
+        CGContextTranslateCTM(mainContext, self.frame.size.width / 2, self.frame.size.height / 2);
+        CGContextRotateCTM(mainContext, self.rotationAngle);
+        CGContextTranslateCTM(mainContext, -self.frame.size.width / 2, -self.frame.size.height / 2);
+        //
         CGContextSetFillColorWithColor(mainContext, self.FillColor.CGColor);
         CGContextFillRect(mainContext, rect);
         CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor.CGColor);
