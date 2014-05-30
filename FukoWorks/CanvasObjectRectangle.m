@@ -25,29 +25,14 @@
     return self;
 }
 
-- (void)drawRect:(NSRect)dirtyRect
+- (void)drawInBodyRect:(CGContextRef)mainContext
 {
     //再描画時に呼ばれる。
-    CGContextRef mainContext;
-    CGRect rect;
-    
-    mainContext = [[NSGraphicsContext currentContext] graphicsPort];
-    
-    rect = self.bodyRectBounds;
-    
-    CGContextSaveGState(mainContext);
-    {
-        CGContextTranslateCTM(mainContext, self.frame.size.width / 2, self.frame.size.height / 2);
-        CGContextRotateCTM(mainContext, self.rotationAngle);
-        CGContextTranslateCTM(mainContext, -self.frame.size.width / 2, -self.frame.size.height / 2);
-        //
-        CGContextSetFillColorWithColor(mainContext, self.FillColor.CGColor);
-        CGContextFillRect(mainContext, rect);
-        CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor.CGColor);
-        CGContextStrokeRectWithWidth(mainContext, rect, self.StrokeWidth);
-    }
-    CGContextRestoreGState(mainContext);
-    
-    [self drawFocusRect];
+    CGRect rect = self.bodyRectBounds;
+
+    CGContextSetFillColorWithColor(mainContext, self.FillColor.CGColor);
+    CGContextFillRect(mainContext, rect);
+    CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor.CGColor);
+    CGContextStrokeRectWithWidth(mainContext, rect, self.StrokeWidth);
 }
 @end

@@ -14,6 +14,6 @@
 }
 
 - (id)initWithFrame:(NSRect)frameRect;
-- (void)drawRect:(NSRect)dirtyRect;
+- (void)drawInBodyRect:(CGContextRef)mainContext;
 
 @end

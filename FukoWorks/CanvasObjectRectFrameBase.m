@@ -256,7 +256,35 @@
     }
     [((MainCanvasView *)self.ownerMainCanvasView) resetCanvasObjectHandleForCanvasObject:self];
 }
-/*
+
+- (void)drawRect:(NSRect)dirtyRect
+{
+    //再描画時に呼ばれる。
+    CGContextRef mainContext;
+    CGRect rect;
+    
+    mainContext = [[NSGraphicsContext currentContext] graphicsPort];
+    
+    rect = self.bodyRectBounds;
+    
+    CGContextSaveGState(mainContext);
+    {
+        CGContextTranslateCTM(mainContext, self.frame.size.width / 2, self.frame.size.height / 2);
+        CGContextRotateCTM(mainContext, self.rotationAngle);
+        CGContextTranslateCTM(mainContext, -self.frame.size.width / 2, -self.frame.size.height / 2);
+        //
+        [self drawInBodyRect:mainContext];
+        //
+        [self drawFocusRect];
+    }
+    CGContextRestoreGState(mainContext);
+}
+
+- (void)drawInBodyRect: (CGContextRef)mainContext
+{
+
+}
+
 - (void)drawFocusRect
 {
     CGContextRef mainContext;
@@ -265,8 +293,6 @@
     
     if(self.isSelected){
         mainContext = [[NSGraphicsContext currentContext] graphicsPort];
-        
-        
         
         rect = self.bodyRectBounds;
         c = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace];
@@ -280,7 +306,7 @@
         CGContextRestoreGState(mainContext);
     }
 }
-*/
+
 
 
 @end

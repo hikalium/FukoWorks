@@ -19,7 +19,7 @@
 
 // NSView override
 - (id)initWithFrame:(NSRect)frame;
-- (void)drawRect:(NSRect)dirtyRect;
+- (void)drawInBodyRect:(CGContextRef)mainContext;
 
 // data encoding
 - (id)initWithEncodedString:(NSString *)sourceString;

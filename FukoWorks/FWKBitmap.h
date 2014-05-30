@@ -14,7 +14,7 @@
 @property (nonatomic) NSView *ownerView;
 
 - (id)init;
-- (void)drawRectWithContext: (CGContextRef)destinationContext;
+- (void)drawRectWithContext: (CGContextRef)destinationContext inRect:(NSRect)rect;
 - (void)copyBufferFromNSData: (NSData *)data;
 - (NSData *)bufferData;
 - (void)resetBitmapContextToSize:(NSSize)size;

@@ -22,29 +22,17 @@
     return self;
 }
 
-- (void)drawRect:(NSRect)dirtyRect
+- (void)drawInBodyRect:(CGContextRef)mainContext
 {
-    //再描画時に呼ばれる。
-    CGContextRef mainContext;
-    CGRect ellipseRect;
+    CGRect ellipseRect = self.bodyRectBounds;
     
-    mainContext = [[NSGraphicsContext currentContext] graphicsPort];
+    CGContextAddEllipseInRect(mainContext, ellipseRect);
+    CGContextSetFillColorWithColor(mainContext, self.FillColor.CGColor);
+    CGContextFillPath(mainContext);
     
-    ellipseRect = self.bodyRectBounds;
-    
-    CGContextSaveGState(mainContext);
-    {
-        CGContextAddEllipseInRect(mainContext, ellipseRect);
-        CGContextSetFillColorWithColor(mainContext, self.FillColor.CGColor);
-        CGContextFillPath(mainContext);
-        
-        CGContextAddEllipseInRect(mainContext, ellipseRect);
-        CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor.CGColor);
-        CGContextSetLineWidth(mainContext, self.StrokeWidth);
-        CGContextStrokePath(mainContext);
-    }
-    CGContextRestoreGState(mainContext);
-
-     [self drawFocusRect];
+    CGContextAddEllipseInRect(mainContext, ellipseRect);
+    CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor.CGColor);
+    CGContextSetLineWidth(mainContext, self.StrokeWidth);
+    CGContextStrokePath(mainContext);
 }
 @end

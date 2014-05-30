@@ -45,7 +45,7 @@
     return self;
 }
 
-- (void)drawRectWithContext: (CGContextRef)destinationContext
+- (void)drawRectWithContext: (CGContextRef)destinationContext inRect:(NSRect)rect
 {
     CGImageRef paintImage, editingImage;
     
@@ -54,8 +54,8 @@
         paintImage = CGBitmapContextCreateImage(paintContext);
         editingImage = CGBitmapContextCreateImage(overlayContext);
         
-        CGContextDrawImage(destinationContext, contextRect, paintImage);
-        CGContextDrawImage(destinationContext, contextRect, editingImage);
+        CGContextDrawImage(destinationContext, rect, paintImage);
+        CGContextDrawImage(destinationContext, rect, editingImage);
         CGImageRelease(paintImage);
         CGImageRelease(editingImage);
     }

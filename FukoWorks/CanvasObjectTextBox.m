@@ -102,6 +102,35 @@
     textField.canvasUndoManager = canvasUndoManager;
 }
 
+- (void)setRotationAngle:(CGFloat)rotationAngle
+{
+    [super setRotationAngle:rotationAngle];
+    //
+    NSPoint p;
+    CGFloat theta = self.rotationAngle, fw, fh;
+    //[textField setBoundsRotation:rotationAngle / pi * 180];
+    [textField setFrameRotation:rotationAngle / pi * 180];
+    fw = self.frame.size.width;
+    fh = self.frame.size.height;
+    p = NSMakePoint(0, 0);
+    //
+    if(theta < pi / 2){
+        p.y = 0;
+        p.x = sinf(theta) * textField.frame.size.height;
+    } else if(theta < pi){
+        p.y = -cosf(theta) * textField.frame.size.height;
+        p.x = fw;
+    } else if(theta < pi / 2 * 3){
+        p.y = fh;
+        p.x = -cosf(theta) * textField.frame.size.width;
+    } else{
+        p.y = -sin(theta) * textField.frame.size.width;
+        p.x = 0;
+
+    }
+    [textField setFrameOrigin:p];
+}
+
 //
 // NSView
 //
@@ -213,6 +242,7 @@
 
 - (void)doubleClicked
 {
+    [self setRotationAngle:0];
     [[NSColorPanel sharedColorPanel] close];
     [[NSFontPanel sharedFontPanel] orderFront:self];
     [[NSColorPanel sharedColorPanel] orderFront:self];

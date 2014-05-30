@@ -66,16 +66,12 @@
     return self;
 }
 
-- (void)drawRect:(NSRect)dirtyRect
+- (void)drawInBodyRect:(CGContextRef)mainContext
 {
-    CGContextRef mainContext;
+    [bitmap drawRectWithContext:mainContext inRect:self.bodyRectBounds];
     
-    mainContext = [[NSGraphicsContext currentContext] graphicsPort];
-    [bitmap drawRectWithContext:mainContext];
     CGContextSetStrokeColorWithColor(mainContext, self.StrokeColor.CGColor);
     CGContextStrokeRectWithWidth(mainContext, self.bodyRectBounds, self.StrokeWidth);
-    
-    [self drawFocusRect];
 }
 
 // data encoding
