@@ -11,6 +11,7 @@
 #import "MainCanvasView.h"
 
 @implementation CanvasObjectRectFrameBase
+// bodyRectとrotationAngleで描画位置の矩形を一意に決定する
 
 //
 // For object rotation
@@ -23,23 +24,20 @@
     if(_rotationAngle < 0){
         _rotationAngle += 2 * pi;
     }
-    [self setBodyRectFromCurrentFrame];
+    [self setFrameFromCurrentBodyRect];
     [self setNeedsDisplay:YES];
 }
 
 - (void)setBodyRect:(NSRect)bodyRect
 {
-    bodyRect.origin.x -= (self.StrokeWidth / 2);
-    bodyRect.origin.y -= (self.StrokeWidth / 2);
-    bodyRect.size.width += self.StrokeWidth;
-    bodyRect.size.height += self.StrokeWidth;
-    
-    [self setFrame:bodyRect];
+    _bodyRect = bodyRect;
+    [self setFrameFromCurrentBodyRect];
 }
 
 - (NSRect)bodyRectBounds
 {
     // このview上でのbodyRectの範囲を示す矩形を返す
+    // 回転時は不正確な矩形になる。
     NSRect b;
     b = _bodyRect;
     b.origin.x -= self.frame.origin.x;
@@ -49,24 +47,15 @@
 
 - (void)setFrameOrigin:(NSPoint)newOrigin
 {
-    if([self.canvasUndoManager isUndoing] || [self.canvasUndoManager isRedoing]){
-        [[self.canvasUndoManager prepareWithInvocationTarget:self] setFrameOrigin:self.frame.origin];
-    }
+    NSPoint diff;
+    diff.x = newOrigin.x - self.frame.origin.x;
+    diff.y = newOrigin.y - self.frame.origin.y;
     [self setFrameOriginRaw:newOrigin];
-    
-    // bodyRectを更新
-    [self setBodyRectFromCurrentFrame];
+    _bodyRect.origin.x += diff.x;
+    _bodyRect.origin.y += diff.y;
 }
 
-- (void)setFrameSize:(NSSize)newSize
-{
-    if([self.canvasUndoManager isUndoing] || [self.canvasUndoManager isRedoing]){
-        [[self.canvasUndoManager prepareWithInvocationTarget:self] setFrameSize:self.frame.size];
-    }
-    //
-    [self setFrameSizeInternal:newSize];
-}
-
+/*
 - (void)setBodyRectFromCurrentFrame
 {
     if(self.rotationAngle == 0){
@@ -98,25 +87,34 @@
         _bodyRect.size = NSMakeSize(bw, bh);
     }
 }
-
-- (void)setFrameSizeInternal:(NSSize)newSize
+*/
+- (void)setFrameFromCurrentBodyRect
 {
-    if(newSize.width > FWK_MAX_SIZE_PIXEL){
-        newSize.width = FWK_MAX_SIZE_PIXEL;
+    NSRect fr;
+    if(self.rotationAngle == 0){
+        fr = self.bodyRect;
+        fr.origin.x -= (self.StrokeWidth / 2);
+        fr.origin.y -= (self.StrokeWidth / 2);
+        fr.size.width += self.StrokeWidth;
+        fr.size.height += self.StrokeWidth;
+    } else{
+        CGFloat fw, fh;
+        CGFloat bw, bh;
+        CGFloat theta, tcos, tsin;
+        NSPoint c;
+        bw = self.bodyRect.size.width;
+        bh = self.bodyRect.size.height;
+        theta =  self.rotationAngle;
+        tcos = fabsf(cosf(theta));
+        tsin = fabsf(sinf(theta));
+        fw = bw * tcos + bh * tsin;
+        fh = bh * tcos + bw * tsin;
+        c = NSMakePoint(self.bodyRect.origin.x + bw / 2, self.bodyRect.origin.y + bh / 2);
+        fr.origin = NSMakePoint(c.x - (fw + self.StrokeWidth) / 2, c.y - (fh + self.StrokeWidth) / 2);
+        fr.size = NSMakeSize(fw + self.StrokeWidth, fh + self.StrokeWidth);
     }
-    if(newSize.height > FWK_MAX_SIZE_PIXEL){
-        newSize.height = FWK_MAX_SIZE_PIXEL;
-    }
-    if(newSize.width < FWK_MIN_SIZE_PIXEL + self.StrokeWidth){
-        newSize.width = FWK_MIN_SIZE_PIXEL + self.StrokeWidth;
-    }
-    if(newSize.height < FWK_MIN_SIZE_PIXEL + self.StrokeWidth){
-        newSize.height = FWK_MIN_SIZE_PIXEL + self.StrokeWidth;
-    }
-    
-    [self setFrameSizeRaw:newSize];
-    // bodyRectを更新
-    [self setBodyRectFromCurrentFrame];
+    [self setFrameSizeRaw:fr.size];
+    [self setFrameOriginRaw:fr.origin];
 }
 
 - (id)init
@@ -135,7 +133,7 @@
 
 - (CanvasObject *)drawMouseDown:(NSPoint)currentPointInCanvas
 {
-    [[self.canvasUndoManager prepareWithInvocationTarget:self] setFrame:self.frame];
+    //[[self.canvasUndoManager prepareWithInvocationTarget:self] setBodyRect:self.bodyRect];
     
     drawingStartPoint = currentPointInCanvas;
     
@@ -144,16 +142,13 @@
 
 - (CanvasObject *)drawMouseDragged:(NSPoint)currentPointInCanvas
 {
-    [self setFrame:[CanvasObject makeNSRectFromMouseMovingWithModifierKey:drawingStartPoint :currentPointInCanvas]];
-    [self setNeedsDisplay:YES];
-    
+    [self setBodyRect:[CanvasObject makeNSRectFromMouseMovingWithModifierKey:drawingStartPoint :currentPointInCanvas]];
     return self;
 }
 
 - (CanvasObject *)drawMouseUp:(NSPoint)currentPointInCanvas
 {
-    [self setFrame:[CanvasObject makeNSRectFromMouseMovingWithModifierKey:drawingStartPoint :currentPointInCanvas]];
-    [self setNeedsDisplay:YES];
+    [self setBodyRect:[CanvasObject makeNSRectFromMouseMovingWithModifierKey:drawingStartPoint :currentPointInCanvas]];
     return nil;
 }
 
@@ -194,7 +189,7 @@
 
 - (void)editHandleDown:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
 {
-    [[self.canvasUndoManager prepareWithInvocationTarget:self] setFrame:self.frame];
+    [[self.canvasUndoManager prepareWithInvocationTarget:self] setBodyRect:self.bodyRect];
     //
     switch (hid) {
         case 0:
@@ -234,7 +229,6 @@
         }
         self.rotationAngle = l;
     }
-    [self setNeedsDisplay:YES];
     [((MainCanvasView *)self.ownerMainCanvasView) resetCanvasObjectHandleForCanvasObject:self];
 }
 
@@ -260,9 +254,33 @@
             rotationHandleVector = NSZeroPoint;
             break;
     }
-    [self setNeedsDisplay:YES];
     [((MainCanvasView *)self.ownerMainCanvasView) resetCanvasObjectHandleForCanvasObject:self];
 }
+/*
+- (void)drawFocusRect
+{
+    CGContextRef mainContext;
+    CGRect rect;
+    NSColor *c;
+    
+    if(self.isSelected){
+        mainContext = [[NSGraphicsContext currentContext] graphicsPort];
+        
+        
+        
+        rect = self.bodyRectBounds;
+        c = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace];
+        c = [NSColor colorWithCalibratedRed:c.redComponent green:c.greenComponent blue:c.blueComponent alpha:0.75];
+        
+        CGContextSaveGState(mainContext);
+        {
+            CGContextSetStrokeColorWithColor(mainContext, [c CGColor]);
+            CGContextStrokeRectWithWidth(mainContext, rect, 8);
+        }
+        CGContextRestoreGState(mainContext);
+    }
+}
+*/
 
 
 @end

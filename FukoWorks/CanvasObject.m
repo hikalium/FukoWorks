@@ -57,6 +57,8 @@
     [self setFrame:bodyRect];
 }
 
+
+
 - (NSRect)bodyRectBounds
 {
     // このview上でのbodyRectの範囲を示す矩形を返す
