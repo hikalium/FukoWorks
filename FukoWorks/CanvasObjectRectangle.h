@@ -10,9 +10,6 @@
 #import "CanvasObjectRectFrameBase.h"
 
 @interface CanvasObjectRectangle : CanvasObjectRectFrameBase
-{
-
-}
 
 - (id)initWithFrame:(NSRect)frameRect;
 - (void)drawInBodyRect:(CGContextRef)mainContext;

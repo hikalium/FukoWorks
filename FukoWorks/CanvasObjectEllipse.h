@@ -9,9 +9,6 @@
 #import "CanvasObjectRectFrameBase.h"
 
 @interface CanvasObjectEllipse : CanvasObjectRectFrameBase
-{
-    
-}
 
 - (id)initWithFrame:(NSRect)frameRect;
 - (void)drawInBodyRect:(CGContextRef)mainContext;

@@ -18,6 +18,16 @@
 // For object rotation
 //
 @property (nonatomic) CGFloat rotationAngle;    // [0, 2 * pi]
+- (void)setRotationAngle:(CGFloat)rotationAngle;
+- (void)setBodyRect:(NSRect)bodyRect;
+- (NSRect)bodyRectBounds;
+- (void)setFrameOrigin:(NSPoint)newOrigin;
+- (void)setFrameFromCurrentBodyRect;
+
+//
+//
+//
+- (id)init;
 
 //
 // initial drawing
@@ -34,5 +44,13 @@
 - (void)editHandleDown:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
 - (void)editHandleDragged:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
 - (void)editHandleUp:(NSPoint)currentHandlePointInCanvas forHandleID:(NSUInteger)hid;
+
+//
+// Drawing
+//
+- (void)drawRect:(NSRect)dirtyRect;
+- (void)drawInBodyRect: (CGContextRef)mainContext;
+- (void)drawFocusRect;
+
 
 @end

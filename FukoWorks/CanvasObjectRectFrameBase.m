@@ -9,6 +9,7 @@
 #import "CanvasObjectRectFrameBase.h"
 #import "CanvasObjectHandle.h"
 #import "MainCanvasView.h"
+#import "NSColor+StringConversion.h"
 
 @implementation CanvasObjectRectFrameBase
 // bodyRectとrotationAngleで描画位置の矩形を一意に決定する
@@ -126,6 +127,50 @@
     
     return self;
 }
+
+//
+// data encoding
+//
+- (id)initWithEncodedString:(NSString *)sourceString
+{
+    NSArray *dataValues;
+    NSString *s;
+    
+    dataValues = [sourceString componentsSeparatedByString:@"|"];
+    
+    self = [self initWithFrame:NSZeroRect];
+    
+    if(self){
+        // BodyRect|RotationAngle|FillColor|StrokeColor|StrokeWidth
+        s = [dataValues objectAtIndex:0];
+        [self setBodyRect:NSRectFromString(s)];
+        s = [dataValues objectAtIndex:1];
+        self.rotationAngle = s.floatValue;
+        s = [dataValues objectAtIndex:2];
+        self.FillColor = [NSColor colorFromString:s forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        s = [dataValues objectAtIndex:3];
+        self.StrokeColor = [NSColor colorFromString:s forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        s = [dataValues objectAtIndex:4];
+        self.StrokeWidth = s.floatValue;
+    }
+    return self;
+}
+
+- (NSString *)encodedStringForCanvasObject
+{
+    NSMutableString *encodedString;
+    
+    encodedString = [[NSMutableString alloc] init];
+    // BodyRect|RotationAngle|FillColor|StrokeColor|StrokeWidth
+    [encodedString appendFormat:@"%@|", NSStringFromRect(self.bodyRect)];
+    [encodedString appendFormat:@"%f|", self.rotationAngle];
+    [encodedString appendFormat:@"%@|", [self.FillColor stringRepresentation]];
+    [encodedString appendFormat:@"%@|", [self.StrokeColor stringRepresentation]];
+    [encodedString appendFormat:@"%f|", self.StrokeWidth];
+    
+    return [NSString stringWithString:encodedString];
+}
+
 
 //
 // initial drawing
@@ -282,7 +327,8 @@
 
 - (void)drawInBodyRect: (CGContextRef)mainContext
 {
-
+    // 子クラスはこの関数をオーバーライドして描画を実装する（回転は自動的に適用される）
+    // 描画位置の指定にはbodyRectBoundsを利用する。
 }
 
 - (void)drawFocusRect
@@ -298,12 +344,8 @@
         c = [[NSColor selectedControlColor] colorUsingColorSpaceName:NSDeviceRGBColorSpace];
         c = [NSColor colorWithCalibratedRed:c.redComponent green:c.greenComponent blue:c.blueComponent alpha:0.75];
         
-        CGContextSaveGState(mainContext);
-        {
-            CGContextSetStrokeColorWithColor(mainContext, [c CGColor]);
-            CGContextStrokeRectWithWidth(mainContext, rect, 8);
-        }
-        CGContextRestoreGState(mainContext);
+        CGContextSetStrokeColorWithColor(mainContext, [c CGColor]);
+        CGContextStrokeRectWithWidth(mainContext, rect, 8);
     }
 }
 
