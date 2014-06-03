@@ -56,39 +56,6 @@
     _bodyRect.origin.y += diff.y;
 }
 
-/*
-- (void)setBodyRectFromCurrentFrame
-{
-    if(self.rotationAngle == 0){
-        _bodyRect.origin.x = self.frame.origin.x + (self.StrokeWidth / 2);
-        _bodyRect.origin.y = self.frame.origin.y + (self.StrokeWidth / 2);
-        _bodyRect.size.width = self.frame.size.width - self.StrokeWidth;
-        _bodyRect.size.height = self.frame.size.height - self.StrokeWidth;
-    } else{
-        CGFloat fw, fh;
-        CGFloat bw, bh;
-        CGFloat theta;
-        CGFloat thetaMax;
-        NSPoint c;
-        fw = self.frame.size.width - self.StrokeWidth;
-        fh = self.frame.size.height - self.StrokeWidth;
-        theta =  self.rotationAngle;
-        theta = fmod(theta, pi);
-        thetaMax = atanf(fh / fw);
-        if(theta < thetaMax){
-            bw = (fw * cosf(theta) - fh * sinf(theta)) / cosf(2 * theta);
-            bh = (fh * cosf(theta) - fw * sinf(theta)) / cosf(2 * theta);
-        } else{
-            theta = theta - thetaMax + (pi / 2);
-            bh = (fw * cosf(theta) - fh * sinf(theta)) / cosf(2 * theta);
-            bw = (fh * cosf(theta) - fw * sinf(theta)) / cosf(2 * theta);
-        }
-        c = NSMakePoint(self.frame.origin.x + fw / 2, self.frame.origin.y + fh / 2);
-        _bodyRect.origin = NSMakePoint(c.x - bw / 2, c.y - bh / 2);
-        _bodyRect.size = NSMakeSize(bw, bh);
-    }
-}
-*/
 - (void)setFrameFromCurrentBodyRect
 {
     NSRect fr;
@@ -141,7 +108,11 @@
     self = [self initWithFrame:NSZeroRect];
     
     if(self){
-        // BodyRect|RotationAngle|FillColor|StrokeColor|StrokeWidth
+        // BodyRect
+        // RotationAngle
+        // FillColor
+        // StrokeColor
+        // StrokeWidth
         s = [dataValues objectAtIndex:0];
         [self setBodyRect:NSRectFromString(s)];
         s = [dataValues objectAtIndex:1];
@@ -161,7 +132,11 @@
     NSMutableString *encodedString;
     
     encodedString = [[NSMutableString alloc] init];
-    // BodyRect|RotationAngle|FillColor|StrokeColor|StrokeWidth
+    // BodyRect
+    // RotationAngle
+    // FillColor
+    // StrokeColor
+    // StrokeWidth
     [encodedString appendFormat:@"%@|", NSStringFromRect(self.bodyRect)];
     [encodedString appendFormat:@"%f|", self.rotationAngle];
     [encodedString appendFormat:@"%@|", [self.FillColor stringRepresentation]];

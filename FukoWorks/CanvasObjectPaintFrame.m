@@ -78,20 +78,32 @@
 - (id)initWithEncodedString:(NSString *)sourceString
 {
     NSArray *dataValues;
+    NSString *s;
     
     dataValues = [sourceString componentsSeparatedByString:@"|"];
     
     self = [self initWithFrame:NSZeroRect];
     
     if(self){
-        // BodyRect|FillColor|StrokeColor|StrokeWidth|BMPData
+        // BodyRect
+        // RotationAngle
+        // FillColor
+        // StrokeColor
+        // StrokeWidth
+        // BMPData
+        s = [dataValues objectAtIndex:0];
         [self setBodyRect:NSRectFromString([dataValues objectAtIndex:0])];
-        
         [self resetPaintContext];
-        self.FillColor = [NSColor colorFromString:[dataValues objectAtIndex:1] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
-        self.StrokeColor = [NSColor colorFromString:[dataValues objectAtIndex:2] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
-        self.StrokeWidth = ((NSString *) [dataValues objectAtIndex:3]).floatValue;
-        [bitmap copyBufferFromNSData:[[NSData alloc] initWithHexadecimalString:[dataValues objectAtIndex:4]]];
+        s = [dataValues objectAtIndex:1];
+        self.rotationAngle = s.floatValue;
+        s = [dataValues objectAtIndex:2];
+        self.FillColor = [NSColor colorFromString:s forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        s = [dataValues objectAtIndex:3];
+        self.StrokeColor = [NSColor colorFromString:s forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        s = [dataValues objectAtIndex:4];
+        self.StrokeWidth = s.floatValue;
+        s = [dataValues objectAtIndex:5];
+        [bitmap copyBufferFromNSData:[[NSData alloc] initWithHexadecimalString:s]];
         [self setNeedsDisplay:YES];
     }
     
@@ -109,8 +121,14 @@
     //データを生成
     contextData = [bitmap bufferData];
     
-    // BodyRect|FillColor|StrokeColor|StrokeWidth|BMPData
+    // BodyRect
+    // RotationAngle
+    // FillColor
+    // StrokeColor
+    // StrokeWidth
+    // BMPData
     [encodedString appendFormat:@"%@|", NSStringFromRect(self.bodyRect)];
+    [encodedString appendFormat:@"%f|", self.rotationAngle];
     [encodedString appendFormat:@"%@|", [self.FillColor stringRepresentation]];
     [encodedString appendFormat:@"%@|", [self.StrokeColor stringRepresentation]];
     [encodedString appendFormat:@"%f|", self.StrokeWidth];

@@ -217,7 +217,10 @@ NSString * objectTypeNameList[7] = {
     self = [self initWithFrame:NSZeroRect];
     
     if(self){
-        // BodyRect|FillColor|StrokeColor|StrokeWidth
+        // BodyRect
+        // FillColor
+        // StrokeColor
+        // StrokeWidth
         [self setBodyRect:NSRectFromString([dataValues objectAtIndex:0])];
         self.FillColor = [NSColor colorFromString:[dataValues objectAtIndex:1] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
         self.StrokeColor = [NSColor colorFromString:[dataValues objectAtIndex:2] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
@@ -232,7 +235,10 @@ NSString * objectTypeNameList[7] = {
 
     
     encodedString = [[NSMutableString alloc] init];
-    // BodyRect|FillColor|StrokeColor|StrokeWidth
+    // BodyRect
+    // FillColor
+    // StrokeColor
+    // StrokeWidth
     [encodedString appendFormat:@"%@|", NSStringFromRect(self.bodyRect)];
     [encodedString appendFormat:@"%@|", [self.FillColor stringRepresentation]];
     [encodedString appendFormat:@"%@|", [self.StrokeColor stringRepresentation]];

@@ -168,30 +168,40 @@
     NSUInteger index;
     NSData *atrstrdata;
     NSAttributedString *atrstr;
+    NSString *s;
+    CGFloat tmpAngle;
     
     dataValues = [sourceString componentsSeparatedByString:@"|"];
     
     self = [self initWithFrame:NSZeroRect];
     
     if(self){
-        // BodyRect|FillColor|StrokeColor|StrokeWidth|RTFData
-        [self setBodyRect:NSRectFromString([dataValues objectAtIndex:0])];
-        self.FillColor = [NSColor colorFromString:[dataValues objectAtIndex:1] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
-        self.StrokeColor = [NSColor colorFromString:[dataValues objectAtIndex:2] forColorSpace:[NSColorSpace deviceRGBColorSpace]];
-        self.StrokeWidth = ((NSString *) [dataValues objectAtIndex:3]).floatValue;
+        // BodyRect
+        // RotationAngle
+        // FillColor
+        // StrokeColor
+        // StrokeWidth
+        // RTFData
         index = 0;
-        index += [[dataValues objectAtIndex:0] length] + 1;
-        index += [[dataValues objectAtIndex:1] length] + 1;
-        index += [[dataValues objectAtIndex:2] length] + 1;
-        index += [[dataValues objectAtIndex:3] length] + 1;
+        s = [dataValues objectAtIndex:0];   index += s.length + 1;
+        [self setBodyRect:NSRectFromString(s)];
+        s = [dataValues objectAtIndex:1];   index += s.length + 1;
+        tmpAngle = s.floatValue;
+        s = [dataValues objectAtIndex:2];   index += s.length + 1;
+        self.FillColor = [NSColor colorFromString:s forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        s = [dataValues objectAtIndex:3];   index += s.length + 1;
+        self.StrokeColor = [NSColor colorFromString:s forColorSpace:[NSColorSpace deviceRGBColorSpace]];
+        s = [dataValues objectAtIndex:4];   index += s.length + 1;
+        self.StrokeWidth = s.floatValue;
         atrstrdata = [[sourceString substringFromIndex:index] dataUsingEncoding:NSUTF8StringEncoding];
         atrstr = [[NSAttributedString alloc] initWithData:atrstrdata options:nil documentAttributes:nil error:nil];
         [textField setAttributedStringValue:atrstr];
         [self controlTextDidEndEditing:nil];
+        self.rotationAngle = tmpAngle;
     }
     return self;
 }
-//Frame|FillColor|StrokeColor|StrokeWidth
+
 - (NSString *)encodedStringForCanvasObject
 {
     NSMutableString *encodedString;
@@ -200,8 +210,14 @@
     
     encodedString = [[NSMutableString alloc] init];
     
-    // BodyRect|FillColor|StrokeColor|StrokeWidth|RTFData
+    // BodyRect
+    // RotationAngle
+    // FillColor
+    // StrokeColor
+    // StrokeWidth
+    // RTFData
     [encodedString appendFormat:@"%@|", NSStringFromRect(self.bodyRect)];
+    [encodedString appendFormat:@"%f|", self.rotationAngle];
     [encodedString appendFormat:@"%@|", [self.FillColor stringRepresentation]];
     [encodedString appendFormat:@"%@|", [self.StrokeColor stringRepresentation]];
     [encodedString appendFormat:@"%f|", self.StrokeWidth];

@@ -64,6 +64,7 @@
     NSString *aDataString;
     NSString *dataItemsString;
     NSUInteger i, i_max;
+    NSInteger formatVersion;
     CanvasObject *aCanvasObject;
     
     dataList = [stringRep componentsSeparatedByString:@"\n"];
@@ -77,12 +78,14 @@
         return;
     }
     aDataString = [dataItem objectAtIndex:1];
-    if(aDataString.integerValue > [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] integerValue]){
+    formatVersion = aDataString.integerValue;
+    if(formatVersion > [[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleVersion"] integerValue]){
         //もし新たなバージョンで作成されたファイルであったら、警告を出す。
         NSRunAlertPanel(@"FukoWorks-警告-", @"読み込もうとしているデータは、より新しいバージョンのFukoWorksで作成されたものであり、正常に読み込めない可能性があります。", @"OK", nil, nil);
     }
     
-    //データ読み込み
+    // データ読み込み
+    // バージョン判別をして適切な読み込みをする必要がある。
     i_max = [dataList count];
     for(i = 1; i < i_max; i++){
         dataItemsString = [dataList objectAtIndex:i];
