@@ -8,6 +8,32 @@
 
 #import "ToolboxController.h"
 #import "CanvasObjectListWindowController.h"
+#import "FukoWorks.h"
+
+@implementation ToolButton
+@synthesize isDoubleClicked = _isDoubleClicked;
+
+- (id)init
+{
+    self = [super init];
+    if(self){
+        self.isDoubleClicked = NO;
+    }
+    return self;
+}
+
+- (void)mouseDown:(NSEvent *)theEvent
+{
+    if([theEvent clickCount] > 1){
+        // double-click
+        self.isDoubleClicked = YES;
+    } else{
+        // single-click
+        self.isDoubleClicked = NO;
+    }
+    [super mouseDown:theEvent];
+}
+@end
 
 @implementation ToolboxController
 
@@ -60,6 +86,7 @@
     if(self){
         _drawingObjectType = Undefined;
         selectedDrawingObjectTypeButton = nil;
+        beforeSelectedDrawingObjectTypeButton = nil;
         _editingObject = nil;
     }
     
@@ -92,6 +119,9 @@ ToolboxController *_sharedToolboxController = nil;
     [self strokeColorChanged:self];
     
     [toolbox setReleasedWhenClosed:NO];
+    
+    [self drawingObjectTypeChanged:toolCursor];
+    beforeSelectedDrawingObjectTypeButton = toolCursor;
 }
 
 - (void)strokeColorChanged:(id)sender
@@ -145,16 +175,35 @@ ToolboxController *_sharedToolboxController = nil;
 
 - (void)drawingObjectTypeChanged:(id)sender
 {
-    NSButton *nextButton;
+    ToolButton *nextButton;
     
-    if([sender isKindOfClass:[NSButton class]]){
-        nextButton = (NSButton *)sender;
-        [selectedDrawingObjectTypeButton setState:NSOffState];
-        selectedDrawingObjectTypeButton = nextButton;
-        [selectedDrawingObjectTypeButton setState:NSOnState];
-        _drawingObjectType = selectedDrawingObjectTypeButton.tag;
+    if([sender isKindOfClass:[ToolButton class]]){
+        nextButton = (ToolButton *)sender;
+        if([nextButton isDoubleClicked]){
+            if(nextButton.tag < PaintToolsBase){
+                // ペイントツール以外が永続選択できる。
+                beforeSelectedDrawingObjectTypeButton = nextButton;
+                nextButton.isDoubleClicked = NO;
+            }
+        } else{
+            if(nextButton == toolCursor){
+                beforeSelectedDrawingObjectTypeButton = toolCursor;
+            }
+            [selectedDrawingObjectTypeButton setState:NSOffState];
+            selectedDrawingObjectTypeButton = nextButton;
+            [selectedDrawingObjectTypeButton setState:NSOnState];
+            _drawingObjectType = selectedDrawingObjectTypeButton.tag;
+        }
     }
 }
 
+- (void)endObjectCreation
+{
+    // キャンバスで描画が終わる度に呼び出される
+    // 以前選択していた（最後にダブルクリックした）ツールに、ツール選択を戻す
+    if(selectedDrawingObjectTypeButton != beforeSelectedDrawingObjectTypeButton){
+        [self drawingObjectTypeChanged:beforeSelectedDrawingObjectTypeButton];
+    }
+}
 
 @end

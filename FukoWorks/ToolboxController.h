@@ -10,6 +10,15 @@
 #import "CanvasObject.h"
 #import "CanvasObjectPaintFrame.h"
 
+@interface ToolButton : NSButton
+{
+
+}
+
+@property BOOL isDoubleClicked;
+
+@end
+
 @interface ToolboxController : NSWindowController
 {
     IBOutlet NSPanel *toolbox;
@@ -18,18 +27,19 @@
     IBOutlet NSSlider *sliderStrokeWidth;
     IBOutlet NSTextField *textFieldStrokeWidth;
     
-    IBOutlet NSButton *toolCursor;
-    IBOutlet NSButton *toolRect;
-    IBOutlet NSButton *toolEllipse;
-    IBOutlet NSButton *toolPaintFrame;
+    IBOutlet ToolButton *toolCursor;
+    IBOutlet ToolButton *toolRect;
+    IBOutlet ToolButton *toolEllipse;
+    IBOutlet ToolButton *toolPaintFrame;
     //
-    IBOutlet NSButton *toolPaintRect;
-    IBOutlet NSButton *toolPaintEllipse;
-    IBOutlet NSButton *toolPaintPen;
-    IBOutlet NSButton *toolPaintLine;
-    IBOutlet NSButton *toolPaintFill;
+    IBOutlet ToolButton *toolPaintRect;
+    IBOutlet ToolButton *toolPaintEllipse;
+    IBOutlet ToolButton *toolPaintPen;
+    IBOutlet ToolButton *toolPaintLine;
+    IBOutlet ToolButton *toolPaintFill;
     
-    NSButton *selectedDrawingObjectTypeButton;
+    ToolButton *selectedDrawingObjectTypeButton;
+    ToolButton *beforeSelectedDrawingObjectTypeButton;
 }
 
 @property (nonatomic) NSColor *drawingStrokeColor;
@@ -56,5 +66,6 @@
 - (IBAction)sliderStrokeWidthChanged:(id)sender;
 - (IBAction)textFieldStrokeWidthChanged:(id)sender;
 - (IBAction)drawingObjectTypeChanged:(id)sender;
+- (void)endObjectCreation;
 
 @end
