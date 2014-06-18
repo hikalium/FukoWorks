@@ -281,11 +281,11 @@
 {
     //再描画時に呼ばれる。
     CGContextRef mainContext;
-    CGRect rect;
+    // CGRect rect;
     
     mainContext = [[NSGraphicsContext currentContext] graphicsPort];
     
-    rect = self.bodyRectBounds;
+    // rect = self.bodyRectBounds;
     
     CGContextSaveGState(mainContext);
     {

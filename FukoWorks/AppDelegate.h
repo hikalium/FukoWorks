@@ -29,6 +29,5 @@
 - (IBAction)showToolBox:(id)sender;
 - (IBAction)showCanvasObjectListWindow:(id)sender;
 - (IBAction)createNewDrawCanvas:(id)sender;
-- (IBAction)openFile:(id)sender;
 
 @end

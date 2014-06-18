@@ -11,16 +11,24 @@
 
 @implementation AppDelegate
 
+- (id)init
+{
+    self = [super init];
+    if(self){
+        Canvases = [NSMutableArray array];
+        toolboxController = [ToolboxController sharedToolboxController];
+        objectListController = [CanvasObjectListWindowController sharedCanvasObjectListWindowController];
+        //ColorWellで透明色を指定できるようにする。
+        [NSColor setIgnoresAlpha:NO];
+    }
+    return self;
+}
+
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
-    //表示部分の初期化
-    Canvases = [NSMutableArray array];
-    toolboxController = [ToolboxController sharedToolboxController];
-    objectListController = [CanvasObjectListWindowController sharedCanvasObjectListWindowController];
-    
-    //ColorWellで透明色を指定できるようにする。
-    [NSColor setIgnoresAlpha:NO];
+    // 起動処理の最後の最後に呼ばれる。
 }
+
 
 - (void)awakeFromNib
 {
@@ -35,12 +43,21 @@
     splashBuildLabel.stringValue = [[NSString alloc] initWithFormat:@"%@%@", splashBuildLabel.stringValue, s];
     s = [[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleShortVersionString"];
     splashVersionLabel.stringValue = [[NSString alloc] initWithFormat:@"%@%@", splashVersionLabel.stringValue, s];
-
 }
+/*
 
 - (void)application:(NSApplication *)sender openFiles:(NSArray *)filenames
 {
     //ファイルを開く処理
+}
+*/
+- (BOOL)application:(NSApplication *)sender openFile:(NSString *)filename
+{
+    CanvasWindowController *aCanvasWindow;
+    [self createNewDrawCanvas:sender];
+    aCanvasWindow = [Canvases objectAtIndex:[Canvases count] - 1];
+    [aCanvasWindow.mainCanvasView loadCanvasFromURL:[NSURL fileURLWithPath:filename]];
+    return YES;
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
@@ -76,9 +93,5 @@
     [aCanvasWindowController.window makeKeyAndOrderFront:self];
 }
 
-- (IBAction)openFile:(id)sender
-{
-    
-}
 
 @end

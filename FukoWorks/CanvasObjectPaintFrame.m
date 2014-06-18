@@ -92,7 +92,7 @@
         // StrokeWidth
         // BMPData
         s = [dataValues objectAtIndex:0];
-        [self setBodyRect:NSRectFromString([dataValues objectAtIndex:0])];
+        [self setBodyRect:NSRectFromString(s)];
         [self resetPaintContext];
         s = [dataValues objectAtIndex:1];
         self.rotationAngle = s.floatValue;
