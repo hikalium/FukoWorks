@@ -83,8 +83,7 @@
         //作成中の図形があるので座標を送る
         creatingObject = [creatingObject drawMouseDown:currentPoint];
         if(!creatingObject){
-            //作成が終了したらundoのグループ化を終了
-            [canvasUndoManager endUndoGrouping];
+            [self endObjectCreation];
         }
     }
     
@@ -108,8 +107,7 @@
         //作成中の図形があるので座標を送る
         creatingObject = [creatingObject drawMouseDragged:currentPoint];
         if(!creatingObject){
-            //作成が終了したらundoのグループ化を終了
-            [canvasUndoManager endUndoGrouping];
+            [self endObjectCreation];
         }
     }
     
@@ -138,8 +136,7 @@
         //作成中の図形があるので座標を送る
         creatingObject = [creatingObject drawMouseUp:currentPoint];
         if(!creatingObject){
-            //作成が終了したらundoのグループ化を終了
-            [canvasUndoManager endUndoGrouping];
+            [self endObjectCreation];
         }
     }
     
@@ -171,6 +168,13 @@
     }
     
     
+}
+
+- (void)endObjectCreation
+{
+    //作成が終了したらundoのグループ化を終了
+    [canvasUndoManager endUndoGrouping];
+    [self.toolboxController endObjectCreation];
 }
 
 - (NSMenu *)menuForEvent:(NSEvent *)event

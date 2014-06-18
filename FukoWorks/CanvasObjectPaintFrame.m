@@ -11,6 +11,7 @@
 #import "NSColor+StringConversion.h"
 #import "NSColor+HexValueConversion.h"
 #import "FWKBitmap.h"
+#import "FukoWorks.h"
 
 @implementation CanvasObjectPaintFrame
 {
@@ -140,6 +141,13 @@
 // paintContext
 - (void)resetPaintContext
 {
+    // 小さすぎるとコンテキスト生成に失敗するので、ある程度の大きさを確保する
+    if(self.bodyRect.size.width < FWK_MIN_SIZE_PIXEL_PAINTFRAME){
+        [self setFrameSize:NSMakeSize(FWK_MIN_SIZE_PIXEL_PAINTFRAME, self.bodyRect.size.height)];
+    }
+    if(self.bodyRect.size.height < FWK_MIN_SIZE_PIXEL_PAINTFRAME){
+        [self setFrameSize:NSMakeSize(self.bodyRect.size.width, FWK_MIN_SIZE_PIXEL_PAINTFRAME)];
+    }
     [bitmap resetBitmapContextToSize:self.bodyRectBounds.size];
 }
 
@@ -155,6 +163,7 @@
     [super drawMouseUp:currentPointInCanvas];
     [self resetPaintContext];
     [self.canvasUndoManager endUndoGrouping];
+    [self setNeedsDisplay:YES];
     
     return nil;
 }
@@ -172,6 +181,7 @@
     [super editHandleUp:currentHandlePointInCanvas forHandleID:hid];
     [self resetPaintContext];
     [self.canvasUndoManager endUndoGrouping];
+    [self setNeedsDisplay:YES];
 }
 
 // User interaction

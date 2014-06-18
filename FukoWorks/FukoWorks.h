@@ -29,8 +29,9 @@ typedef enum : NSInteger {
 
 #define FWK_PASTEBOARD_TYPE @"com.pcd.fwk.data.pasteboard"
 
-// 100m (72ppi)
-#define FWK_MAX_SIZE_PIXEL  283465
-#define FWK_MIN_SIZE_PIXEL  1
+
+#define FWK_MAX_SIZE_PIXEL              283465  // 100m (72ppi)
+#define FWK_MIN_SIZE_PIXEL              1
+#define FWK_MIN_SIZE_PIXEL_PAINTFRAME   16
 
 #endif
